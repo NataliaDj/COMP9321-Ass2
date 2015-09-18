@@ -33,8 +33,8 @@ create table users (
 );
 
 create table admin (
-	admin_id integer not null generated always as identity,
-	book_title varchar(40) not null,
+	admin_id varchar(20) not null,
+	pub_id integer not null,
 	foreign key (admin_id) references users(username),
-	foreign key (book_title) references publications(id)
+	foreign key (pub_id) references publications(id)
 );
