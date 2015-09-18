@@ -36,5 +36,6 @@ create table admin (
 	admin_id varchar(20) not null,
 	pub_id integer not null,
 	foreign key (admin_id) references users(username),
-	foreign key (pub_id) references publications(id)
+	foreign key (pub_id) references publications(id),
+	primary key (admin_id, pub_id)
 );
