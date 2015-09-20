@@ -18,14 +18,14 @@ import javax.servlet.http.HttpServletResponse;
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private Map commands;
+	private Map<String, Object> commands;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ControllerServlet() {
 		super();
-		commands = new HashMap();
+		commands = new HashMap<String, Object>();
 		commands.put("register", new RegisterCommand());
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 	}
