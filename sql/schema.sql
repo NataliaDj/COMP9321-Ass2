@@ -23,12 +23,12 @@ create table users (
 	username varchar(20) not null,
 	password varchar(20) not null, 
 	email varchar(30) not null unique,
-	nickname varchar(10) not null,
-	first_name varchar(20) not null,
-	last_name varchar(20) not null,
-	birth_year numeric(4,0) not null, 
-	address varchar(100) not null,
-	credit_card bigint not null,
+	nickname varchar(10),
+	first_name varchar(20),
+	last_name varchar(20),
+	birth_year numeric(4,0), 
+	address varchar(100),
+	credit_card bigint,
  	primary key (username)
 );
 
