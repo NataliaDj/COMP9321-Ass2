@@ -30,16 +30,15 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 	}
 
-	protected void processRequest(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+	throws ServletException, IOException {
 		Command cmd = resolveCommand(request);
 		String next = cmd.execute(request, response);
-		//if (next.indexOf('.') < 0) {
-		//	cmd = (Command) commands.get(next);
-		//	next = cmd.execute(request, response);
-		//}
-		RequestDispatcher dispatcher = getServletContext()
-				.getRequestDispatcher(next);
+		if (next.indexOf('.') < 0) {
+			cmd = (Command) commands.get(next);
+			next = cmd.execute(request, response);
+		}		
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(next);
 		dispatcher.forward(request, response);
 	}
 	
