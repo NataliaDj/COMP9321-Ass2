@@ -8,6 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.unsw.comp9321.jdbc.UserDTO;
+import edu.unsw.comp9321.jdbc.UserService;
+
 
 public class RegisterCommand implements Command{
 	
@@ -27,7 +30,9 @@ public class RegisterCommand implements Command{
 			PrintWriter out = response.getWriter();// from response, get output writer
 			out.println("<b>Submitting!</b>"); 
 			 
-			//TEMP DISABLED//UserBean userbean = CreateUser(request, response);
+			UserDTO user = CreateUser(request, response);
+			UserService service = new UserService();
+			service.addUser(user);
 			//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
 			//TEMP DISABLED//user_del.addUser(userbean);
 			 
@@ -46,32 +51,32 @@ public class RegisterCommand implements Command{
 		return null;
 	}
 	
-	/*
-	private UserBean CreateUser(HttpServletRequest request, HttpServletResponse response) 
+	
+	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException {
 		
-		UserBean userbean = new UserBean();
-		userbean.setFirstname(request.getParameter("firstname"));
-		userbean.setLastname(request.getParameter("lastname"));
-		userbean.setUsername(request.getParameter("username"));
-		userbean.setPassword(request.getParameter("password"));
+		UserDTO user = new UserDTO();
+		user.setFirstName(request.getParameter("firstname"));
+		user.setLastName(request.getParameter("lastname"));
+		user.setUsername(request.getParameter("username"));
+		user.setPassword(request.getParameter("password"));
 		
-		userbean.setEmail(request.getParameter("email"));
-		userbean.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));
+		user.setEmail(request.getParameter("email"));
+		user.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));
 		
-		userbean.setAddressOne(request.getParameter("address_one"));
-		userbean.setAddressTwo(request.getParameter("address_two"));
-		userbean.setCity(request.getParameter("city"));
-		userbean.setPostalCode(request.getParameter("postal_code"));
-		userbean.setState(request.getParameter("state"));
-		userbean.setCountry(request.getParameter("country"));
+		//user.setAddressOne(request.getParameter("address_one"));
+		//user.setAddressTwo(request.getParameter("address_two"));
+		//user.setCity(request.getParameter("city"));
+		//user.setPostalCode(request.getParameter("postal_code"));
+		//user.setState(request.getParameter("state"));
+		//user.setCountry(request.getParameter("country"));
 		
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<br>"); 
-		out.println("User's name = " + userbean.getFirstname() + " " + userbean.getLastname()); 
+		out.println("User's name = " + user.getFirstName() + " " + user.getLastName()); 
 		
-		return userbean;
+		return user;
 		
 		
-	}*/
+	}
 }

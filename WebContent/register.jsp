@@ -21,7 +21,7 @@
 	    <h2>Register</h2>
 	    <p>Please fill in all information</p>
 	
-		<form action='dispatcher?operation=register' class='registerForm' method='POST'>
+		<form action='ControllerServlet?operation=register' class='registerForm' method='POST'>
 			Username <input type="text"name="username">
 			Password <input type="password" name="password">
 			Email: <input type="text" name="email">
