@@ -1,3 +1,4 @@
 insert into publications values (default, )
 
-select first_name from users;
+select count(1) from users where username='123';
+select * from users;
