@@ -23,31 +23,14 @@ public class BookStoreDAO {
 		}
 		
 	}
-	
-	/*public void addUser(UserDTO u) throws DataAccessException {
-		try {
-			PreparedStatement stmt = connection
-					.prepareStatement("insert into users (username, password, email) values (?, ?, ?)");
-			stmt.setString(1, u.getUsername());
-			stmt.setString(2, u.getPassword());
-			stmt.setString(3, u.getEmail());
-			int n = stmt.executeUpdate();
-			if (n != 1) {
-				throw new DataAccessException(
-						"Did not insert one row into database");
-			}
-		} catch (SQLException e) {
-			throw new DataAccessException("Unable to execute query; "
-					+ e.getMessage(), e);
-		}
-	}*/
-	
-	
+		
 	
 	/**
 	 * Query the database and return a result set 
 	 * Use updateDatabase() for update statements and alter statements
-	 * Need to close connection after with closeConnection()
+	 * 
+	 * Need to close connection after with closeConnection() because otherwise
+	 * ResultSet closes and it can't be used
 	 * 
 	 * @param query
 	 * @return
@@ -73,7 +56,6 @@ public class BookStoreDAO {
 	/**
 	 * Update the database with update, alter, etc. statements
 	 * Use queryDatabase() for queries
-	 * Need to close connection after with closeConnection()
 	 * 
 	 * @param query
 	 */
@@ -86,7 +68,7 @@ public class BookStoreDAO {
                     ResultSet.CONCUR_READ_ONLY);
 
             statement.executeUpdate(query);
-			
+            closeConnection();
 	   } catch (ServiceLocatorException e) {
 	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 	   } catch (SQLException e) {
