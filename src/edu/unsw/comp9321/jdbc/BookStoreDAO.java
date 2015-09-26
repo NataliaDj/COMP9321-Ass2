@@ -83,14 +83,14 @@ public class BookStoreDAO {
 		}
 	}
 	
-	public void addUser(UserDTO bean) throws DataAccessException {
+	public boolean addUser(UserDTO user) throws DataAccessException {
 		
 		// first test if user already exists
-		if (userExists(bean.getUsername())) {
+		if (userExists(user.getUsername())) {
 			System.out.println("Not creating user because username already exists!");
-			return;
+			return false;
 		} else {
-			System.out.println("creating user = " + bean.getUsername());
+			System.out.println("creating user = " + user.getUsername());
 		}
 	
 	   Connection con = null;
@@ -100,12 +100,12 @@ public class BookStoreDAO {
 	       "insert into users (username, password, email, first_name, last_name, birth_year, "
 	       + "address, credit_card) values (?, ?, ?, ?, ?, ?, ?, ?)");
 	    
-	     stmt.setString(1, bean.getUsername());
-	     stmt.setString(2, bean.getPassword());
-	     stmt.setString(3, bean.getEmail());
-	     stmt.setString(4, bean.getFirstName());
-	     stmt.setString(5, bean.getLastName());
-	     stmt.setLong(6, bean.getBirthYear());
+	     stmt.setString(1, user.getUsername());
+	     stmt.setString(2, user.getPassword());
+	     stmt.setString(3, user.getEmail());
+	     stmt.setString(4, user.getFirstName());
+	     stmt.setString(5, user.getLastName());
+	     stmt.setLong(6, user.getBirthYear());
 	     stmt.setString(7, "temp address");
 	     //stmt.setString(9, bean.getAddressOne());
 	     //stmt.setString(10, bean.getAddressTwo());
@@ -113,7 +113,7 @@ public class BookStoreDAO {
 	     //stmt.setString(12, bean.getPostalCode());
 	     //stmt.setString(13, bean.getState());
 	     //stmt.setString(14, bean.getCountry());
-	     stmt.setLong(8, bean.getCreditCard());
+	     stmt.setLong(8, user.getCreditCard());
 	    	
 	     int n = stmt.executeUpdate();
 	     if (n != 1)
@@ -131,5 +131,7 @@ public class BookStoreDAO {
 	         }
 	      }
 	   }
+	   
+	   return true;
 	}
 }

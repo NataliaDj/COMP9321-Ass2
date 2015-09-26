@@ -1,17 +1,29 @@
 package edu.unsw.comp9321.jdbc;
 
+/**
+ * This class connects the frontend (e.g. registerCommand) to the database
+ * 
+ * So for example. RegistrationCommand calls
+ */
+
+import java.util.*;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
-/**
- * This class connects the frontend (e.g. registerCommand) to the database
- * 
- * So for example. RegistrationCommand calls
- */
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.mail.Session;
+
 
 import edu.unsw.comp9321.exception.*;
 import sun.net.www.protocol.mailto.MailToURLConnection;
@@ -39,70 +51,43 @@ public class UserService {
 	}
 
 	public UserDTO addUser(UserDTO user){
-		bookstoreDAO.addUser(user);
-		try {
-			SendConfirmationEmail();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (bookstoreDAO.addUser(user)) {
+			sendConfirmationEmail(user); // send confirmation email if adding user to database is successful
 		}
 		return null;
 	}
 	
-	private void SendConfirmationEmail() throws IOException
+	private void sendConfirmationEmail(UserDTO user) 
 	{
-		sendMail("me@something.com", "vincentrubingh@gmail.com", "confirmation", "hi there!", null);
+		sendMail("me@something.com", user.getEmail(), "Website confirmation", "Hi " + user.getFirstName() + "\n \n this works?");
 	}
 	
-	public static void sendMail(String from, String to, String subject, String body, String[] headers) throws IOException {
-		System.setProperty("mail.smtp.host", "Vincents-MacBook-Pro.local");
-	   
-		String[] hosts = new String[] { "Vincents-MacBook-Pro.local", "Vincents-MacBook-Pro", "local", "localhost" };
-	    String host = "";
-	    String[] mail = new String[] { "mail.smtp.host", "mail.host" };
-	    String host_property = "";
-	    
-	    for (int k = 0; k < 2; k++ ) {
-	    	host_property = mail[k];
-		for (int i = 0; i < 4; i++) {
-			host = hosts[i];
-			System.setProperty(host_property, host);
-			try {
-				URL u = new URL("mailto:"+to);
-				MailToURLConnection con = (MailToURLConnection)u.openConnection();
-				OutputStream os = con.getOutputStream();
-				OutputStreamWriter w = new OutputStreamWriter(os);
-			   
-				DateFormat df = new SimpleDateFormat("E, d MMM yyyy H:mm:ss Z");
-				Date d = new Date();
-				String dt = df.format(d);
-			    String mid = d.getTime()+from.substring(from.indexOf('@'));
-
-			   w.append("Subject: "+subject+"\r\n");
-			   w.append("Date: " +dt+ "\r\n");
-			   w.append("Message-ID: <"+mid+ ">\r\n");
-			   w.append("From: "+from+"\r\n");
-			   w.append("To: <"+to+">\r\n");
-			   if(headers!=null) {
-			      for(String h: headers)
-			         w.append(h).append("\r\n");
-			   }
-			   w.append("\r\n");
-
-			   w.append(body.replace("\n", "\r\n"));
-			   w.flush();
-			   w.close();
-			   os.close();
-			   con.close();
-		   } catch (java.net.UnknownHostException e) {
-			   System.out.println("host failed: ");
-			   System.out.println("name = " + host_property + " and host = " + host);
-		   }
-		   
-	   }
-	    }
-
-	   
+	public static void sendMail(String email_sender, String email_receiver,
+								String subject, String content) {
+		
+		try {
+			Context initCtx = new InitialContext();
+			Context envCtx = (Context) initCtx.lookup("java:comp/env");
+			Session session = (Session) envCtx.lookup("mail/Session");
+	
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress(email_sender));
+			InternetAddress to[] = new InternetAddress[1];
+			to[0] = new InternetAddress(email_receiver);
+			message.setRecipients(Message.RecipientType.TO, to);
+			message.setSubject(subject);
+			message.setContent(content, "text/plain");
+			Transport.send(message);
+		} catch (AddressException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -5,4 +5,7 @@
           driverClassName="org.apache.derby.jdbc.ClientDriver" 
           url="jdbc:derby://localhost:1527/Ass2DB"
           maxActive="8" maxIdle="4"/>
+  <Resource name="mail/Session" auth="Container"
+            type="javax.mail.Session"
+            mail.smtp.host="localhost"/>        
 </Context>

@@ -40,6 +40,9 @@ public class RegisterCommand implements Command{
 			//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
 			//TEMP DISABLED//user_del.addUser(userbean);
 			 
+		} else if (action.equals("activating")) {
+			
+			
 		} else {
 			String nextPage = "register.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
