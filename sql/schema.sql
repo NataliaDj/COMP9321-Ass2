@@ -20,11 +20,11 @@ create table publications (
 );
 
 create table users (
-	username varchar(20) not null,
-	password varchar(20) not null, 
-	email varchar(30) not null unique,
-	first_name varchar(20),
-	last_name varchar(20),
+	username varchar(32) not null,
+	password varchar(32) not null, 
+	email varchar(32) not null unique,
+	first_name varchar(32),
+	last_name varchar(32),
 	birth_year numeric(4,0), 
 	address varchar(100),
 	credit_card bigint,

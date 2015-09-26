@@ -40,7 +40,7 @@ public class UserService {
 		if (bookstoreDAO.activateUser(username)) {
 			
 		} else {
-			
+			System.out.println("Couldn't activate user for some reason");
 		}
 	}
 	

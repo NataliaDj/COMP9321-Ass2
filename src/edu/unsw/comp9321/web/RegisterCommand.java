@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
+import edu.unsw.comp9321.jdbc.Utilities;
 
 
 public class RegisterCommand implements Command{
@@ -48,13 +49,21 @@ public class RegisterCommand implements Command{
 		return null;
 	}
 	
-	
+	/**
+	 * Attempt to register the user with information contained in request
+	 * from register.jsp
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");// from response, set content type
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<b>Submitting!</b>"); 
 		 
 		UserDTO user = CreateUser(request, response);
+				
 		UserService service = new UserService();
 		service.addUser(user);
 		//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
@@ -68,7 +77,9 @@ public class RegisterCommand implements Command{
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
 		user.setUsername(request.getParameter("username"));
-		user.setPassword(request.getParameter("password"));
+		String password = request.getParameter("password");
+		user.setPassword(Utilities.generateMD5(password)); // don't forget to hash password
+		
 		
 		user.setEmail(request.getParameter("email"));
 		user.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));

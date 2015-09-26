@@ -1,5 +1,9 @@
 package edu.unsw.comp9321.jdbc;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -54,7 +58,25 @@ public class Utilities {
 		}
 	}
 	
-	
+	/**
+	 * 
+	 * 
+	 * @param unhashed
+	 * @return
+	 */
+	public static String generateMD5(String unhashed) {
+        String generated_md5 = null;
+        if (unhashed == null) return null;
+         
+        try {
+	        MessageDigest digest = MessageDigest.getInstance("MD5");
+	        digest.update(unhashed.getBytes(), 0, unhashed.length());
+	        generated_md5 = new BigInteger(1, digest.digest()).toString(16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generated_md5;
+    }
 	
 	
 }
