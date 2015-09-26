@@ -9,4 +9,10 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>dispatcher</display-name>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>edu.unsw.comp9321.web.ControllerServlet</servlet-class>
+  </servlet>
 </web-app>

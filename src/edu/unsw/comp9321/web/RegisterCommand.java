@@ -1,7 +1,82 @@
 package edu.unsw.comp9321.web;
 
-public class RegisterCommand {
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import edu.unsw.comp9321.jdbc.UserDTO;
+import edu.unsw.comp9321.jdbc.UserService;
+
+
+public class RegisterCommand implements Command{
+	
 	public RegisterCommand() {
+	}
+	
+	public String execute(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		
+		String action = "";
+		if (request.getParameter("action") != null) {
+			action = request.getParameter("action");
+		}
+		 
+		if (action.equals("registering")) { //success
+			response.setContentType("text/html");// from response, set content type
+			PrintWriter out = response.getWriter();// from response, get output writer
+			out.println("<b>Submitting!</b>"); 
+			 
+			UserDTO user = CreateUser(request, response);
+			UserService service = new UserService();
+			service.addUser(user);
+			//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
+			//TEMP DISABLED//user_del.addUser(userbean);
+			 
+		} else {
+			String nextPage = "register.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
+			rd.forward(request, response); 
+		}
+		
+		
+		
+		
+		//response.setContentType("text/html");// from response, set content type
+		//PrintWriter out = response.getWriter();// from response, get output writer
+		//out.println("<b>REGISTERRR</b>");
+		return null;
+	}
+	
+	
+	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		
+		UserDTO user = new UserDTO();
+		user.setFirstName(request.getParameter("firstname"));
+		user.setLastName(request.getParameter("lastname"));
+		user.setUsername(request.getParameter("username"));
+		user.setPassword(request.getParameter("password"));
+		
+		user.setEmail(request.getParameter("email"));
+		user.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));
+		
+		//user.setAddressOne(request.getParameter("address_one"));
+		//user.setAddressTwo(request.getParameter("address_two"));
+		//user.setCity(request.getParameter("city"));
+		//user.setPostalCode(request.getParameter("postal_code"));
+		//user.setState(request.getParameter("state"));
+		//user.setCountry(request.getParameter("country"));
+		
+		PrintWriter out = response.getWriter();// from response, get output writer
+		out.println("<br>"); 
+		out.println("User's name = " + user.getFirstName() + " " + user.getLastName()); 
+		
+		return user;
+		
 		
 	}
 }

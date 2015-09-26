@@ -19,7 +19,7 @@ public class DBConnectionFactory {
 	private InitialContext ctx;
 	private Context subctx;
 	
-	private DBConnectionFactory() throws ServiceLocatorException {
+	public DBConnectionFactory() throws ServiceLocatorException {
 		try{
 			ctx = new InitialContext();
 			ds = (DataSource) ctx.lookup("java:comp/env/jdbc/cs9321");
@@ -42,5 +42,14 @@ public class DBConnectionFactory {
 		Connection conn = factory.getDataSource().getConnection();
 		
 		return conn;
+	}
+	
+	public Connection createConnection() throws ServiceLocatorException {
+		try {
+			//return getDataSource().getConnection("SA", "d41d8cd98f00b204e9800998ecf8427e");
+			return getDataSource().getConnection();
+		} catch (SQLException e) {
+			throw new ServiceLocatorException("Unable to create connection: " + e.getMessage(), e);
+		}
 	}
 }

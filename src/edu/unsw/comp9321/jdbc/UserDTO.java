@@ -6,6 +6,12 @@ public class UserDTO {
 		
 	}
 	
+	public int getID() {
+		return id;
+	}
+	public void setID(int id) {
+		this.id = id;
+	}
 	public String getUsername() {
 		return username;
 	}
@@ -48,6 +54,7 @@ public class UserDTO {
 	public void setBirthYear(int birthYear) {
 		this.birthYear = birthYear;
 	}
+	
 	public String getAddress() {
 		return address;
 	}
@@ -61,6 +68,7 @@ public class UserDTO {
 		this.creditCard = creditCard;
 	}
 
+	private int id;
 	private String username;
 	private String password;
 	private String email;
