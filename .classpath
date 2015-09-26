@@ -6,5 +6,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v8.0"/>
 	<classpathentry kind="lib" path="/Users/rubinghv/Downloads/javamail-1.4.5/mail.jar"/>
+	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
