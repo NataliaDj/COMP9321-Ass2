@@ -12,7 +12,6 @@ import edu.unsw.comp9321.exception.ServiceLocatorException;
 
 public class BookStoreDAO {
 
-	static Logger logger = Logger.getLogger(BookStoreDAO.class.getName());
 	private DBConnectionFactory services;
 
 	public BookStoreDAO() {
@@ -22,7 +21,6 @@ public class BookStoreDAO {
 			e.printStackTrace();
 		}
 		
-		logger.info("Got connection");
 	}
 	
 	/*public void addUser(UserDTO u) throws DataAccessException {
@@ -91,29 +89,32 @@ public class BookStoreDAO {
 		if (userExists(bean.getUsername())) {
 			System.out.println("Not creating user because username already exists!");
 			return;
+		} else {
+			System.out.println("creating user = " + bean.getUsername());
 		}
 	
 	   Connection con = null;
 	   try {
 	     con = services.createConnection();
 	     PreparedStatement stmt = con.prepareStatement(
-	       "insert into users (username, password, email, nickname, first_name, last_name, birth_year, "
-	       + "address, credit_card) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+	       "insert into users (username, password, email, first_name, last_name, birth_year, "
+	       + "address, credit_card) values (?, ?, ?, ?, ?, ?, ?, ?)");
+	    
 	     stmt.setString(1, bean.getUsername());
 	     stmt.setString(2, bean.getPassword());
 	     stmt.setString(3, bean.getEmail());
-	     stmt.setString(4, bean.getNickname());
-	     stmt.setString(5, bean.getFirstName());
-	     stmt.setString(6, bean.getLastName());
-	     stmt.setLong(7, bean.getBirthYear());
-	     stmt.setString(8, "");
+	     stmt.setString(4, bean.getFirstName());
+	     stmt.setString(5, bean.getLastName());
+	     stmt.setLong(6, bean.getBirthYear());
+	     stmt.setString(7, "temp address");
 	     //stmt.setString(9, bean.getAddressOne());
 	     //stmt.setString(10, bean.getAddressTwo());
 	     //stmt.setString(11, bean.getCity());
 	     //stmt.setString(12, bean.getPostalCode());
 	     //stmt.setString(13, bean.getState());
 	     //stmt.setString(14, bean.getCountry());
-	     stmt.setLong(9, bean.getCreditCard());
+	     stmt.setLong(8, bean.getCreditCard());
+	    	
 	     int n = stmt.executeUpdate();
 	     if (n != 1)
 	       throw new DataAccessException("Did not insert one row into database");
