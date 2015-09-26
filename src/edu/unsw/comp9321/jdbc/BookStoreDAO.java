@@ -45,7 +45,8 @@ public class BookStoreDAO {
 	
 	
 	/**
-	 * Query the database and return a result set
+	 * Query the database and return a result set 
+	 * Use updateDatabase() for update statements and alter statements
 	 * Need to close connection after with closeConnection()
 	 * 
 	 * @param query
@@ -53,7 +54,6 @@ public class BookStoreDAO {
 	 */
 	private ResultSet queryDatabase(String query) {
 		con = null;
-		
 		try {
 			con = services.createConnection();
 			Statement statement = con.createStatement(
@@ -67,8 +67,30 @@ public class BookStoreDAO {
 	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 	   } catch (SQLException e) {
 	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
-	   } finally {
-	      
+	   } 
+	}
+	
+	/**
+	 * Update the database with update, alter, etc. statements
+	 * Use queryDatabase() for queries
+	 * Need to close connection after with closeConnection()
+	 * 
+	 * @param query
+	 */
+	private void updateDatabase(String query) {
+		con = null;
+		try {
+			con = services.createConnection();
+			Statement statement = con.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            statement.executeUpdate(query);
+			
+	   } catch (ServiceLocatorException e) {
+	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+	   } catch (SQLException e) {
+	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
 	   }
 	}
 	
@@ -106,9 +128,31 @@ public class BookStoreDAO {
 		} else {
 			return false;
 		}
-		
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public boolean activateUser(String username) {
+		System.out.println("Activating database: " + username + "!");
+		
+		String query = "update users set account_activated=1 where username='" + username + "'";
+		updateDatabase(query);
+		
+		return false;
+	}
+	
+	/**
+	 * Add user to the database and return true
+	 * If username already exists, return false
+	 * 
+	 * @param user
+	 * @return
+	 * @throws DataAccessException
+	 */
 	public boolean addUser(UserDTO user) throws DataAccessException {
 		
 		// first test if user already exists

@@ -33,10 +33,15 @@ public class UserService {
 	
 	/**
 	 * 
+	 * 
 	 * @param username
 	 */
 	public void activateUser(String username) {
-		
+		if (bookstoreDAO.activateUser(username)) {
+			
+		} else {
+			
+		}
 	}
 	
 

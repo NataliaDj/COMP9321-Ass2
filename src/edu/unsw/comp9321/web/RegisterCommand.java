@@ -2,7 +2,6 @@ package edu.unsw.comp9321.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -21,8 +20,8 @@ public class RegisterCommand implements Command{
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		InetAddress ip = InetAddress.getLocalHost();
-		System.out.println("hostaddress = " + ip.getHostName());
+		//InetAddress ip = InetAddress.getLocalHost();
+		//System.out.println("hostaddress = " + ip.getHostName());
 		
 		String action = "";
 		if (request.getParameter("action") != null) {
