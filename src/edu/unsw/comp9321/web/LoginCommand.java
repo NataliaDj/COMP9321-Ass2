@@ -25,7 +25,9 @@ public class LoginCommand implements Command{
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");
 		}
-		 
+		
+		request.setAttribute("error", "" ); 
+		
 		if (action.equals("loggingin")) {
 			response.setContentType("text/html");// from response, set content type
 			PrintWriter out = response.getWriter();// from response, get output writer
@@ -37,17 +39,17 @@ public class LoginCommand implements Command{
 			
 			UserDTO user = service.login(request.getParameter("username"), Utilities.generateMD5(password));
 			if (user == null) {
-				out.println("<b>Could not log in!</b>");
+				request.setAttribute("error", "Username and/or password is incorrect, please try again." );
 			} else {
 				// found user
 				out.println("<b>Successfully logged in!!</b>");
+				return null;
 			}
-		} else {
-			// if no action, just display login jsp page
-			String nextPage = "login.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
-			rd.forward(request, response); 
-		}
+		} 
+		
+		String nextPage = "login.jsp";
+		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
+		rd.forward(request, response); 
 
 		return null;
 	}
