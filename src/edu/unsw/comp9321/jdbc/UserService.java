@@ -55,6 +55,7 @@ public class UserService {
 			sendConfirmationEmail(user); // send confirmation email if adding user to database is successful
 		}
 		return null;
+		
 	}
 	
 	private void sendConfirmationEmail(UserDTO user) 
