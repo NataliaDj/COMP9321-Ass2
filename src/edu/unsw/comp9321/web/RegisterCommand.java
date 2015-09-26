@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
@@ -16,36 +17,54 @@ import edu.unsw.comp9321.jdbc.Utilities;
 public class RegisterCommand implements Command{
 	
 	public RegisterCommand() {
+		
 	}
 	
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
+
 		//InetAddress ip = InetAddress.getLocalHost();
 		//System.out.println("hostaddress = " + ip.getHostName());
-		
+		PrintWriter out = response.getWriter();
 		String action = "";
+		UserDTO user = new UserDTO();
+		request.setAttribute("user", user);	
+		
+		// if no action, it means first access to register page 
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");
 		}
 		 
-		if (action.equals("registering")) { //success
+		if (action.equals("registering")) { // trying to register with form data
 			register(request, response);
 			 
-		} else if (action.equals("activation")) {
-			response.setContentType("text/html");// from response, set content type
-			PrintWriter out = response.getWriter();// from response, get output writer
+		} else if (action.equals("activation")) { // trying to activate through link in email
+			response.setContentType("text/html");
+			
 			out.println("<b>Activating " + request.getParameter("username") + "!</b>"); 
 			
 			UserService service = new UserService();
 			service.activateUser(request.getParameter("username")); // NEED ERROR HANDLING
 			
 		} else {
-			String nextPage = "register.jsp";
+			
+			// test if logged in or not
+			HttpSession session = request.getSession(false);  
+	        if (session != null){
+	        	if (session.getAttribute("user") != null) {
+	        		out.println("<b>You obviously deserve a better page here " + session.getAttribute("username") + "!</b>"); 
+	        		
+	        		// set attributes
+	        		user = (UserDTO) session.getAttribute("user");
+	        		request.setAttribute("user", user);
+	        	}
+	        }
+	        
+	        String nextPage = "register.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
-			rd.forward(request, response); 
+			rd.forward(request, response);
+	        
 		}
-
 		return null;
 	}
 	

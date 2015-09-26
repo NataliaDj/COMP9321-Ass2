@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable  {
 	
 	public UserDTO() {
 		

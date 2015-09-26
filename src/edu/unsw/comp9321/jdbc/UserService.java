@@ -1,5 +1,7 @@
 package edu.unsw.comp9321.jdbc;
 
+import javax.servlet.http.Cookie;
+
 /**
  * This class connects the frontend (e.g. registerCommand) to the database
  * 
@@ -22,17 +24,17 @@ public class UserService {
 	 */
 	public UserDTO login(String username, String password) {
 		
+		UserDTO user = bookstoreDAO.userLogin(username, password);
 		
-		if (bookstoreDAO.userLogin(username, password)) {
-			return new UserDTO();
-		} else {
-			return null;
-		}
+		if (user != null) {
+					
+		} 
 		
-		
+		return user;		
          
 		
 	}
+	
 	
 	/**
 	 * Called through RegisterCommand when link in email is pressed to activate

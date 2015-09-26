@@ -114,30 +114,44 @@ public class BookStoreDAO {
 	
 	/**
 	 * Test if username and password combination exists in the database, 
+	 * return UserDTO if found, null otherwise
 	 * 
 	 * @param username
 	 */
-	public boolean userLogin(String username, String password) {
-		String query = "select count(*) AS matchcount from users where username='" + username + "' and "
-				+ "password='" + password + "'";
+	public UserDTO userLogin(String username, String password) {
+		String query = "select * from users where username='" + username + "' and "
+					 + "password='" + password + "'";
 		//System.out.println("query = " + query);
-		int matches = 0;
+		UserDTO user = null;
+		
 		ResultSet rs = queryDatabase(query);
 		try {
-			rs.last();
-			matches = rs.getInt("matchcount");
+			while(rs.next()) {
+				String username_result = rs.getString("username");
+				if (username_result.equals(username)) {
+					user = new UserDTO();
+					user.setUsername(username);
+					user.setPassword(password);
+					user.setFirstName(rs.getString("first_name"));
+					user.setLastName(rs.getString("last_name"));
+					user.setBirthYear(rs.getInt("birth_year"));
+					user.setEmail(rs.getString("email"));
+					user.setAddress(rs.getString("address"));
+					user.setCreditCard(rs.getInt("credit_card"));
+					break;
+				} else {
+					return null;
+				}
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return null; // means there is no result
 		}
+		
 		closeConnection();
-        System.out.println ("matches = " + matches);
-		if (matches > 0) { 
-			return true;
-		} else {
-			return false;
-		}
+		return user;
 	}
+	
 	
 	/**
 	 * 

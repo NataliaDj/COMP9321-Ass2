@@ -7,6 +7,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
@@ -25,7 +26,7 @@ public class LoginCommand implements Command{
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");
 		}
-		
+		String nextPage = "login.jsp";
 		request.setAttribute("error", "" ); 
 		
 		if (action.equals("loggingin")) {
@@ -40,19 +41,25 @@ public class LoginCommand implements Command{
 			UserDTO user = service.login(request.getParameter("username"), Utilities.generateMD5(password));
 			if (user == null) {
 				request.setAttribute("error", "Username and/or password is incorrect, please try again." );
+				
 			} else {
 				// found user
-				out.println("<b>Successfully logged in!!</b>");
-				return null;
+				HttpSession session = request.getSession(true);
+				session.setAttribute("username", request.getParameter("username")); // set user session so it remembers logged in
+				session.setAttribute("user", user);
+				nextPage = "register.jsp";
 			}
 		} 
 		
-		String nextPage = "login.jsp";
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
 		rd.forward(request, response); 
 
 		return null;
 	}
+	
+	
+	
 	
 
 }
