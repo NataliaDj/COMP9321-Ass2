@@ -113,6 +113,33 @@ public class BookStoreDAO {
 	}
 	
 	/**
+	 * Test if username and password combination exists in the database, 
+	 * 
+	 * @param username
+	 */
+	public boolean userLogin(String username, String password) {
+		String query = "select count(*) AS matchcount from users where username='" + username + "' and "
+				+ "password='" + password + "'";
+		//System.out.println("query = " + query);
+		int matches = 0;
+		ResultSet rs = queryDatabase(query);
+		try {
+			rs.last();
+			matches = rs.getInt("matchcount");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+        System.out.println ("matches = " + matches);
+		if (matches > 0) { 
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * 
 	 * 
 	 * @param username

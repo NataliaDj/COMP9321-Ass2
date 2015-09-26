@@ -20,19 +20,22 @@ public class UserService {
 	/**
 	 * @see com.enterprise.business.PhonebookService#login(java.lang.String, java.lang.String)
 	 */
-	public UserDTO login(String username, String password)
-		throws UserLoginFailedException {
-
-		UserDTO user = null;
+	public UserDTO login(String username, String password) {
 		
-          //TODO: this should try to find a UserBean using the UserDAO  
-          //TODO: throw LoginFailedException if the user is not found or the operation fails.
-          //TODO: if the user is found, return the user
-        return user;
+		
+		if (bookstoreDAO.userLogin(username, password)) {
+			return new UserDTO();
+		} else {
+			return null;
+		}
+		
+		
+         
+		
 	}
 	
 	/**
-	 * 
+	 * Called through RegisterCommand when link in email is pressed to activate
 	 * 
 	 * @param username
 	 */

@@ -80,7 +80,6 @@ public class RegisterCommand implements Command{
 		String password = request.getParameter("password");
 		user.setPassword(Utilities.generateMD5(password)); // don't forget to hash password
 		
-		
 		user.setEmail(request.getParameter("email"));
 		user.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));
 		

@@ -27,6 +27,7 @@ public class ControllerServlet extends HttpServlet {
 		super();
 		commands = new HashMap<String, Object>();
 		commands.put("register", new RegisterCommand());
+		commands.put("login", new LoginCommand());
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 	}
 
