@@ -30,37 +30,34 @@ public class RegisterCommand implements Command{
 		}
 		 
 		if (action.equals("registering")) { //success
-			register(request, response);
-			 
-		} else if (action.equals("activation")) {
 			response.setContentType("text/html");// from response, set content type
 			PrintWriter out = response.getWriter();// from response, get output writer
-			out.println("<b>Activating " + request.getParameter("username") + "!</b>"); 
-			
+			out.println("<b>Submitting!</b>"); 
+			 
+			UserDTO user = CreateUser(request, response);
 			UserService service = new UserService();
-			service.activateUser(request.getParameter("username")); // NEED ERROR HANDLING
+			service.addUser(user);
+			//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
+			//TEMP DISABLED//user_del.addUser(userbean);
+			 
+		} else if (action.equals("activating")) {
+			
 			
 		} else {
 			String nextPage = "register.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
 			rd.forward(request, response); 
 		}
-
+		
+		
+		
+		
+		//response.setContentType("text/html");// from response, set content type
+		//PrintWriter out = response.getWriter();// from response, get output writer
+		//out.println("<b>REGISTERRR</b>");
 		return null;
 	}
 	
-	
-	private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("text/html");// from response, set content type
-		PrintWriter out = response.getWriter();// from response, get output writer
-		out.println("<b>Submitting!</b>"); 
-		 
-		UserDTO user = CreateUser(request, response);
-		UserService service = new UserService();
-		service.addUser(user);
-		//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
-		//TEMP DISABLED//user_del.addUser(userbean);
-	}
 	
 	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException {
