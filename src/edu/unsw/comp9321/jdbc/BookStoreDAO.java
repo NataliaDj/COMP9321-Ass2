@@ -13,7 +13,8 @@ import edu.unsw.comp9321.exception.ServiceLocatorException;
 public class BookStoreDAO {
 
 	private DBConnectionFactory services;
-
+	Connection con = null;
+	
 	public BookStoreDAO() {
 		try {
 			services = new DBConnectionFactory();
@@ -41,46 +42,71 @@ public class BookStoreDAO {
 		}
 	}*/
 	
+	
+	
 	/**
-	 * Test if the username exists in the users table in the database
+	 * Query the database and return a result set
+	 * Need to close connection after with closeConnection()
 	 * 
-	 * @param username
+	 * @param query
+	 * @return
 	 */
-	private boolean userExists(String username) {
-		Connection con = null;
-		int matches = 0;
+	private ResultSet queryDatabase(String query) {
+		con = null;
+		
 		try {
 			con = services.createConnection();
 			Statement statement = con.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
 
-            String query = "select count(*) AS matchcount from users where username = '" + username + "'";
             ResultSet rs = statement.executeQuery(query);
-            rs.last();
-            
-            matches = rs.getInt("matchcount");
+            return rs;
 			
 	   } catch (ServiceLocatorException e) {
 	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 	   } catch (SQLException e) {
 	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
 	   } finally {
-	      if (con != null) {
-	         try {
-	           con.close();
-	         } catch (SQLException e1) {
-	           e1.printStackTrace();
-	         }
-	      }
+	      
 	   }
+	}
+	
+	private void closeConnection() {
+		if (con != null) {
+			try {
+	        	con.close();
+	        } catch (SQLException e1) {
+	        	e1.printStackTrace();
+	        }
+	    }
+	}
+	
+	/**
+	 * Test if the username exists in the users table in the database
+	 * 
+	 * @param username
+	 */
+	private boolean userExists(String username) {
+		String query = "select count(*) AS matchcount from users where username = '" + username + "'";
+		int matches = 0;
 		
-		
+		ResultSet rs = queryDatabase(query);
+		try {
+			rs.last();
+			matches = rs.getInt("matchcount");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+        
 		if (matches > 0) { 
 			return true;
 		} else {
 			return false;
 		}
+		
 	}
 	
 	public boolean addUser(UserDTO user) throws DataAccessException {

@@ -6,27 +6,8 @@ package edu.unsw.comp9321.jdbc;
  * So for example. RegistrationCommand calls
  */
 
-import java.util.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.mail.Session;
-
 
 import edu.unsw.comp9321.exception.*;
-import sun.net.www.protocol.mailto.MailToURLConnection;
 
 public class UserService {
 	private BookStoreDAO bookstoreDAO;
