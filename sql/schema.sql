@@ -1,6 +1,6 @@
+drop table admin;
 drop table publications;
 drop table users;
-drop table admin;
 
 create table publications (
 	id integer not null generated always as identity,
@@ -23,13 +23,13 @@ create table users (
 	username varchar(20) not null,
 	password varchar(20) not null, 
 	email varchar(30) not null unique,
-	nickname varchar(10),
 	first_name varchar(20),
 	last_name varchar(20),
 	birth_year numeric(4,0), 
 	address varchar(100),
 	credit_card bigint,
- 	primary key (username)
+ 	primary key (username) 
+ 	
 );
 
 create table admin (

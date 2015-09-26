@@ -2,6 +2,7 @@ package edu.unsw.comp9321.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -20,6 +21,9 @@ public class RegisterCommand implements Command{
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
+		InetAddress ip = InetAddress.getLocalHost();
+		System.out.println("hostaddress = " + ip.getHostName());
+		
 		String action = "";
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");
@@ -36,6 +40,9 @@ public class RegisterCommand implements Command{
 			//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
 			//TEMP DISABLED//user_del.addUser(userbean);
 			 
+		} else if (action.equals("activating")) {
+			
+			
 		} else {
 			String nextPage = "register.jsp";
 			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
