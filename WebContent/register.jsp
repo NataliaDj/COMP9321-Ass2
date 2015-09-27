@@ -17,7 +17,7 @@
 <body>
 
 <c:choose> 
-	<c:when test="${user.getUsername()=='NULL'}"> <%@ include file="Header.html"%> </c:when>    
+	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="Header.html"%> </c:when>    
 	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
 </c:choose>
 
@@ -25,7 +25,7 @@
 <div class="middleSection">    
 	<div class= "middleSect">
 		<c:choose>
-			<c:when test="${user.getUsername()=='NULL'}">
+			<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
 				<h2>Register</h2>
 	    		<p>Please fill in all information</p>        
 			</c:when>    
@@ -37,7 +37,7 @@
 	
 		<form action='ControllerServlet?operation=register' class='registerForm' method='POST'>
 			<c:choose>
-			    <c:when test="${user.getUsername()=='NULL'}">
+			    <c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
 			        Username <input type="text" name="username">
 			    </c:when>    
 			    <c:otherwise>
