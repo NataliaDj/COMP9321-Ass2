@@ -116,6 +116,8 @@ public class BookStoreDAO {
 	 * Test if username and password combination exists in the database, 
 	 * return UserDTO if found, null otherwise
 	 * 
+	 * Also NEED to check if account is activated
+	 * 
 	 * @param username
 	 */
 	public UserDTO userLogin(String username, String password) {
