@@ -13,7 +13,8 @@ import edu.unsw.comp9321.exception.ServiceLocatorException;
 public class BookStoreDAO {
 
 	private DBConnectionFactory services;
-
+	Connection con = null;
+	
 	public BookStoreDAO() {
 		try {
 			services = new DBConnectionFactory();
@@ -22,24 +23,68 @@ public class BookStoreDAO {
 		}
 		
 	}
+		
 	
-	/*public void addUser(UserDTO u) throws DataAccessException {
+	/**
+	 * Query the database and return a result set 
+	 * Use updateDatabase() for update statements and alter statements
+	 * 
+	 * Need to close connection after with closeConnection() because otherwise
+	 * ResultSet closes and it can't be used
+	 * 
+	 * @param query
+	 * @return
+	 */
+	private ResultSet queryDatabase(String query) {
+		con = null;
 		try {
-			PreparedStatement stmt = connection
-					.prepareStatement("insert into users (username, password, email) values (?, ?, ?)");
-			stmt.setString(1, u.getUsername());
-			stmt.setString(2, u.getPassword());
-			stmt.setString(3, u.getEmail());
-			int n = stmt.executeUpdate();
-			if (n != 1) {
-				throw new DataAccessException(
-						"Did not insert one row into database");
-			}
-		} catch (SQLException e) {
-			throw new DataAccessException("Unable to execute query; "
-					+ e.getMessage(), e);
-		}
-	}*/
+			con = services.createConnection();
+			Statement statement = con.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            ResultSet rs = statement.executeQuery(query);
+            return rs;
+			
+	   } catch (ServiceLocatorException e) {
+	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+	   } catch (SQLException e) {
+	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+	   } 
+	}
+	
+	/**
+	 * Update the database with update, alter, etc. statements
+	 * Use queryDatabase() for queries
+	 * 
+	 * @param query
+	 */
+	private void updateDatabase(String query) {
+		con = null;
+		try {
+			con = services.createConnection();
+			Statement statement = con.createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
+
+            statement.executeUpdate(query);
+            closeConnection();
+	   } catch (ServiceLocatorException e) {
+	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+	   } catch (SQLException e) {
+	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+	   }
+	}
+	
+	private void closeConnection() {
+		if (con != null) {
+			try {
+	        	con.close();
+	        } catch (SQLException e1) {
+	        	e1.printStackTrace();
+	        }
+	    }
+	}
 	
 	/**
 	 * Test if the username exists in the users table in the database
@@ -47,35 +92,19 @@ public class BookStoreDAO {
 	 * @param username
 	 */
 	private boolean userExists(String username) {
-		Connection con = null;
+		String query = "select count(*) AS matchcount from users where username = '" + username + "'";
 		int matches = 0;
+		
+		ResultSet rs = queryDatabase(query);
 		try {
-			con = services.createConnection();
-			Statement statement = con.createStatement(
-                    ResultSet.TYPE_SCROLL_INSENSITIVE,
-                    ResultSet.CONCUR_READ_ONLY);
-
-            String query = "select count(*) AS matchcount from users where username = '" + username + "'";
-            ResultSet rs = statement.executeQuery(query);
-            rs.last();
-            
-            matches = rs.getInt("matchcount");
-			
-	   } catch (ServiceLocatorException e) {
-	       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
-	   } catch (SQLException e) {
-	       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
-	   } finally {
-	      if (con != null) {
-	         try {
-	           con.close();
-	         } catch (SQLException e1) {
-	           e1.printStackTrace();
-	         }
-	      }
-	   }
-		
-		
+			rs.last();
+			matches = rs.getInt("matchcount");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		closeConnection();
+        
 		if (matches > 0) { 
 			return true;
 		} else {
@@ -83,6 +112,29 @@ public class BookStoreDAO {
 		}
 	}
 	
+	/**
+	 * 
+	 * 
+	 * @param username
+	 * @return
+	 */
+	public boolean activateUser(String username) {
+		System.out.println("Activating database: " + username + "!");
+		
+		String query = "update users set account_activated=1 where username='" + username + "'";
+		updateDatabase(query);
+		
+		return false;
+	}
+	
+	/**
+	 * Add user to the database and return true
+	 * If username already exists, return false
+	 * 
+	 * @param user
+	 * @return
+	 * @throws DataAccessException
+	 */
 	public boolean addUser(UserDTO user) throws DataAccessException {
 		
 		// first test if user already exists

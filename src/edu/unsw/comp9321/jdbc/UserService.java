@@ -6,27 +6,8 @@ package edu.unsw.comp9321.jdbc;
  * So for example. RegistrationCommand calls
  */
 
-import java.util.*;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.mail.Session;
-
 
 import edu.unsw.comp9321.exception.*;
-import sun.net.www.protocol.mailto.MailToURLConnection;
 
 public class UserService {
 	private BookStoreDAO bookstoreDAO;
@@ -49,45 +30,46 @@ public class UserService {
           //TODO: if the user is found, return the user
         return user;
 	}
+	
+	/**
+	 * 
+	 * 
+	 * @param username
+	 */
+	public void activateUser(String username) {
+		if (bookstoreDAO.activateUser(username)) {
+			
+		} else {
+			
+		}
+	}
+	
 
+	/**
+	 * Add the user to the database, send an email confirmation if it's successful
+	 * 
+	 * @param user 
+	 * @return
+	 */
 	public UserDTO addUser(UserDTO user){
 		if (bookstoreDAO.addUser(user)) {
 			sendConfirmationEmail(user); // send confirmation email if adding user to database is successful
 		}
 		return null;
+		
 	}
+	
 	
 	private void sendConfirmationEmail(UserDTO user) 
 	{
-		sendMail("me@something.com", user.getEmail(), "Website confirmation", "Hi " + user.getFirstName() + "\n \n this works?");
+		Utilities.sendMail("me@something.com", user.getEmail(), "Website confirmation", 
+				 "Hi " + user.getFirstName() + ",\n\n"
+				 		+ "Please click the following link to activate your account:\n"
+				 		+ "http://localhost:8080/Ass2/ControllerServlet?operation=register&action=activation&"
+				 		+ "username=" + user.getUsername() + "\n\n"
+				 		+ "Cheers");
 	}
 	
-	public static void sendMail(String email_sender, String email_receiver,
-								String subject, String content) {
-		
-		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			Session session = (Session) envCtx.lookup("mail/Session");
 	
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(email_sender));
-			InternetAddress to[] = new InternetAddress[1];
-			to[0] = new InternetAddress(email_receiver);
-			message.setRecipients(Message.RecipientType.TO, to);
-			message.setSubject(subject);
-			message.setContent(content, "text/plain");
-			Transport.send(message);
-		} catch (AddressException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 }

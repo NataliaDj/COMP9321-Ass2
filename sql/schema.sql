@@ -28,6 +28,7 @@ create table users (
 	birth_year numeric(4,0), 
 	address varchar(100),
 	credit_card bigint,
+	account_activated numeric(1,0) DEFAULT 0,
  	primary key (username) 
  	
 );
