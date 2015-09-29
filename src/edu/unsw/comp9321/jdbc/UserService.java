@@ -1,5 +1,7 @@
 package edu.unsw.comp9321.jdbc;
 
+import javax.servlet.http.Cookie;
+
 /**
  * This class connects the frontend (e.g. registerCommand) to the database
  * 
@@ -20,19 +22,22 @@ public class UserService {
 	/**
 	 * @see com.enterprise.business.PhonebookService#login(java.lang.String, java.lang.String)
 	 */
-	public UserDTO login(String username, String password)
-		throws UserLoginFailedException {
-
-		UserDTO user = null;
+	public UserDTO login(String username, String password) {
 		
-          //TODO: this should try to find a UserBean using the UserDAO  
-          //TODO: throw LoginFailedException if the user is not found or the operation fails.
-          //TODO: if the user is found, return the user
-        return user;
+		UserDTO user = bookstoreDAO.userLogin(username, password);
+		
+		if (user != null) {
+					
+		} 
+		
+		return user;		
+         
+		
 	}
 	
+	
 	/**
-	 * 
+	 * Called through RegisterCommand when link in email is pressed to activate
 	 * 
 	 * @param username
 	 */
@@ -40,7 +45,7 @@ public class UserService {
 		if (bookstoreDAO.activateUser(username)) {
 			
 		} else {
-			
+			System.out.println("Couldn't activate user for some reason");
 		}
 	}
 	

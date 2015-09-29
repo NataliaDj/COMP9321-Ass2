@@ -1,8 +1,5 @@
 insert into publications values (default, )
 
-select count(1) from users where username='123';
 select * from users;
 
-update users 
-set account_activated=1
-where username='rubinghv';
+select * from users where username='avgiii' and password='202cb962ac59075b964b07152d234b70';

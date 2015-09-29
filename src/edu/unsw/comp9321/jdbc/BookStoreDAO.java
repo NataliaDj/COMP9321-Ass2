@@ -113,6 +113,49 @@ public class BookStoreDAO {
 	}
 	
 	/**
+	 * Test if username and password combination exists in the database, 
+	 * return UserDTO if found, null otherwise
+	 * 
+	 * Also NEED to check if account is activated
+	 * 
+	 * @param username
+	 */
+	public UserDTO userLogin(String username, String password) {
+		String query = "select * from users where username='" + username + "' and "
+					 + "password='" + password + "'";
+		//System.out.println("query = " + query);
+		UserDTO user = null;
+		
+		ResultSet rs = queryDatabase(query);
+		try {
+			while(rs.next()) {
+				String username_result = rs.getString("username");
+				if (username_result.equals(username)) {
+					user = new UserDTO();
+					user.setUsername(username);
+					user.setPassword(password);
+					user.setFirstName(rs.getString("first_name"));
+					user.setLastName(rs.getString("last_name"));
+					user.setBirthYear(rs.getInt("birth_year"));
+					user.setEmail(rs.getString("email"));
+					user.setAddress(rs.getString("address"));
+					user.setCreditCard(rs.getInt("credit_card"));
+					break;
+				} else {
+					return null;
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null; // means there is no result
+		}
+		
+		closeConnection();
+		return user;
+	}
+	
+	
+	/**
 	 * 
 	 * 
 	 * @param username
@@ -185,5 +228,53 @@ public class BookStoreDAO {
 	   }
 	   
 	   return true;
+	}
+	
+	/**
+	 * 
+	 * @param pub
+	 * @return
+	 */
+	public boolean newBookListing(PublicationDTO pub) {
+		try {
+			//create connection and prepare a query statement
+		     con = services.createConnection();
+		     PreparedStatement stmt = con.prepareStatement(
+		       "insert into publications (id, title, price, author, pub_type, pub_year, "
+		       + "isbn, picture, pause, seller_id) values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		    
+		     //fill in the query statement
+		     stmt.setString(2, pub.getTitle());
+		     stmt.setInt(3, pub.getPrice());
+		     stmt.setString(4, pub.getAuthor());
+		     stmt.setString(5, pub.getPubType());
+		     stmt.setInt(6, pub.getPubYear());
+		     stmt.setString(7, pub.getIsbn());
+		     stmt.setString(8, pub.getPicture());
+		     if(pub.isPause()) {
+		    	 stmt.setBoolean(9, true);
+		     } else {
+		    	 stmt.setBoolean(9, false);
+		     }
+		     stmt.setString(10, pub.getSeller());
+		    	
+		     int n = stmt.executeUpdate();
+		     if (n != 1)
+		       throw new DataAccessException("Did not insert one row into database");
+		   } catch (ServiceLocatorException e) {
+		       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+		   } catch (SQLException e) {
+		       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		   } finally {
+		      if (con != null) {
+		         try {
+		           con.close();
+		         } catch (SQLException e1) {
+		           e1.printStackTrace();
+		         }
+		      }
+		   }
+		   
+		   return true;
 	}
 }
