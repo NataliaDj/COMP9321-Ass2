@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ControlServlet
  */
-@WebServlet("/ControllerServlet")
+@WebServlet(name="ControllerServlet", urlPatterns={"/ControllerServlet"})
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -29,6 +29,7 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("register", new RegisterCommand());
 		commands.put("login", new LoginCommand());
 		commands.put("logout", new LogoutCommand());
+		commands.put("sell", new SellCommand());
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 	}
 
@@ -42,9 +43,8 @@ public class ControllerServlet extends HttpServlet {
 		//}
 		
 		// @vincent disabled
-		//RequestDispatcher dispatcher = getServletContext()
-		//		.getRequestDispatcher(next);
-		//dispatcher.forward(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(next);
+		dispatcher.forward(request, response);
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {

@@ -229,4 +229,52 @@ public class BookStoreDAO {
 	   
 	   return true;
 	}
+	
+	/**
+	 * 
+	 * @param pub
+	 * @return
+	 */
+	public boolean newBookListing(PublicationDTO pub) {
+		try {
+			//create connection and prepare a query statement
+		     con = services.createConnection();
+		     PreparedStatement stmt = con.prepareStatement(
+		       "insert into publications (id, title, price, author, pub_type, pub_year, "
+		       + "isbn, picture, pause, seller_id) values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+		    
+		     //fill in the query statement
+		     stmt.setString(2, pub.getTitle());
+		     stmt.setInt(3, pub.getPrice());
+		     stmt.setString(4, pub.getAuthor());
+		     stmt.setString(5, pub.getPubType());
+		     stmt.setInt(6, pub.getPubYear());
+		     stmt.setString(7, pub.getIsbn());
+		     stmt.setString(8, pub.getPicture());
+		     if(pub.isPause()) {
+		    	 stmt.setBoolean(9, true);
+		     } else {
+		    	 stmt.setBoolean(9, false);
+		     }
+		     stmt.setString(10, pub.getSeller());
+		    	
+		     int n = stmt.executeUpdate();
+		     if (n != 1)
+		       throw new DataAccessException("Did not insert one row into database");
+		   } catch (ServiceLocatorException e) {
+		       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+		   } catch (SQLException e) {
+		       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		   } finally {
+		      if (con != null) {
+		         try {
+		           con.close();
+		         } catch (SQLException e1) {
+		           e1.printStackTrace();
+		         }
+		      }
+		   }
+		   
+		   return true;
+	}
 }
