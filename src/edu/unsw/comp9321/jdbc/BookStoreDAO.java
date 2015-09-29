@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import edu.unsw.comp9321.exception.DataAccessException;
@@ -154,7 +156,6 @@ public class BookStoreDAO {
 		return user;
 	}
 	
-	
 	/**
 	 * 
 	 * 
@@ -228,5 +229,33 @@ public class BookStoreDAO {
 	   }
 	   
 	   return true;
+	}
+	
+	public List<PublicationDTO> searchPublications (String title) {
+		List<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+		String query = "select * from publications where title= " + title;
+		ResultSet rs = queryDatabase(query);
+		try {
+			while(rs.next()) {
+				PublicationDTO p = createPublication(rs);
+				publications.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		closeConnection();
+		return publications;
+	}
+	
+	private PublicationDTO createPublication(ResultSet rs) throws SQLException {
+		PublicationDTO publ = new PublicationDTO();
+		publ.setTitle(rs.getString("title"));
+		publ.setPrice(rs.getInt("price"));
+		publ.setAuthor(rs.getString("lastname"));
+		publ.setIsbn(rs.getString("isbn"));
+		publ.setPicture(rs.getString("picture"));
+		publ.setPause(rs.getBoolean("pause"));
+		publ.setSellerId(rs.getString("seller_id"));
+		return publ;
 	}
 }

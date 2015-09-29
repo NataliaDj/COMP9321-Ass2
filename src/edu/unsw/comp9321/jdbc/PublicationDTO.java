@@ -54,6 +54,13 @@ public class PublicationDTO {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
+	public String getSellerId() {
+		return sellerId;
+	}
+	public void setSellerId(String sellerId) {
+		this.sellerId = sellerId;
+	}
+
 
 	private String title;
 	private int price;
@@ -63,4 +70,5 @@ public class PublicationDTO {
 	private String isbn;
 	private String picture;
 	private boolean pause;
+	private String sellerId;
 }
