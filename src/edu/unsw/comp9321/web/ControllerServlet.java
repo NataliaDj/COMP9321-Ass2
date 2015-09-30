@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ControlServlet
  */
-@WebServlet(name="ControllerServlet", urlPatterns={"/ControllerServlet"})
+@WebServlet("/ControllerServlet")
 public class ControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -43,8 +43,8 @@ public class ControllerServlet extends HttpServlet {
 		//}
 		
 		// @vincent disabled
-		RequestDispatcher dispatcher = request.getRequestDispatcher(next);
-		dispatcher.forward(request, response);
+		//RequestDispatcher dispatcher = request.getRequestDispatcher(next);
+		//dispatcher.forward(request, response);
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {
