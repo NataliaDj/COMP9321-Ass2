@@ -231,8 +231,8 @@ public class BookStoreDAO {
 	   return true;
 	}
 	
-	public List<PublicationDTO> searchPublications (String title) {
-		List<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+	public ArrayList<PublicationDTO> searchPublications (String title) {
+		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
 		String query = "select * from publications where title= " + title;
 		ResultSet rs = queryDatabase(query);
 		try {

@@ -17,7 +17,6 @@
 	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="Header.html"%> </c:when>    
 	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
 </c:choose>
-</body>
 
 <div class="middleSection">    
 	<div class= "middleSect">
@@ -29,3 +28,5 @@
 		</form>
 	</div>
 </div>
+</body>
+</html>

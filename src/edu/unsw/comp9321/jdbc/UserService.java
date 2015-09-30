@@ -1,5 +1,7 @@
 package edu.unsw.comp9321.jdbc;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.Cookie;
 
 /**
@@ -7,6 +9,7 @@ import javax.servlet.http.Cookie;
  * 
  * So for example. RegistrationCommand calls
  */
+
 
 
 import edu.unsw.comp9321.exception.*;
@@ -75,6 +78,9 @@ public class UserService {
 				 		+ "Cheers");
 	}
 	
-	
+	public ArrayList<PublicationDTO> searchPublications(String title) {
+		ArrayList<PublicationDTO> results = bookstoreDAO.searchPublications(title);
+		return results;
+	}
 
 }

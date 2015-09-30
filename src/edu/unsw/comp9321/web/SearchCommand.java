@@ -21,12 +21,12 @@ public class SearchCommand {
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-	/*	String action = "";
-		if (request.getParameter("action") != null) {
-			action = request.getParameter("action");
+		String title = "";
+		if (request.getParameter("title") != null) {
+			title = request.getParameter("title");
 		}
-		String nextPage = "login.jsp";
-		request.setAttribute("error", "" ); 
+		String nextPage = "results.jsp";
+		request.setAttribute("publications", publications); 
 		
 		if (action.equals("loggingin")) {
 			response.setContentType("text/html");// from response, set content type
@@ -53,7 +53,7 @@ public class SearchCommand {
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
 		rd.forward(request, response); 
-	*/
+	
 		return null;
 	}
 }
