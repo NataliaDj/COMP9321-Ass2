@@ -15,7 +15,7 @@ create table people(
 	address varchar(100),
 	account_activated numeric(1,0) DEFAULT 0,
 	ban boolean not null,
- 	primary key (username) 
+ 	primary key (username)
 );
 
 create table buyers(

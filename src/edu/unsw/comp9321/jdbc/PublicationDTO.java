@@ -69,6 +69,13 @@ public class PublicationDTO {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
+	public String getSellerId() {
+		return sellerId;
+	}
+	public void setSellerId(String sellerId) {
+		this.sellerId = sellerId;
+	}
+
 
 	public String getSeller() {
 		return seller;
@@ -86,5 +93,5 @@ public class PublicationDTO {
 	private String isbn;
 	private String picture;
 	private boolean pause;
-	private String seller;
+	private String sellerId;
 }
