@@ -86,6 +86,26 @@ public class BookStoreDAO {
 	    }
 	}
 	
+	//checks whether supplied admin login details are correct
+	public boolean validAdmin(AdminDTO adminLogin){
+		String id = adminLogin.getId();
+		String password = adminLogin.getPassword();
+		String query = "select count(*) AS matchcount from admin where id = '" + id + "' AND password = '" + password + "'";
+		ResultSet rs = queryDatabase(query);
+		boolean retVal = false;
+		
+		try {
+			rs.last();
+			if (rs.getInt("matchcount") == 1) {
+				retVal = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return retVal;
+	}
+		
 	/**
 	 * Test if the username exists in the users table in the database
 	 * 
