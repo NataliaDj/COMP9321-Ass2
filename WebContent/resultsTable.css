@@ -1,0 +1,22 @@
+
+<style type="text/css">
+	.results {
+		width:100%; 
+		border-collapse:collapse; 
+	}
+	.results td{ 
+		padding:7px;
+	}
+	/* provide some minimal visual accomodation for IE8 and below */
+	.results tr{
+		background: #ffffff;
+	}
+	/*  Define the background color for all the ODD background rows  */
+	.results tr:nth-child(odd){ 
+		background: #ffffff;
+	}
+	/*  Define the background color for all the EVEN background rows  */
+	.results tr:nth-child(even){
+		background: #f1f1f1;
+	}
+</style>

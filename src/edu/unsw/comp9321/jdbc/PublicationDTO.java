@@ -78,11 +78,11 @@ public class PublicationDTO {
 
 
 	public String getSeller() {
-		return seller;
+		return sellerId;
 	}
 
 	public void setSeller(String seller) {
-		this.seller = seller;
+		this.sellerId = seller;
 	}
 
 	private String title;

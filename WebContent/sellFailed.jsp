@@ -14,9 +14,15 @@
 
 <%@ include file="HeaderSeller.html"%>
 
-<h2>New Listing Failed...</h2>
-<br/>
-<h3> Please try again later</h3>
 
+<div class="middleSection">    
+	<div class= "middleSect">
+		<h2>New Listing Failed...</h2>
+		<br/>
+		<h3> Please try again later</h3>
+	</div>
+</div>
+
+<%@ include file="footer.jsp"%>
 </body>
 </html>

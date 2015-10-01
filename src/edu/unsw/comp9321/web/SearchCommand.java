@@ -18,7 +18,8 @@ public class SearchCommand {
 	public SearchCommand() {
 		
 	}
-	public String execute(HttpServletRequest request, HttpServletResponse response) 
+
+	/*public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
 		String title = "";
@@ -26,7 +27,7 @@ public class SearchCommand {
 			title = request.getParameter("title");
 		}
 		String nextPage = "results.jsp";
-		request.setAttribute("publications", publications); 
+		request.setAttribute("publications", "publications"); 
 		
 		if (action.equals("loggingin")) {
 			response.setContentType("text/html");// from response, set content type
@@ -55,5 +56,5 @@ public class SearchCommand {
 		rd.forward(request, response); 
 	
 		return null;
-	}
+	}*/
 }

@@ -277,6 +277,7 @@ public class BookStoreDAO {
 		   }
 		   
 		   return true;
+	}
 
 	public ArrayList<PublicationDTO> searchPublications (String title) {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();

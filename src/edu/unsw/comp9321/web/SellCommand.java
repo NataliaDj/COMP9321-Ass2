@@ -15,19 +15,20 @@ public class SellCommand implements Command {
 
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-
-		response.setContentType("text/html");// from response, set content type
-		PrintWriter out = response.getWriter();
-		PublicationDTO book = CreatePublication(request, response);
-
-		out.println("<b>Submitting!</b>"); 
-		 
+		
+		String action = "";
+		// if no action, it means first access to register page 
+		if (request.getParameter("action") == null) {
+			return "./sell.jsp";
+		}
 
 		try {
+			response.setContentType("text/html");// from response, set content type
+			PublicationDTO book = CreatePublication(request, response);
 			DAOFactory factory = DAOFactory.getInstance();
 			BookStoreDAO bookstoreDAO = factory.getBookStoreDAO();
 			bookstoreDAO.newBookListing(book);
-			return "./sellSuccess,jsp";
+			return "./sellSuccess.jsp";
 		} catch (Exception e) {
 			return "./sellFailed.jsp";
 		}
@@ -43,9 +44,13 @@ public class SellCommand implements Command {
 		//fill in the DTO with its values from sell.jsp
 		book.setTitle(request.getParameter("bookTitle"));
 		book.setAuthor(request.getParameter("bookAuthor"));
-		book.setPrice(Integer.parseInt(request.getParameter("bookPrice")));
+		if(request.getParameter("bookPrice") != null) {
+			book.setPrice(Integer.parseInt(request.getParameter("bookPrice")));
+		}
 		book.setPubType(request.getParameter("bookType"));
-		book.setPubYear(Integer.parseInt(request.getParameter("bookYear")));
+		if(request.getParameter("bookYear") != null) {
+			book.setPubYear(Integer.parseInt(request.getParameter("bookYear")));
+		}
 		book.setIsbn(request.getParameter("bookISBN"));
 		book.setPicture(request.getParameter("bookPicture"));
 		book.setSeller(request.getParameter("bookSeller"));

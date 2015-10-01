@@ -7,8 +7,9 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-	<title>New Listing Success</title>
+	<title>Manage Your Listings</title>
 	<link href="frontpage.css" rel="stylesheet" type="text/css">
+	<link href="resultsTable.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -16,12 +17,33 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
-		<h2>Success! Your publication has successfully been listed</h2>
-		<br/>
-		<h3>You can now find your book listed from the main page</h3>
+	
+		<!-- Table with form to pause listings -->
+		<form method="post" action="ControllerServlet?operation=pause">
+		<table class="results" width=100%>
+			<tr>
+				<td>
+				Book Title
+				</td>
+				<td>
+				Author
+				</td>
+				<td>
+				Price
+				</td>
+				<td>
+				Pause
+				</td>
+			</tr>
+			<!-- Need to add in loop to show all of seller's listing -->
+			<!-- Like the shopping cart -->
+			
+		</table>
+		</form>
+		
 	</div>
 </div>
-
 <%@ include file="footer.jsp"%>
+
 </body>
 </html>

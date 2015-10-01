@@ -24,7 +24,6 @@
 			<h4>All fields with * are required</h4>
 			
 			<h3>Basic info</h3>
-			<h4>Please fill in all sections</h4>
 			Title*:	<input type="text" name="bookTitle">
 			Author*:	<input type="text" name="bookAuthor">
 			Price*:	<input type="text" name="bookPrice">
@@ -52,6 +51,7 @@
 	        <br/>
 	        <br/>
 	        <input type="hidden" name="bookSeller" value=${user.getUsername()}>
+	        <input type="hidden" name="action" value="newListing"/>
 	        <input type="submit">
 		</form>
 	</div>

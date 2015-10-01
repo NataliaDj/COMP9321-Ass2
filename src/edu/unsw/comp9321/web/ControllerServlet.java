@@ -44,8 +44,8 @@ public class ControllerServlet extends HttpServlet {
 		//}
 		
 		// @vincent disabled
-		//RequestDispatcher dispatcher = request.getRequestDispatcher(next);
-		//dispatcher.forward(request, response);
+		RequestDispatcher dispatcher = request.getRequestDispatcher(next);
+		dispatcher.forward(request, response);
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {
