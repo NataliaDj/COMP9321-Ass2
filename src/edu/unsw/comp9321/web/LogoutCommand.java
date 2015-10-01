@@ -30,10 +30,6 @@ public class LogoutCommand implements Command{
 			session.invalidate();
 		}
 		
-		String nextPage = "login.jsp";
-		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
-		rd.forward(request, response); 
-
-		return null;
+		return "login.jsp";
 	}
 }

@@ -30,10 +30,7 @@ public class SearchCommand implements Command {
 		
 		UserService service = new UserService();
 		request.setAttribute("publications", service.searchPublications(title)); 
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/results.jsp");
-		rd.forward(request, response); 
 	
-		return null;
+		return "/results.jsp";
 	}
 }
