@@ -8,7 +8,7 @@
 	<link href="frontpage.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<%@ include file="/Header.html" %>
+<%@ include file="/header.jsp" %>
 <form action="ControllerServlet" method='POST'>
 	<form>
 		username<input type="text" name="username">

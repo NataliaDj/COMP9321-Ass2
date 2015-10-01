@@ -2,20 +2,16 @@ package edu.unsw.comp9321.web;
 
 import java.io.IOException;
 
-import edu.unsw.comp9321.*;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.catalina.Session;
-
 import edu.unsw.comp9321.jdbc.*;
 
-public class SearchUsersCommand implements Command {
+public class UnbanUserCommand implements Command {
 	BookStoreDAO bookstoreDAO;
 	
-	SearchUsersCommand() {
+	public UnbanUserCommand() {
 		DAOFactory factory = DAOFactory.getInstance();
 		bookstoreDAO = factory.getBookStoreDAO();
 	}
@@ -26,13 +22,11 @@ public class SearchUsersCommand implements Command {
 		String nextPage = "/register.jsp";
 		String isAdmin = (String) request.getSession().getAttribute("adminAccount");
 		if (isAdmin != null && isAdmin.equals("yes")) {
-			nextPage = "/WEB-INF/adminDir/searchUsers.jsp";
-			String username = request.getParameter("username");
-			UserDTO userDTO = bookstoreDAO.getUserDTO(username);
-			if (userDTO != null) {
-				request.getSession().setAttribute("userDTO", userDTO);
-				nextPage = "/WEB-INF/adminDir/viewUser.jsp";
-			}
+			nextPage = "/WEB-INF/adminDir/viewUser.jsp";
+			UserDTO oldDTO = (UserDTO) request.getSession().getAttribute("userDTO");
+			bookstoreDAO.updateUserBan(oldDTO, false);
+			UserDTO newDTO = bookstoreDAO.getUserDTO(oldDTO.getUsername());
+			request.getSession().setAttribute("userDTO", newDTO);
 		}
 		return nextPage;
 	}

@@ -28,7 +28,7 @@ public class AdminLoginCommand implements Command {
 		String nextPage;
 		if (bookstoreDAO.validAdmin(adminDTO)) {
 			nextPage = "/WEB-INF/adminDir/adminHome.jsp";
-			request.getSession().setAttribute("admin account", "true");
+			request.getSession().setAttribute("adminAccount", "yes");
 		} else {
 			nextPage = "/adminLogin.jsp";
 		}
