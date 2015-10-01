@@ -211,22 +211,8 @@ public class BookStoreDAO {
 		
 		ResultSet rs = queryDatabase(query);
 		try {
-			while(rs.next()) {
-				String username_result = rs.getString("username");
-				if (username_result.equals(username)) {
-					user = new UserDTO();
-					user.setUsername(username);
-					user.setPassword(password);
-					user.setFirstName(rs.getString("first_name"));
-					user.setLastName(rs.getString("last_name"));
-					user.setBirthYear(rs.getInt("birth_year"));
-					user.setEmail(rs.getString("email"));
-					user.setAddress(rs.getString("address"));
-					user.setCreditCard(rs.getInt("credit_card"));
-					break;
-				} else {
-					return null;
-				}
+			if (rs.next()) {
+				getUserDTO(username);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
