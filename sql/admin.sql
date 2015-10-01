@@ -1,0 +1,1 @@
+insert into admin (id, password)values ('admin', 'admin');

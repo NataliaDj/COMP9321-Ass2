@@ -3,6 +3,7 @@
   <display-name>Ass2</display-name>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
+    <welcome-file>register.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
     <description></description>

@@ -52,7 +52,6 @@ public class UserService {
 		}
 	}
 	
-
 	/**
 	 * Add the user to the database, send an email confirmation if it's successful
 	 * 
