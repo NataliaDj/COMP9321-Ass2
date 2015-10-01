@@ -27,13 +27,13 @@
 				<h3>Sorry, no matching datasets found!</h3>
 			</c:when>
 			<c:otherwise>
-				<h2 align="center">Search Results</h1>
+				<h2 align="center">Search Results</h2>
 			   		<table style="width:100%" cellpadding="10">
 			   		<tr>
-			   			<th>
+			   			<th align="left">
 			   				Title
 			   			</th>
-			   			<th>
+			   			<th align="left">
 			   				Author(s)
 			   			</th>
 			   		</tr>
@@ -55,6 +55,6 @@
 	</c:choose>
 	</div>
 </div>
-<%@ include file="footer.jsp"%>
 </body>
+<%@ include file="footer.jsp"%>
 </html>
