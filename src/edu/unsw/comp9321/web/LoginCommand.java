@@ -51,11 +51,8 @@ public class LoginCommand implements Command{
 			}
 		} 
 		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
-		rd.forward(request, response); 
 
-		return null;
+		return "/"+nextPage;
 	}
 	
 	

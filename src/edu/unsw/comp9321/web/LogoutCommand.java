@@ -30,6 +30,6 @@ public class LogoutCommand implements Command{
 			session.invalidate();
 		}
 		
-		return "login.jsp";
+		return "/login.jsp";
 	}
 }
