@@ -30,10 +30,6 @@ public class LoginCommand implements Command{
 		request.setAttribute("error", "" ); 
 		
 		if (action.equals("loggingin")) {
-			response.setContentType("text/html");// from response, set content type
-			PrintWriter out = response.getWriter();// from response, get output writer
-			
-			; 
 			UserService service = new UserService();
 			
 			String password = request.getParameter("password");

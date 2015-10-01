@@ -316,6 +316,8 @@ public class BookStoreDAO {
 		     PreparedStatement stmt = con.prepareStatement(
 		       "insert into publications (id, title, price, author, pub_type, pub_year, "
 		       + "isbn, picture, pause, seller_id) values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+		     System.out.println("n");
 		    
 		     //fill in the query statement
 		     stmt.setString(2, pub.getTitle());

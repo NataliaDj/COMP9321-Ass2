@@ -19,7 +19,7 @@ public class SellCommand implements Command {
 		String action = "";
 		// if no action, it means first access to register page 
 		if (request.getParameter("action") == null) {
-			return "./sell.jsp";
+			return "/sell.jsp";
 		}
 
 		try {
@@ -28,9 +28,9 @@ public class SellCommand implements Command {
 			DAOFactory factory = DAOFactory.getInstance();
 			BookStoreDAO bookstoreDAO = factory.getBookStoreDAO();
 			bookstoreDAO.newBookListing(book);
-			return "./sellSuccess.jsp";
+			return "/sellSuccess.jsp";
 		} catch (Exception e) {
-			return "./sellFailed.jsp";
+			return "/sellFailed.jsp";
 		}
 		
 	}
