@@ -27,30 +27,6 @@ public class SearchCommand implements Command {
 		if (request.getParameter("title") != null) {
 			title = request.getParameter("title");
 		}
-		String nextPage = "results.jsp";
-		request.setAttribute("publications", "publications"); 
-		
-		if (action.equals("loggingin")) {
-			response.setContentType("text/html");// from response, set content type
-			PrintWriter out = response.getWriter();// from response, get output writer
-			
-			; 
-			UserService service = new UserService();
-			
-			String password = request.getParameter("password");
-			
-			UserDTO user = service.login(request.getParameter("username"), Utilities.generateMD5(password));
-			if (user == null) {
-				request.setAttribute("error", "Username and/or password is incorrect, please try again." );
-				
-			} else {
-				// found user
-				HttpSession session = request.getSession(true);
-				session.setAttribute("username", request.getParameter("username")); // set user session so it remembers logged in
-				session.setAttribute("user", user);
-				nextPage = "register.jsp";
-			}
-		} 
 		
 		UserService service = new UserService();
 		request.setAttribute("publications", service.searchPublications(title)); 
@@ -59,5 +35,5 @@ public class SearchCommand implements Command {
 		rd.forward(request, response); 
 	
 		return null;
-	}*/
+	}
 }
