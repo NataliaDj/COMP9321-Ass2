@@ -30,7 +30,7 @@ public class AdminLoginCommand implements Command {
 			nextPage = "/WEB-INF/adminDir/adminHome.jsp";
 			request.getSession().setAttribute("adminAccount", "yes");
 		} else {
-			nextPage = "/adminLogin.jsp";
+			nextPage = "/adminLogin.jsp?loginFailed=yes";
 		}
 		
 		return nextPage;

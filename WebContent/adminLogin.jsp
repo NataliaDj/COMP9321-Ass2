@@ -11,10 +11,13 @@
 <h1>Admin Login</h1>
 <form action="ControllerServlet" method='POST'>
 	username<input type="text" name="adminId">
-	password<input type="text" name="password">
+	password<input type="password" name="password">
 	<input type="hidden" name="operation" value="adminLogin"/>
 	<input type='submit' value='Submit'/>
 </form>
+<c:if test="${loginFailed == 'yes'}">
+	<p>Login Failed!</p>
+</c:if>
 <%@ include file="footer.jsp" %>
 </body>
 </html>
