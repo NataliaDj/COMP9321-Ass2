@@ -36,6 +36,4 @@ public class LogoutCommand implements Command{
 
 		return null;
 	}
-	
-
 }

@@ -34,7 +34,7 @@ create table sellers(
 
 create table publications (
 	id integer not null generated always as identity,
-	title varchar(40) not null,
+	title varchar(100) not null,
 	price integer not null,
 	constraint chk_price check
 	(price>=0),
@@ -44,7 +44,7 @@ create table publications (
 	(pub_type='book/collection' or pub_type='journal' or pub_type='conference' or pub_type='editorship'),
 	pub_year numeric(4,0),
 	isbn varchar(20),
-	picture varchar (100),
+	picture varchar (300),
 	pause boolean not null,
 	seller_id varchar(32),
 	foreign key(seller_id) references sellers(seller_id),
@@ -64,7 +64,6 @@ create table shopping_cart(
 );
 
 create table admin (
-<<<<<<< HEAD
 	id varchar(20) not null,
 	password varchar(32) not null,
 	primary key (id)

@@ -362,7 +362,12 @@ public class BookStoreDAO {
 
 	public ArrayList<PublicationDTO> searchPublications (String title) {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
-		String query = "select * from publications where title= " + title;
+		String query = "";
+		if(title == null || title.equals("")) {
+			query = "select * from publications";
+		} else {
+			query = "select * from publications where lower(title) like lower('%" + title + "%')";
+		}
 		ResultSet rs = queryDatabase(query);
 		try {
 			while(rs.next()) {
@@ -380,7 +385,9 @@ public class BookStoreDAO {
 		PublicationDTO publ = new PublicationDTO();
 		publ.setTitle(rs.getString("title"));
 		publ.setPrice(rs.getInt("price"));
-		publ.setAuthor(rs.getString("lastname"));
+		publ.setAuthor(rs.getString("author"));
+		publ.setPubType(rs.getString("pub_type"));
+		publ.setPubYear(rs.getInt("pub_year"));
 		publ.setIsbn(rs.getString("isbn"));
 		publ.setPicture(rs.getString("picture"));
 		publ.setPause(rs.getBoolean("pause"));

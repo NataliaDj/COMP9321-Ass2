@@ -13,13 +13,14 @@ import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
 import edu.unsw.comp9321.jdbc.Utilities;
 
-public class SearchCommand {
+public class SearchCommand implements Command {
 	
 	public SearchCommand() {
 		
 	}
-
-	/*public String execute(HttpServletRequest request, HttpServletResponse response) 
+	
+	@Override
+	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
 		String title = "";
@@ -51,8 +52,10 @@ public class SearchCommand {
 			}
 		} 
 		
+		UserService service = new UserService();
+		request.setAttribute("publications", service.searchPublications(title)); 
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
+		RequestDispatcher rd = request.getRequestDispatcher("/results.jsp");
 		rd.forward(request, response); 
 	
 		return null;

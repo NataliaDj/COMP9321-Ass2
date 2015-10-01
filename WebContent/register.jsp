@@ -15,6 +15,7 @@
 </head>
 
 <body>
+
 <%@ include file="header.jsp"%>
 
 <!-- <form action='results.jsp'>-->
