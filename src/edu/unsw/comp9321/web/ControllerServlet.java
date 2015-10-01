@@ -27,6 +27,10 @@ public class ControllerServlet extends HttpServlet {
 		super();
 		commands = new HashMap<String, Object>();
 		commands.put("register", new RegisterCommand());
+		commands.put("login", new LoginCommand());
+		commands.put("logout", new LogoutCommand());
+		commands.put("sell", new SellCommand());
+		commands.put("search", new SearchCommand());
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 		commands.put("adminLogin", new AdminLoginCommand());
 		commands.put("searchUsers", new SearchUsersCommand());

@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class UserDTO {
+import java.io.Serializable;
+
+public class UserDTO implements Serializable  {
 	
 	private String username;
 	private String password; 
@@ -15,7 +17,7 @@ public class UserDTO {
 	private SellerDTO sellerDTO;
 	
 	public UserDTO() {
-		
+		username = "NULL";
 	}
 	
 	public String getUsername() {

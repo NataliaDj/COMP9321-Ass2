@@ -15,7 +15,7 @@ create table people(
 	address varchar(100),
 	account_activated numeric(1,0) DEFAULT 0,
 	ban boolean not null,
- 	primary key (username) 
+ 	primary key (username)
 );
 
 create table buyers(
@@ -64,6 +64,7 @@ create table shopping_cart(
 );
 
 create table admin (
+<<<<<<< HEAD
 	id varchar(20) not null,
 	password varchar(32) not null,
 	primary key (id)
