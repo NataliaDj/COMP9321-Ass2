@@ -41,7 +41,10 @@ public class SearchCommand implements Command {
 		Random rand = new Random();
         int randomNum;
         for(int i = 0; i < 10; ++i) {  	
-        	randomNum = rand.nextInt(result.size()); 	
+        	randomNum = rand.nextInt(result.size());
+        	while(random.contains(result.get(randomNum))) {
+        		randomNum = rand.nextInt(result.size());
+        	}
         	random.add(result.get(randomNum));
         }
 		request.getSession().setAttribute("random", random);

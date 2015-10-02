@@ -53,7 +53,10 @@ public class AdvancedSearchCommand implements Command {
 				Random rand = new Random();
 		        int randomNum;
 		        for(int i = 0; i < 10; ++i) {  	
-		        	randomNum = rand.nextInt(publications.size()); 	
+		        	randomNum = rand.nextInt(publications.size());
+		        	while(random.contains(publications.get(randomNum))) {
+		        		randomNum = rand.nextInt(publications.size());
+		        	}
 		        	random.add(publications.get(randomNum));
 		        }
 				request.getSession().setAttribute("random", random);
@@ -74,7 +77,10 @@ public class AdvancedSearchCommand implements Command {
 		Random rand = new Random();
         int randomNum;
         for(int i = 0; i < 10; ++i) {  	
-        	randomNum = rand.nextInt(publications.size()); 	
+        	randomNum = rand.nextInt(publications.size());
+        	while(random.contains(publications.get(randomNum))) {
+        		randomNum = rand.nextInt(publications.size());
+        	}
         	random.add(publications.get(randomNum));
         }
 		request.getSession().setAttribute("random", random);
@@ -157,8 +163,6 @@ public class AdvancedSearchCommand implements Command {
 						}
 					}
 				} else if (searchPref.equals("author")) {
-					System.out.println(input);
-					System.out.println(p.getAuthor());
 					if (p.getAuthor() != null) {
 						Matcher matcher = pattern.matcher(p.getAuthor());
 						if (matcher.find()) {
