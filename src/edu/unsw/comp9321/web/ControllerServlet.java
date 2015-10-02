@@ -36,6 +36,7 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("searchUsers", new SearchUsersCommand());
 		commands.put("banUser", new BanUserCommand());
 		commands.put("unbanUser", new UnbanUserCommand());
+		commands.put("viewHistory", new ViewHistoryCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,

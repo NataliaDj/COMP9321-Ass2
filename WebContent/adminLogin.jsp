@@ -10,8 +10,8 @@
 </head>
 <body>
 	<h1>Admin Login</h1>
-	<div class="middlesection">
-		<div class="middlesect">
+	<div class="middleSection">
+		<div class="middleSect">
 			<form action="ControllerServlet" method='POST'>
 				username<input type="text" name="adminId"> password<input
 					type="password" name="password"> <input type="hidden"

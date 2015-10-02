@@ -51,10 +51,12 @@
 		<a href="ControllerServlet?operation=banUser">Ban User</a>
 	</c:when>
 	<c:when test="${userDTO.ban == true}">
-		<a href="ControllerServlet?operation=unbanUser">Unban User</a>
+		<a href="ControllerServlet?operation=unbanUser">Unban User</a><br>
 	</c:when>
 </c:choose>
-
+<c:if test="${userDTO.buyerDTO != null}">
+	<a href="ControllerServlet?operation=viewHistory">View User History</a>
+</c:if>
 <%@ include file="/footer.jsp" %>
 </body>
 </html>

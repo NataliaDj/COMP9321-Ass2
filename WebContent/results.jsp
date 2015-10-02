@@ -37,7 +37,7 @@
 			   		<c:forEach var="i" items="${publications}">
 			   		<tr>
 			   			<td>
-			   				${i.title}
+			   				<a href="/viewPublication.jsp">${i.title}</a>
 			   			</td>
 			   			<td>
 			   				<c:forEach var="j" items="${i.author}" varStatus="loop">

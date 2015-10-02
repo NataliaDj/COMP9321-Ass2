@@ -23,7 +23,7 @@
 				<li><a href="ControllerServlet?operation=register">Register</a></li>
 			</c:otherwise>
 		</c:choose>
-		<c:if test="${buyerAccount == 'yes || sellerAccount == 'yes' || adminAccount =='yes'}">
+		<c:if test="${buyerAccount == 'yes' || sellerAccount == 'yes' || adminAccount =='yes'}">
 			<li><a href="ControllerServlet?operation=logout">Logout</a></li>
 		</c:if>
 	</ul>

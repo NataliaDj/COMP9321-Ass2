@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -157,6 +158,34 @@ public class BookStoreDAO {
 			e.printStackTrace();
 		}
 		return userDTO;
+	}
+	
+	public List<CartEntryDTO> getCartDTO(String username) {
+		List<CartEntryDTO> cart = new LinkedList<CartEntryDTO>();
+		String query = "select * from shopping_cart where buyer_key = '"+ username +"'";
+		ResultSet rs = queryDatabase(query);
+		try {
+			while (rs.next()) {
+				CartEntryDTO current = new CartEntryDTO();
+				current.setUsername(username);
+				current.setAdded(rs.getDate("added"));
+				current.setRemoved(rs.getDate("removed"));
+				current.setPurchased(rs.getDate("purchased"));
+				
+				//create and add publicationDTO
+				ResultSet temp = queryDatabase("select * from publications where id = " + rs.getInt("publication_key"));
+				temp.next();
+				PublicationDTO pub = createPublication(temp);
+				current.setPublication(pub);
+				
+				cart.add(current);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cart;
 	}
 
 	public void updateUserBan(UserDTO userDTO, boolean banStatus) {
