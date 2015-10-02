@@ -29,11 +29,7 @@ public class LoginCommand implements Command{
 		String nextPage = "login.jsp";
 		request.setAttribute("error", "" ); 
 		
-		if (action.equals("loggingin")) {
-			response.setContentType("text/html");// from response, set content type
-			PrintWriter out = response.getWriter();// from response, get output writer
-			
-			; 
+		if (action.equals("loggingin")) {			
 			UserService service = new UserService();
 			
 			String password = request.getParameter("password");
@@ -51,11 +47,7 @@ public class LoginCommand implements Command{
 			}
 		} 
 		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
-		rd.forward(request, response); 
-
-		return null;
+		return "/"+nextPage;
 	}
 	
 	

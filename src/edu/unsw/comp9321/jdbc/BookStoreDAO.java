@@ -219,7 +219,6 @@ public class BookStoreDAO {
 			return null; // means there is no result
 		}
 		
-		closeConnection();
 		return user;
 	}
 	

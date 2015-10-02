@@ -34,7 +34,6 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 		commands.put("adminLogin", new AdminLoginCommand());
 		commands.put("searchUsers", new SearchUsersCommand());
-		commands.put("logout", new LogoutCommand());
 		commands.put("banUser", new BanUserCommand());
 		commands.put("unbanUser", new UnbanUserCommand());
 	}

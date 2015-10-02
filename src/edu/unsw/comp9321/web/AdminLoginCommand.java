@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public class AdminLoginCommand implements Command {
 
 	private BookStoreDAO bookstoreDAO;
-	
+
 	public AdminLoginCommand() {
 		DAOFactory factory = DAOFactory.getInstance();
 		bookstoreDAO = factory.getBookStoreDAO();
 	}
-	
+
 	@Override
 	public String execute(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -25,15 +25,15 @@ public class AdminLoginCommand implements Command {
 		adminDTO.setId(request.getParameter("adminId"));
 		adminDTO.setPassword(request.getParameter("password"));
 		//check if provided credentials are legit
-		String nextPage;
+		String nextPage = "/adminLogin.jsp";
 		if (bookstoreDAO.validAdmin(adminDTO)) {
-			nextPage = "/WEB-INF/adminDir/adminHome.jsp";
+			nextPage = "/index.jsp";
 			request.getSession().setAttribute("adminAccount", "yes");
-		} else {
-			nextPage = "/adminLogin.jsp?loginFailed=yes";
-		}
-		
+		} else if (adminDTO.getId() != null){
+			request.setAttribute("loginFailed", "yes");	
+		} 
+
 		return nextPage;
 	}
-	
+
 }
