@@ -1,4 +1,3 @@
-<%-- This is the welcome page and does absolutely nothing other than welcome the user--%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="edu.unsw.comp9321.*"%> 
@@ -19,21 +18,17 @@
 	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
 </c:choose>
 
-<!-- <form action='results.jsp'>-->
 <div class="middleSection">    
 	<div class= "middleSect">
-	    <h2>Login</h2>
-		<p>${error}</p>
-		<form action='ControllerServlet?operation=login' class='registerForm' method='POST'>
-			Username <input type="text"name="username">
-			Password <input type="password" name="password">
-	        
-	    <!--<p><input type='submit' value='Search'></form></p>-->
-		    <input type="hidden" name="action" value="loggingin"/>
-			<input type='submit' value='Submit'/>
+		<br>
+		<form action='ControllerServlet?operation=search' class='registerForm' method='POST'>
+			Title: <input type="text" name="title">
+			<br>
+			<input type="submit" value="Search">
 		</form>
 	</div>
 </div>
+
 <%@ include file="footer.jsp"%>
 </body>
 </html>

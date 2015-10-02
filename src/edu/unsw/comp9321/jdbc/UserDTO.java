@@ -4,16 +4,22 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable  {
 	
+	private String username;
+	private String password; 
+	private String email;
+	private String firstName;
+	private String lastName;
+	private int birthYear; 
+	private String address;
+	private boolean accountActivated;
+	private boolean ban;
+	private BuyerDTO buyerDTO;
+	private SellerDTO sellerDTO;
+	
 	public UserDTO() {
 		username = "NULL";
 	}
 	
-	public int getID() {
-		return id;
-	}
-	public void setID(int id) {
-		this.id = id;
-	}
 	public String getUsername() {
 		return username;
 	}
@@ -32,12 +38,7 @@ public class UserDTO implements Serializable  {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getNickname() {
-		return nickname;
-	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -63,21 +64,33 @@ public class UserDTO implements Serializable  {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public int getCreditCard() {
-		return creditCard;
-	}
-	public void setCreditCard(int creditCard) {
-		this.creditCard = creditCard;
-	}
 
-	private int id;
-	private String username;
-	private String password;
-	private String email;
-	private String nickname;
-	private String firstName;
-	private String lastName;
-	private int birthYear;
-	private String address;
-	private int creditCard;
+	public boolean getAccountActivated() {
+		return accountActivated;
+	}
+	public void setAccountActivated(boolean accountActivated) {
+		this.accountActivated = accountActivated;
+	}
+	public boolean getBan() {
+		return ban;
+	}
+	public void setBan(boolean ban) {
+		this.ban = ban;
+	}
+	
+	public BuyerDTO getBuyerDTO() {
+		return buyerDTO;
+	}
+	
+	public void setBuyerDTO(BuyerDTO buyerDTO) {
+		this.buyerDTO = buyerDTO;
+	}
+	
+	public SellerDTO getSellerDTO() {
+		return sellerDTO;
+	}
+	
+	public void setSellerDTO(SellerDTO sellerDTO) {
+		this.sellerDTO = sellerDTO;
+	}
 }

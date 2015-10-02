@@ -16,10 +16,7 @@
 
 <body>
 
-<c:choose> 
-	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="Header.html"%> </c:when>    
-	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
 
 <!-- <form action='results.jsp'>-->
 <div class="middleSection">    

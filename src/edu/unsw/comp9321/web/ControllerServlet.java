@@ -29,7 +29,14 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("register", new RegisterCommand());
 		commands.put("login", new LoginCommand());
 		commands.put("logout", new LogoutCommand());
+		commands.put("sell", new SellCommand());
+		commands.put("search", new SearchCommand());
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
+		commands.put("adminLogin", new AdminLoginCommand());
+		commands.put("searchUsers", new SearchUsersCommand());
+		commands.put("logout", new LogoutCommand());
+		commands.put("banUser", new BanUserCommand());
+		commands.put("unbanUser", new UnbanUserCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,
@@ -41,10 +48,9 @@ public class ControllerServlet extends HttpServlet {
 		//	next = cmd.execute(request, response);
 		//}
 		
-		// @vincent disabled
-		//RequestDispatcher dispatcher = getServletContext()
-		//		.getRequestDispatcher(next);
-		//dispatcher.forward(request, response);
+		RequestDispatcher dispatcher = getServletContext()
+				.getRequestDispatcher(next);
+		dispatcher.forward(request, response);
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {

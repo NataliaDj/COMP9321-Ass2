@@ -13,23 +13,24 @@ import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
 import edu.unsw.comp9321.jdbc.Utilities;
 
-
-public class LogoutCommand implements Command{
+public class SearchCommand implements Command {
 	
-	public LogoutCommand() {
+	public SearchCommand() {
+		
 	}
 	
+	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		
-		
-		
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			session.invalidate();
+		String title = "";
+		if (request.getParameter("title") != null) {
+			title = request.getParameter("title");
 		}
 		
-		return "login.jsp";
+		UserService service = new UserService();
+		request.setAttribute("publications", service.searchPublications(title)); 
+	
+		return "/results.jsp";
 	}
 }
