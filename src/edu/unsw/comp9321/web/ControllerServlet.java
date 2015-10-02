@@ -3,6 +3,7 @@ package edu.unsw.comp9321.web;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -67,7 +68,7 @@ public class ControllerServlet extends HttpServlet {
 	 *      response)
 	 */
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws ServletException, IOException {;
 		processRequest(request, response);
 	}
 

@@ -38,12 +38,12 @@ create table publications (
 	price integer not null,
 	constraint chk_price check
 	(price>=0),
-	author varchar(20) not null,
+	author varchar(200) not null,
 	pub_type varchar(20) not null, 
 	constraint chk_type check
 	(pub_type='book/collection' or pub_type='journal' or pub_type='conference' or pub_type='editorship'),
 	pub_year numeric(4,0),
-	isbn varchar(20),
+	isbn varchar(100),
 	picture varchar (300),
 	pause boolean not null,
 	seller_id varchar(32),

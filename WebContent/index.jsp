@@ -21,14 +21,22 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
+		<form action="advancedSearch.jsp">
+		<button type="submit">Advanced Search</button>
+		</form>
+		<br>
+		<br>
 		<form action='ControllerServlet?operation=search' class='registerForm' method='POST'>
 			Title: <input type="text" name="title">
-			<br>
 			<input type="submit" value="Search">
 			<br>
 		</form>
 		<br>
-		<a href='advancedSearch.jsp'>Advanced Search</a>
+		<br>
+		<c:forEach var="i" items="${random}">
+		<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
+		<br>
+		</c:forEach>
 	</div>
 </div>
 

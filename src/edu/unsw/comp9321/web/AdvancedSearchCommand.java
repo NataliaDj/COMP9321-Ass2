@@ -138,6 +138,8 @@ public class AdvancedSearchCommand implements Command {
 						}
 					}
 				} else if (searchPref.equals("author")) {
+					System.out.println(input);
+					System.out.println(p.getAuthor());
 					if (p.getAuthor() != null) {
 						Matcher matcher = pattern.matcher(p.getAuthor());
 						if (matcher.find()) {
