@@ -358,9 +358,9 @@ public class BookStoreDAO {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
 		String query = "";
 		if(title == null || title.equals("")) {
-			query = "select * from publications";
+			query = "select * from publications where pause='false'";
 		} else {
-			query = "select * from publications where lower(title) like lower('%" + title + "%')";
+			query = "select * from publications where lower(title) like lower('%" + title + "%') and pause='false'";
 		}
 		ResultSet rs = queryDatabase(query);
 		try {
@@ -388,4 +388,5 @@ public class BookStoreDAO {
 		publ.setSellerId(rs.getString("seller_id"));
 		return publ;
 	}
+
 }

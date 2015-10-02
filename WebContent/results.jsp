@@ -41,7 +41,7 @@
 			   		<c:forEach var="i" items="${publications}">
 			   		<tr>
 			   			<td>
-			   				<a href="ControllerServlet?operation=search&title=${i.title}&link=true">${i.title}</a>
+			   				<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&author=${i.author}&pubtype=${i.pubType}&link=true">${i.title}</a>
 			   			</td>
 			   			<td>
 			   				<c:forEach var="j" items="${i.author}" varStatus="loop">

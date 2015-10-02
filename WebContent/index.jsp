@@ -21,12 +21,14 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
-		<br>
 		<form action='ControllerServlet?operation=search' class='registerForm' method='POST'>
 			Title: <input type="text" name="title">
 			<br>
 			<input type="submit" value="Search">
+			<br>
 		</form>
+		<br>
+		<a href='advancedSearch.jsp'>Advanced Search</a>
 	</div>
 </div>
 

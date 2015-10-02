@@ -32,13 +32,7 @@ public class SearchCommand implements Command {
 		if (request.getParameter("title") != null) {
 			title = request.getParameter("title");
 		}
-		
-		if (request.getParameter("link") != null && request.getParameter("link").equals("true")) {
-			request.setAttribute("publication", bookStoreDAO.searchPublications(title).get(0));
-			return "/info.jsp";
-		} else {
-			request.setAttribute("publications", bookStoreDAO.searchPublications(title)); 
-			return "/results.jsp";
-		}
+		request.setAttribute("publications", bookStoreDAO.searchPublications(title)); 
+		return "/results.jsp";
 	}
 }
