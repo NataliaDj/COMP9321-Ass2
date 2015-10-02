@@ -2,6 +2,7 @@ package edu.unsw.comp9321.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,14 +45,25 @@ public class AdvancedSearchCommand implements Command {
 						.searchPublications(title).get(0));
 				return "/info.jsp";
 			} else {
+				ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+				ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
+				publications.addAll(bookStoreDAO.searchPublications(null));
 				request.setAttribute("publications",
-						bookStoreDAO.searchPublications(title));
+						publications);
+				Random rand = new Random();
+		        int randomNum;
+		        for(int i = 0; i < 10; ++i) {  	
+		        	randomNum = rand.nextInt(publications.size()); 	
+		        	random.add(publications.get(randomNum));
+		        }
+				request.getSession().setAttribute("random", random);
 				return "/results.jsp";
 			}
 		}
 
 		// ELSE
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+		ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
 		String type = request.getParameter("type");
 		title = request.getParameter("title");
 		String author = request.getParameter("author");
@@ -59,6 +71,13 @@ public class AdvancedSearchCommand implements Command {
 		String isbn = request.getParameter("isbn");
 		int minPrice = -1, maxPrice = -1;
 		publications.addAll(bookStoreDAO.searchPublications(null));
+		Random rand = new Random();
+        int randomNum;
+        for(int i = 0; i < 10; ++i) {  	
+        	randomNum = rand.nextInt(publications.size()); 	
+        	random.add(publications.get(randomNum));
+        }
+		request.getSession().setAttribute("random", random);
 		if (type != null) {
 			if (!type.equals("")) {
 				specificSearch(publications, "type", type, year, minPrice,
