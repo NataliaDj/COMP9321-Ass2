@@ -76,10 +76,5 @@ public class UserService {
 				 		+ "username=" + user.getUsername() + "\n\n"
 				 		+ "Cheers");
 	}
-	
-	public ArrayList<PublicationDTO> searchPublications(String title) {
-		ArrayList<PublicationDTO> results = bookstoreDAO.searchPublications(title);
-		return results;
-	}
 
 }

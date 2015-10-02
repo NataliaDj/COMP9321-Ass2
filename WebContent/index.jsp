@@ -10,6 +10,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Welcome!</title>
 	<link href="frontpage.css" rel="stylesheet" type="text/css">
+	<link href="resultsTable.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -17,12 +18,22 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
+		<form action="advancedSearch.jsp">
+		<button type="submit">Advanced Search</button>
+		</form>
+		<br>
 		<br>
 		<form action='ControllerServlet?operation=search' class='registerForm' method='POST'>
 			Title: <input type="text" name="title">
-			<br>
 			<input type="submit" value="Search">
+			<br>
 		</form>
+		<br>
+		<br>
+		<c:forEach var="i" items="${random}">
+		<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
+		<br>
+		</c:forEach>
 	</div>
 </div>
 

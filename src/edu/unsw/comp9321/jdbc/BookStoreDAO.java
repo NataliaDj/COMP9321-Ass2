@@ -47,14 +47,20 @@ public class BookStoreDAO {
 					ResultSet.CONCUR_READ_ONLY);
 
 			ResultSet rs = statement.executeQuery(query);
-			closeConnection();
+			
 			return rs;
 
 		} catch (ServiceLocatorException e) {
 			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 		} catch (SQLException e) {
 			throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
-		} 
+		} finally {
+			try {
+				con.setAutoCommit(false);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			};
+		}
 	}
 
 	/**
@@ -204,7 +210,7 @@ public class BookStoreDAO {
 	 * @param username
 	 */
 	private boolean userExists(String username) {
-		String query = "select count(*) AS matchcount from users where username = '" + username + "'";
+		String query = "select count(*) AS matchcount from people where username = '" + username + "'";
 		int matches = 0;
 
 		ResultSet rs = queryDatabase(query);
@@ -233,7 +239,7 @@ public class BookStoreDAO {
 	 * @param username
 	 */
 	public UserDTO userLogin(String username, String password) {
-		String query = "select * from users where username='" + username + "' and "
+		String query = "select * from people where username='" + username + "' and "
 					 + "password='" + password + "'";
 		//System.out.println("query = " + query);
 		UserDTO user = null;
@@ -338,6 +344,8 @@ public class BookStoreDAO {
 		     PreparedStatement stmt = con.prepareStatement(
 		       "insert into publications (id, title, price, author, pub_type, pub_year, "
 		       + "isbn, picture, pause, seller_id) values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+		     System.out.println("n");
 		    
 		     //fill in the query statement
 		     stmt.setString(2, pub.getTitle());
@@ -378,9 +386,9 @@ public class BookStoreDAO {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
 		String query = "";
 		if(title == null || title.equals("")) {
-			query = "select * from publications";
+			query = "select * from publications where pause='false'";
 		} else {
-			query = "select * from publications where lower(title) like lower('%" + title + "%')";
+			query = "select * from publications where lower(title) like lower('%" + title + "%') and pause='false'";
 		}
 		ResultSet rs = queryDatabase(query);
 		try {
@@ -408,4 +416,5 @@ public class BookStoreDAO {
 		publ.setSellerId(rs.getString("seller_id"));
 		return publ;
 	}
+
 }

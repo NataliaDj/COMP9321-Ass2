@@ -29,7 +29,11 @@ public class LoginCommand implements Command{
 		String nextPage = "login.jsp";
 		request.setAttribute("error", "" ); 
 		
+<<<<<<< HEAD
 		if (action.equals("loggingin")) {			
+=======
+		if (action.equals("loggingin")) {
+>>>>>>> 01fc8da187e4302818ec9186171e91fd5492507a
 			UserService service = new UserService();
 			
 			String password = request.getParameter("password");
@@ -47,6 +51,10 @@ public class LoginCommand implements Command{
 			}
 		} 
 		
+<<<<<<< HEAD
+=======
+
+>>>>>>> 01fc8da187e4302818ec9186171e91fd5492507a
 		return "/"+nextPage;
 	}
 	
