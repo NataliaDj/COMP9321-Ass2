@@ -1,4 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<%@ page import="edu.unsw.comp9321.*"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <header>
@@ -9,7 +12,7 @@
 		<li><a href="/Ass2">Home</a></li>
 		<c:choose>
 			<c:when test="${user.getUserType() == 'buyer'}">
-
+				<li><a href="ControllerServlet?operation=register">Profile</a></li>
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
 			</c:when>
 			<c:when test="${user.getUserType() == 'seller'}">
@@ -20,15 +23,10 @@
 				<li><a href="ControllerServlet?operation=searchUsers">Search Users</a></li>
 			</c:when>
 			<c:otherwise>
-				<c:choose>
-				<c:when test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller'}">
-					<li><a href="ControllerServlet?operation=register">Profile</a></li>
-				</c:when>
-				<c:otherwise>
+			
 					<li><a href="ControllerServlet?operation=login">Login</a></li>
 					<li><a href="ControllerServlet?operation=register">Register</a></li>
-				</c:otherwise>
-				</c:choose>
+
 			</c:otherwise>
 		</c:choose>
 		<c:if test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller' || adminAccount =='yes'}">
