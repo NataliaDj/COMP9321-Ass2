@@ -16,9 +16,16 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
-		<h2>Success! Your publication has successfully been listed</h2>
-		<br/>
-		<h3>You can now find your book listed from the main page</h3>
+		<c:choose>
+			<c:when test="${not empty message }">
+				<h2>${message }</h2>
+			</c:when>
+			<c:otherwise>
+				<h2>Success! Your publication has successfully been listed</h2>
+				<br/>
+				<h3>You can now find your book listed from the main page</h3>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </div>
 

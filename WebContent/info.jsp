@@ -82,7 +82,7 @@
   		<a href="ControllerServlet?operation=removePublication&id=${publication.id}">Remove Publication</a>
   	</c:if>
 	</div>
-	<c:if test="${user.getUserType() == 'buyer'}">
+	<c:if test="${user.hasBuyerDTO() == true}">
 		<center>
 		<form action='ControllerServlet?operation=cart&id=${publication.id}' class='registerForm' method='POST'>
   			<button type="submit" name="action" value="add">Add to Cart</button>

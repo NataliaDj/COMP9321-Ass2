@@ -24,8 +24,12 @@ public class CartCommand implements Command {
 		if (request.getParameter("operation") != null && request.getParameter("operation").equals("removeFromCart")) {
 			String[] removeIDs = request.getParameterValues("toRemove");
 			for (String id: removeIDs) {
-				bookstoreDAO.removeFromCart(id);
+				bookstoreDAO.removeFromCart(id, user);
 			}
+		} else if (request.getParameter("operation") != null && request.getParameter("operation").equals("checkout")) {
+			bookstoreDAO.checkout(user);
+			request.setAttribute("message", "Items were succesffully bought");
+			return "/sellSuccess.jsp";
 		} else if (request.getParameter("action") != null && request.getParameter("action").equals("add")) {
 			String addID = request.getParameter("id");
 			bookstoreDAO.addToCart(addID, user);

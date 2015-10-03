@@ -587,14 +587,30 @@ public class BookStoreDAO {
 		return items;
 	}
 	
-	public void removeFromCart(String id) {
-		String query ="select * from shopping_cart where publication_key=" + id;
+	public void removeFromCart(String id, String user) {
+		String query ="select * from shopping_cart where publication_key=" + id + "and buyer_key='" + user + "'";
 		
 		ResultSet rs = queryDatabase(query);
 		try {
 			if (rs.next()) {
 				Timestamp timestamp = new Timestamp(new Date().getTime());
 				query = "update shopping_cart set removed = '" + timestamp + "' where publication_key = " + id;
+				updateDatabase(query);
+				System.out.println(query);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void checkout(String user) {
+		String query ="select * from shopping_cart where buyer_key='" + user +"'";
+		
+		ResultSet rs = queryDatabase(query);
+		try {
+			while (rs.next()) {
+				Timestamp timestamp = new Timestamp(new Date().getTime());
+				query = "update shopping_cart set purchased='" + timestamp + "' where buyer_key='" + user + "' and publication_key=" + rs.getInt("publication_key")  ;
 				updateDatabase(query);
 				System.out.println(query);
 			}
