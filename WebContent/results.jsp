@@ -35,8 +35,11 @@
 			   			<th align="left">
 			   				Author(s)
 			   			</th>
-			   			<th>
-			   			</th>
+			   			<c:if test="${user.hasBuyerDTO() == 'true' }">
+				   			<th>
+				   				Add to Cart
+				   			</th>
+			   			</c:if>
 			   		</tr>
 			   		<c:forEach var="i" items="${publications}">
 			   		<tr>
@@ -54,9 +57,13 @@
 			   					${!loop.last ? ',' : ''}
 			   				</c:forEach>
 			   			</td>
-			   			<td align="center">
-			   				<button type="submit">Add To Cart</button>
-			   			</td>
+			   			<c:if test="${user.hasBuyerDTO() == 'true' }">
+				   			<td align="center">
+				   				<form action="ControllerServlet?operation=cart&id=${i.id}" method="post">
+				   					<button type="submit" name="action" value="add">Add to Cart</button>
+				   				</form>
+				   			</td>
+			   			</c:if>
 			   		</tr>			
 			   		</c:forEach>
 			   		</table>
