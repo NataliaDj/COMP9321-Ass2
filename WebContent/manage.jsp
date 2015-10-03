@@ -60,10 +60,10 @@
 		   		<td>
 		   			<c:choose>
 		   				<c:when test="${listing.pause}">
-		   					<input type="checkbox" name="toPause" value="${listing.author}" checked>
+		   					<input type="checkbox" name="toPause" value="${listing.id}" checked>
 		   				</c:when>
 		   				<c:otherwise>
-		   					<input type="checkbox" name="toPause" value="${listing.id}" checked>
+		   					<input type="checkbox" name="toPause" value="${listing.id}">
 		   				</c:otherwise>
 		   			</c:choose>
 		   		</td>

@@ -569,12 +569,12 @@ public class BookStoreDAO {
 	public void updatePause(String id) {
 		String query ="select * from publications where id=" + id;
 		
-		String pause = "false";
+		String pause = "true";
 		ResultSet rs = queryDatabase(query);
 		try {
 			while (rs.next()) {
 				if(rs.getBoolean("pause")) {
-					pause = "true";
+					pause = "false";
 				}
 			}
 		} catch (SQLException e) {
@@ -582,6 +582,7 @@ public class BookStoreDAO {
 		}
 		query = "update publications set pause = " + pause + " where id = " + id;
 		updateDatabase(query);
+		closeConnection();
 	}
 	
 	public ArrayList<PublicationDTO> getCartItems(String username) {

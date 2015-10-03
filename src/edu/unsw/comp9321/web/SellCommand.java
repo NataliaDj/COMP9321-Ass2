@@ -61,9 +61,9 @@ public class SellCommand implements Command {
 		}
 		book.setSeller(request.getParameter("bookSeller"));
 		if (request.getParameter("bookPause").equals("No")) {
-			book.setPause(false);
-		} else {
 			book.setPause(true);
+		} else {
+			book.setPause(false);
 		}
 		
 		return book;
