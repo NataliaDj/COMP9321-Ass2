@@ -8,10 +8,11 @@
 	<ul>
 		<li><a href="/Ass2">Home</a></li>
 		<c:choose>
-			<c:when test="${buyerAccount == 'yes'}">
+			<c:when test="${user.getUserType() == 'buyer'}">
+
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
 			</c:when>
-			<c:when test="${sellerAccount == 'yes'}">
+			<c:when test="${user.getUserType() == 'seller'}">
 				<li><a href="ControllerServlet?operation=manage">Manage Listing</a></li>
 				<li><a href="ControllerServlet?operation=sell">New Listing</a></li>
 			</c:when>
@@ -19,13 +20,21 @@
 				<li><a href="ControllerServlet?operation=searchUsers">Search Users</a></li>
 			</c:when>
 			<c:otherwise>
-				<li><a href="ControllerServlet?operation=login">Login</a></li>
-				<li><a href="ControllerServlet?operation=register">Register</a></li>
+				<c:choose>
+				<c:when test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller'}">
+					<li><a href="ControllerServlet?operation=register">Profile</a></li>
+				</c:when>
+				<c:otherwise>
+					<li><a href="ControllerServlet?operation=login">Login</a></li>
+					<li><a href="ControllerServlet?operation=register">Register</a></li>
+				</c:otherwise>
+				</c:choose>
 			</c:otherwise>
 		</c:choose>
-		<c:if test="${buyerAccount == 'yes' || sellerAccount == 'yes' || adminAccount =='yes'}">
+		<c:if test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller' || adminAccount =='yes'}">
 			<li><a href="ControllerServlet?operation=logout">Logout</a></li>
 		</c:if>
 	</ul>
+
 </div>
 </html>

@@ -20,6 +20,10 @@ public class UserDTO implements Serializable  {
 		username = "NULL";
 	}
 	
+	public String getUserType() {
+		return "need to override method in child class";
+	}
+	
 	public String getUsername() {
 		return username;
 	}

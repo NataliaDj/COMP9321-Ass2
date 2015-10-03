@@ -27,14 +27,8 @@ public class UserService {
 	 */
 	public UserDTO login(String username, String password) {
 		
-		UserDTO user = bookstoreDAO.userLogin(username, password);
-		
-		if (user != null) {
-					
-		} 
-		
+		UserDTO user = bookstoreDAO.userLogin(username, password);		
 		return user;		
-         
 		
 	}
 	
@@ -66,13 +60,25 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * Update the users information in the database
+	 * 
+	 * @param user 
+	 * @return
+	 */
+	public boolean updateUser(UserDTO user){
+		return bookstoreDAO.updateUser(user);
+				
+	}
+	
 	
 	private void sendConfirmationEmail(UserDTO user) 
 	{
+		System.out.println("sending email!");
 		Utilities.sendMail("me@something.com", user.getEmail(), "Website confirmation", 
 				 "Hi " + user.getFirstName() + ",\n\n"
 				 		+ "Please click the following link to activate your account:\n"
-				 		+ "http://localhost:8080/Ass2/ControllerServlet?operation=register&action=activation&"
+				 		+ "http://localhost:8080/Ass2/ControllerServlet?operation=activation&"
 				 		+ "username=" + user.getUsername() + "\n\n"
 				 		+ "Cheers");
 	}

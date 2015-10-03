@@ -45,6 +45,7 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("viewHistory", new ViewHistoryCommand());
 		commands.put("viewPublication", new ViewPublicationCommand());
 		commands.put("removePublication", new RemovePublicationCommand());
+		commands.put("activation", new ActivationCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,
@@ -58,7 +59,9 @@ public class ControllerServlet extends HttpServlet {
 		//}
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(next);
-		dispatcher.forward(request, response);
+		if (dispatcher != null) {
+			dispatcher.forward(request, response);
+		}
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {
