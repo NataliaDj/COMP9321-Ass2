@@ -220,6 +220,11 @@ public class BookStoreDAO {
 			} else {
 				closeConnection();
 				return false;
+			} 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 	

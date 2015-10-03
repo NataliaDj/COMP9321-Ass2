@@ -12,8 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
-
 import edu.unsw.comp9321.jdbc.BuyerDTO;
 import edu.unsw.comp9321.jdbc.SellerDTO;
 import edu.unsw.comp9321.jdbc.UserDTO;
