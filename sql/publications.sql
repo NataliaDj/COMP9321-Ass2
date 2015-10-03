@@ -10,6 +10,6 @@ INSERT INTO publications (title, price, author, pub_type, pub_year, picture, pau
 INSERT INTO publications (title, price, author, pub_type, pub_year, picture, pause) VALUES ('On the Power of Chain Rules in Context Free Grammar',25,'Norbert Blum','journal',1982,'http://static-content.springer.com/lookinside/art%3A10.1007%2FBF00264161/000.png','false');
 INSERT INTO publications (title, price, author, pub_type, pub_year, isbn, picture, pause) VALUES ('A Letter to My Children',28,'Christopher Pyne','book/collection',2015,'9780522867985, 0522867987','http://www.randomhouse.com.au/content/cache/140x210/titles/9780522867985.jpg','false');
 
-
+update publications set pause = false where title = 'Pattern Matching in Trees and Nets';
 insert into sellers values ('dory', '12345678');
 insert into publications (title, price, author, pub_type, pub_year, isbn, picture, pause, seller_id) values ('a', 1, 'b', 'book/collection', 1234, '123457890', '12asdf', 'true', 'dory');

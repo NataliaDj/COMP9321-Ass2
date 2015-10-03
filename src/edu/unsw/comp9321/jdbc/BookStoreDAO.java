@@ -382,7 +382,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		query = "update publication set pause = " + pause + " where id = " + id;
+		query = "update publications set pause = " + pause + " where id = " + id;
 		updateDatabase(query);
 	}
 	

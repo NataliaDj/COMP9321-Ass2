@@ -41,12 +41,15 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("unbanUser", new UnbanUserCommand());
 		commands.put("manage", new ManageCommand());
 		commands.put("cart", new CartCommand());
+		commands.put("next", new NextPageCommand());
+		commands.put("back", new BackPageCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		Command cmd = resolveCommand(request);
 		String next = cmd.execute(request, response);
+		System.out.println(next);
 		//if (next.indexOf('.') < 0) {
 		//	cmd = (Command) commands.get(next);
 		//	next = cmd.execute(request, response);

@@ -33,10 +33,15 @@
 		</form>
 		<br>
 		<br>
+		<table class="results" width="100%">
 		<c:forEach var="i" items="${random}">
-		<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
-		<br>
+			<tr>
+				<td>
+					<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
+				</td>
+			</tr>
 		</c:forEach>
+		</table>
 	</div>
 </div>
 

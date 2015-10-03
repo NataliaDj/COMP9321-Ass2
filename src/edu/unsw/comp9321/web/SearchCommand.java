@@ -35,9 +35,9 @@ public class SearchCommand implements Command {
 		if (request.getParameter("title") != null) {
 			title = request.getParameter("title");
 		}
+		System.out.println("bookstore");
 		ArrayList<PublicationDTO> result = new ArrayList<PublicationDTO>(bookStoreDAO.searchPublications(title));
 		ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
-		request.setAttribute("publications", bookStoreDAO.searchPublications(title));
 		Random rand = new Random();
         int randomNum;
         for(int i = 0; i < 10; ++i) {  	
@@ -47,7 +47,25 @@ public class SearchCommand implements Command {
         	}
         	random.add(result.get(randomNum));
         }
-		request.setAttribute("random", random);
+        System.out.println("hello");
+		request.getSession().setAttribute("random", random);
+		request.getSession().setAttribute("totalPublications", result);
+		request.getSession().setAttribute("totalMatches", result.size());
+		request.getSession().setAttribute("currPage", 1);
+		int totalPages = result.size()/10;
+		if (result.size() % 10 == 0) {
+			totalPages--;
+		}
+		request.getSession().setAttribute("totalPages", totalPages);
+		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+    	for (int i = 0; i < 10; ++i) {
+    		if (i == result.size()) {
+    			break;
+    		}
+    		publications.add(result.get(i));
+    	}
+    	System.out.println(publications.size());
+		request.getSession().setAttribute("publications", publications);
 		return "/results.jsp";
 	}
 }
