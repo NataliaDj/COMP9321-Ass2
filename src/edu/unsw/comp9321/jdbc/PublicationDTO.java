@@ -85,6 +85,15 @@ public class PublicationDTO {
 		this.sellerId = seller;
 	}
 
+	public int getId() {
+		return id;
+	}
+	
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	private int id;
 	private String title;
 	private int price;
 	private String author;

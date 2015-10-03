@@ -13,20 +13,23 @@ import edu.unsw.comp9321.jdbc.PublicationDTO;
 
 public class SellCommand implements Command {
 
+	private BookStoreDAO bookstoreDAO;
+	
+	SellCommand() {
+		DAOFactory factory = DAOFactory.getInstance();
+		bookstoreDAO = factory.getBookStoreDAO();
+	}
+
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		String action = "";
 		// if no action, it means first access to register page 
 		if (request.getParameter("action") == null) {
 			return "/sell.jsp";
 		}
 
 		try {
-			response.setContentType("text/html");// from response, set content type
 			PublicationDTO book = CreatePublication(request, response);
-			DAOFactory factory = DAOFactory.getInstance();
-			BookStoreDAO bookstoreDAO = factory.getBookStoreDAO();
 			bookstoreDAO.newBookListing(book);
 			return "/sellSuccess.jsp";
 		} catch (Exception e) {
@@ -48,24 +51,20 @@ public class SellCommand implements Command {
 			book.setPrice(Integer.parseInt(request.getParameter("bookPrice")));
 		}
 		book.setPubType(request.getParameter("bookType"));
-		if(request.getParameter("bookYear") != null) {
+		if(request.getParameter("bookYear") != null && request.getParameter("bookYear") != "") {
 			book.setPubYear(Integer.parseInt(request.getParameter("bookYear")));
 		}
 		book.setIsbn(request.getParameter("bookISBN"));
 		book.setPicture(request.getParameter("bookPicture"));
+		if(request.getParameter("bookSeller") != null && request.getParameter("bookSeller") != "") {
+			book.setSeller(request.getParameter("bookSeller"));
+		}
 		book.setSeller(request.getParameter("bookSeller"));
 		if (request.getParameter("bookPause").equals("No")) {
 			book.setPause(false);
 		} else {
 			book.setPause(true);
 		}
-		
-		//print out the book was successfully added
-		PrintWriter out = response.getWriter();// from response, get output writer
-		out.println("<br/><h3>New book listing</h3><br/>"); 
-		out.println("<h4>Book's title = " + book.getTitle() + "</h4><br/>");
-		out.println("<h4>Book's author = " + book.getAuthor() + "</h4><br/>"); 
-		out.println("<h4>Book's author = " + book.getAuthor() + "</h4><br/>"); 
 		
 		return book;
 		

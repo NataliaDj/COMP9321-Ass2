@@ -14,10 +14,7 @@
 </head>
 
 <body>
-<c:choose> 
-	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="header.jsp"%> </c:when>    
-	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
 
 <div class="middleSection">    
 	<div class= "middleSect">
@@ -33,10 +30,15 @@
 		</form>
 		<br>
 		<br>
+		<table class="results" width="100%">
 		<c:forEach var="i" items="${random}">
-		<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
-		<br>
+			<tr>
+				<td>
+					<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
+				</td>
+			</tr>
 		</c:forEach>
+		</table>
 	</div>
 </div>
 

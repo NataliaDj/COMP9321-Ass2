@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.unsw.comp9321.jdbc.BookStoreDAO;
 
-public class CartCommand implements Command {
+public class ManageCommand implements Command{
 	BookStoreDAO bookstoreDAO;
 	
-	public CartCommand() {
+	public ManageCommand() {
 		bookstoreDAO = new BookStoreDAO();
 		
 	}
@@ -19,18 +19,17 @@ public class CartCommand implements Command {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
+		
 		if (request.getParameter("action") != null) {
-			String[] removeIDs = request.getParameterValues("toRemove");
-			for (String id: removeIDs) {
-				bookstoreDAO.removeFromCart(id);
+			String[] pauseIDs = request.getParameterValues("toPause");
+			for (String id: pauseIDs) {
+				bookstoreDAO.updatePause(id);
 			}
 		}
 		
-		String user = (String) request.getSession().getAttribute("username");
-		request.setAttribute("listings", bookstoreDAO.getCartItems(user)); 
+		String seller_id = (String) request.getSession().getAttribute("username");
+		request.setAttribute("listings", bookstoreDAO.findListing(seller_id)); 
 	
-		return "/cart.jsp";
+		return "/manage.jsp";
 	}
-
 }

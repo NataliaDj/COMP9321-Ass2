@@ -15,11 +15,7 @@
 </head>
 
 <body>
-
-<c:choose> 
-	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="header.jsp"%> </c:when>    
-	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
 
 <div class="middleSection">    
 	<div class= "middleSect">
@@ -52,6 +48,30 @@
 			   		</tr>			
 			   		</c:forEach>
 			   		</table>
+						<c:if test="${totalPages gt 0}">
+							<table width="100%" align="center">
+							<tr>
+								<td align="right" width="45%">
+									<c:if test="${currPage gt 1 }">
+										<form action="ControllerServlet?operation=back&page=${currPage - 1}" method="post">
+											<button type="submit" name="action" value="back">Previous</button>
+										</form>
+									</c:if>
+								</td>
+								<td>
+								<h5 align="center">${currPage} of ${totalPages + 1}</h5>
+								</td>
+								<td align="left" width="45%">
+									<c:if test="${currPage lt totalPages + 1}">
+										<form action="ControllerServlet?operation=next&page=${currPage + 1}" method="post">
+											<button type="submit" name="action" value="next">Next</button>
+										</form>
+									</c:if>
+								</td>
+							</tr>
+							</table>
+						</c:if>
+						<h4>Your search matched ${totalMatches} publications</h4>
 			</c:otherwise>
 	</c:choose>
 	</div>

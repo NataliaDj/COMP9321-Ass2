@@ -8,6 +8,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -39,7 +40,7 @@ public class BookStoreDAO {
 	 * @param query
 	 * @return
 	 */
-	private ResultSet queryDatabase(String query) {
+	public ResultSet queryDatabase(String query) {
 		con = null;
 		try {
 			con = services.createConnection();
@@ -166,7 +167,42 @@ public class BookStoreDAO {
 		}
 		return userDTO;
 	}
+	
+	public List<CartEntryDTO> getCartDTO(String username) {
+		List<CartEntryDTO> cart = new LinkedList<CartEntryDTO>();
+		String query = "select * from shopping_cart where buyer_key = '"+ username +"'";
+		ResultSet rs = queryDatabase(query);
+		try {
+			while (rs.next()) {
+				CartEntryDTO current = new CartEntryDTO();
+				current.setUsername(username);
+				current.setAdded(rs.getDate("added"));
+				current.setRemoved(rs.getDate("removed"));
+				current.setPurchased(rs.getDate("purchased"));
+				
+				//create and add publicationDTO
+				ResultSet temp = queryDatabase("select * from publications where id = " + rs.getInt("publication_key"));
+				temp.next();
+				PublicationDTO pub = createPublication(temp);
+				current.setPublication(pub);
+				
+				cart.add(current);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cart;
+	}
 
+	public void removePublication(int id) {
+		String query = "delete from shopping_cart where publication_key = " + id;
+		updateDatabase(query);
+		query = "delete from publications where id = " + id;
+		updateDatabase(query);
+	}
+	
 	public void updateUserBan(UserDTO userDTO, boolean banStatus) {
 		String username = userDTO.getUsername();
 		String banStr = "false";
@@ -227,7 +263,6 @@ public class BookStoreDAO {
 			return null; // means there is no result
 		}
 		
-		closeConnection();
 		return user;
 	}
 	
@@ -310,39 +345,34 @@ public class BookStoreDAO {
 	 * 
 	 * @param pub
 	 * @return
+	 * @throws Exception 
 	 */
-	public boolean newBookListing(PublicationDTO pub) {
+	public boolean newBookListing(PublicationDTO pub) throws Exception {
 		try {
 			//create connection and prepare a query statement
 		     con = services.createConnection();
-		     PreparedStatement stmt = con.prepareStatement(
-		       "insert into publications (id, title, price, author, pub_type, pub_year, "
-		       + "isbn, picture, pause, seller_id) values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-		     System.out.println("n");
-		    
-		     //fill in the query statement
-		     stmt.setString(2, pub.getTitle());
-		     stmt.setInt(3, pub.getPrice());
-		     stmt.setString(4, pub.getAuthor());
-		     stmt.setString(5, pub.getPubType());
-		     stmt.setInt(6, pub.getPubYear());
-		     stmt.setString(7, pub.getIsbn());
-		     stmt.setString(8, pub.getPicture());
-		     if(pub.isPause()) {
-		    	 stmt.setBoolean(9, true);
-		     } else {
-		    	 stmt.setBoolean(9, false);
+		     System.out.println("hello");
+		     String insert = "insert into publications (title, price, author, pub_type, pub_year, "
+				       + "isbn, picture, pause";
+		     if (pub.getSeller() != null) {
+		    	 insert = insert + ", seller_id";
 		     }
-		     stmt.setString(10, pub.getSeller());
-		    	
-		     int n = stmt.executeUpdate();
-		     if (n != 1)
-		       throw new DataAccessException("Did not insert one row into database");
-		   } catch (ServiceLocatorException e) {
-		       throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
-		   } catch (SQLException e) {
-		       throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		     insert = insert + ") values (";
+		     insert = insert + "'" + pub.getTitle() + "', ";
+		     insert = insert + pub.getPrice() + ", ";
+		     insert = insert + "'" + pub.getAuthor() + "', ";
+		     insert = insert + "'" + pub.getPubType() + "', ";
+		     insert = insert + pub.getPubYear() + ", ";
+		     insert = insert + "'" + pub.getIsbn() + "', ";
+		     insert = insert + "'" + pub.getPicture() + "', ";
+		     insert = insert + "'" + pub.isPause() + "', ";
+		     if (pub.getSeller() != null || pub.getSeller() != "") {
+		    	 insert = insert + "'" + pub.getSeller() + "')";
+		     }
+		     System.out.println(insert);
+		     updateDatabase(insert);
+		   } catch (Exception e) {
+			   throw e;
 		   } finally {
 		      if (con != null) {
 		         try {
@@ -355,7 +385,7 @@ public class BookStoreDAO {
 		   
 		   return true;
 	}
-
+	
 	public ArrayList<PublicationDTO> findListing(String username) {
 		ArrayList<PublicationDTO> listings = new ArrayList<PublicationDTO>();
 		String query ="select * from publications where seller_id='" + username + "'";
@@ -387,11 +417,9 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		query = "update publication set pause = " + pause + " where id = " + id;
+		query = "update publications set pause = " + pause + " where id = " + id;
 		updateDatabase(query);
 	}
-	
-	
 	
 	public ArrayList<PublicationDTO> getCartItems(String username) {
 		ArrayList<PublicationDTO> items = new ArrayList<PublicationDTO>();
@@ -447,7 +475,7 @@ public class BookStoreDAO {
 		return publications;
 	}
 	
-	private PublicationDTO createPublication(ResultSet rs) throws SQLException {
+	public PublicationDTO createPublication(ResultSet rs) throws SQLException {
 		PublicationDTO publ = new PublicationDTO();
 		publ.setTitle(rs.getString("title"));
 		publ.setPrice(rs.getInt("price"));
@@ -458,6 +486,7 @@ public class BookStoreDAO {
 		publ.setPicture(rs.getString("picture"));
 		publ.setPause(rs.getBoolean("pause"));
 		publ.setSellerId(rs.getString("seller_id"));
+		publ.setId(rs.getInt("id"));
 		return publ;
 	}
 

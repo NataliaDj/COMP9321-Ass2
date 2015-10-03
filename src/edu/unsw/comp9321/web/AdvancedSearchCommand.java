@@ -42,22 +42,38 @@ public class AdvancedSearchCommand implements Command {
 						.searchPublications(title).get(0));
 				return "/info.jsp";
 			} else {
-				ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+				ArrayList<PublicationDTO> result = new ArrayList<PublicationDTO>();
 				ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
-				publications.addAll(bookStoreDAO.searchPublications(null));
+				result.addAll(bookStoreDAO.searchPublications(null));
 				request.setAttribute("publications",
-						publications);
+						result);
 				Random rand = new Random();
 		        int randomNum;
 		        for(int i = 0; i < 10; ++i) {  	
-		        	randomNum = rand.nextInt(publications.size());
-		        	while(random.contains(publications.get(randomNum))) {
-		        		randomNum = rand.nextInt(publications.size());
+		        	randomNum = rand.nextInt(result.size());
+		        	while(random.contains(result.get(randomNum))) {
+		        		randomNum = rand.nextInt(result.size());
 		        	}
-		        	random.add(publications.get(randomNum));
+		        	random.add(result.get(randomNum));
 		        }
 				request.getSession().setAttribute("random", random);
-				request.getSession().setAttribute("found", publications);
+				request.getSession().setAttribute("totalPublications", result);
+				request.getSession().setAttribute("totalMatches", result.size());
+				request.getSession().setAttribute("currPage", 1);
+				int totalPages = result.size()/10;
+				if (result.size() % 10 == 0) {
+					totalPages--;
+				}
+				request.getSession().setAttribute("totalPages", totalPages);
+				ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
+		    	for (int i = 0; i < 10; ++i) {
+		    		if (i == result.size()) {
+		    			break;
+		    		}
+		    		publications.add(result.get(i));
+		    	}
+		    	System.out.println(publications.size());
+				request.getSession().setAttribute("publications", publications);
 				return "/results.jsp";
 			}
 		}
@@ -132,8 +148,22 @@ public class AdvancedSearchCommand implements Command {
 			request.setAttribute("publication", publications.get(0));
 			return "/info.jsp";
 		} else {
-			request.setAttribute("publications", publications);
-			request.getSession().setAttribute("found", publications);
+			request.getSession().setAttribute("totalPublications", publications);
+			request.getSession().setAttribute("totalMatches", publications.size());
+			request.getSession().setAttribute("currPage", 1);
+			int totalPages = publications.size()/10;
+			if (publications.size() % 10 == 0) {
+				totalPages--;
+			}
+			request.getSession().setAttribute("totalPages", totalPages);
+			ArrayList<PublicationDTO> publication = new ArrayList<PublicationDTO>();
+	    	for (int i = 0; i < 10; ++i) {
+	    		if (i == publications.size()) {
+	    			break;
+	    		}
+	    		publication.add(publications.get(i));
+	    	}
+			request.getSession().setAttribute("publications", publication);
 			return "/results.jsp";
 		}
 	}

@@ -15,11 +15,7 @@
 </head>
 
 <body>
-
-<c:choose> 
-	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="header.jsp"%> </c:when>    
-	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
 
 <div class="middleSection">
 	<div class= "middleSect">
@@ -82,7 +78,9 @@
    		</td>
    	</tr>
   	</table>
-  	<br>
+  	<c:if test="${adminAccount == 'yes'}">
+  		<a href="ControllerServlet?operation=removePublication&id=${publication.id}">Remove Publication</a>
+  	</c:if>
 	</div>
 		<center>
 		<form action='ControllerServlet?operation=cart' class='registerForm' method='POST'>

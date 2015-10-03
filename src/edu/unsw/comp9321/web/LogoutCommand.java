@@ -22,9 +22,6 @@ public class LogoutCommand implements Command{
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		
-		
-		
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
