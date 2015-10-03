@@ -52,7 +52,6 @@ public class ControllerServlet extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		Command cmd = resolveCommand(request);
 		String next = cmd.execute(request, response);
-		System.out.println(next);
 		//if (next.indexOf('.') < 0) {
 		//	cmd = (Command) commands.get(next);
 		//	next = cmd.execute(request, response);

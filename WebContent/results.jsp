@@ -18,7 +18,6 @@
 <%@ include file="header.jsp"%>
 
 <div class="middleSection">    
-	<div class= "middleSect">
 		<c:choose>
 			<c:when test="${empty publications}">
 				<h3>Sorry, no matching datasets found!</h3>
@@ -28,22 +27,35 @@
 			   		<table style="width:100%" cellpadding="10" class="results">
 			   		<tr>
 			   			<th align="left">
+			   				Picture
+			   			</th>
+			   			<th align="left">
 			   				Title
 			   			</th>
 			   			<th align="left">
 			   				Author(s)
 			   			</th>
+			   			<th>
+			   			</th>
 			   		</tr>
 			   		<c:forEach var="i" items="${publications}">
 			   		<tr>
-			   			<td>
+			   			<td align="center">
+			   				<c:if test="${not empty i.picture}">
+			   					<img src="${i.picture}" height="300" width="200">
+			   				</c:if>
+			   			</td>
+			   			<td align="center">
 			   				<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
 			   			</td>
-			   			<td>
+			   			<td align="center">
 			   				<c:forEach var="j" items="${i.author}" varStatus="loop">
 			   					${j}
 			   					${!loop.last ? ',' : ''}
 			   				</c:forEach>
+			   			</td>
+			   			<td align="center">
+			   				<button type="submit">Add To Cart</button>
 			   			</td>
 			   		</tr>			
 			   		</c:forEach>
@@ -74,7 +86,6 @@
 						<h4>Your search matched ${totalMatches} publications</h4>
 			</c:otherwise>
 	</c:choose>
-	</div>
 </div>
 </body>
 <%@ include file="footer.jsp"%>

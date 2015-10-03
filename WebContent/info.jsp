@@ -21,7 +21,7 @@
 	<div class= "middleSect">
 	<c:if test="${not empty publication.picture}">
 		<br>
-		<center><img src="${publication.picture}" height="500" width="300"></center>
+		<center><img src="${publication.picture}" height="600" width="370"></center>
 		<br>
 		<br>
 	</c:if>
@@ -83,6 +83,7 @@
   	</c:if>
 	</div>
 	<c:if test="${buyerAccount == 'yes' }">
+		<br>
 		<center>
 		<form action='ControllerServlet?operation=cart&id=${publication.id}&user=${username}' class='registerForm' method='POST'>
   			<button type="submit" name="action" value="add">Add to Cart</button>
