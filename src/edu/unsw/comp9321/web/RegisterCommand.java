@@ -9,6 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Session;
+
+import edu.unsw.comp9321.jdbc.BuyerDTO;
+import edu.unsw.comp9321.jdbc.SellerDTO;
 import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
 import edu.unsw.comp9321.jdbc.Utilities;
@@ -23,8 +27,6 @@ public class RegisterCommand implements Command{
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 
-		//InetAddress ip = InetAddress.getLocalHost();
-		//System.out.println("hostaddress = " + ip.getHostName());
 		PrintWriter out = response.getWriter();
 		String action = "";
 		UserDTO user = new UserDTO();
@@ -45,7 +47,8 @@ public class RegisterCommand implements Command{
 			
 			UserService service = new UserService();
 			service.activateUser(request.getParameter("username")); // NEED ERROR HANDLING
-			
+		} else if (action.equals("updating_user")) { // update user
+			updateUser(request, response);
 		} else {
 			
 			// test if logged in or not
@@ -69,6 +72,73 @@ public class RegisterCommand implements Command{
 	}
 	
 	/**
+	 * Get the right type of user (buyer or seller)
+	 * 
+	 * @param request
+	 * @param response
+	 * @param user_type
+	 * @return
+	 * @throws IOException
+	 */
+	private UserDTO userHelper(HttpServletRequest request, HttpServletResponse response, String user_type) 
+			throws IOException {		 
+		UserDTO user;
+		if (user_type.equalsIgnoreCase("seller")) {
+			user = CreateSeller(request, response);
+		} else {
+			user = CreateBuyer(request, response);
+		}
+		
+		return user;
+	}
+	
+	/**
+	 * Update user information in database and session
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException 
+	 */
+	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException, ServletException {
+		// first current session user
+		HttpSession session = request.getSession(false);
+		UserDTO user = (UserDTO) session.getAttribute("user");
+		
+		// if password is empty, keep it
+		String current_password = user.getPassword();
+		user = CreateUser(request, response, user); 
+		if (request.getParameter("password").isEmpty()) { // if empty
+			// make sure to keep old one
+			user.setPassword(current_password);
+		}
+		
+		// get service and update in database
+		UserService service = new UserService();
+		if (service.updateUser(user)) { // if successfully updated
+			request.setAttribute("info", "<p><b>Your profile has successfully been updated</b></p>");
+		} else {
+			request.setAttribute("info", "<p><b>Error: profile could not be updated</b></p>");
+		}
+		
+		// finally put user back into session.
+		session.setAttribute("user", user);
+		request.setAttribute("user", user);
+		
+		// send to updated page
+		String nextPage = "register.jsp";
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
+		rd.forward(request, response);
+		
+		
+		
+
+	}
+	
+	
+	/**
 	 * Attempt to register the user with information contained in request
 	 * from register.jsp
 	 * 
@@ -81,18 +151,31 @@ public class RegisterCommand implements Command{
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<b>Submitting!</b>"); 
 		 
-		UserDTO user = CreateUser(request, response);
-				
+		UserDTO user = userHelper(request, response, request.getParameter("user_type"));
 		UserService service = new UserService();
 		service.addUser(user);
-		//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
-		//TEMP DISABLED//user_del.addUser(userbean);
+		
+}
+	
+	private BuyerDTO CreateBuyer(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		BuyerDTO buyer = new BuyerDTO();
+		buyer = (BuyerDTO) CreateUser(request, response, buyer);
+		buyer.setCreditCard(Integer.parseInt(request.getParameter("payment")));
+		return buyer;
 	}
 	
-	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response) 
+	private SellerDTO CreateSeller(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		SellerDTO seller = new SellerDTO();
+		seller = (SellerDTO) CreateUser(request, response, seller);
+		seller.setPaypal(request.getParameter("payment"));
+		return seller;
+	}
+	
+	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response, UserDTO user) 
 			throws IOException {
 		
-		UserDTO user = new UserDTO();
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
 		user.setUsername(request.getParameter("username"));
@@ -108,10 +191,6 @@ public class RegisterCommand implements Command{
 		//user.setPostalCode(request.getParameter("postal_code"));
 		//user.setState(request.getParameter("state"));
 		//user.setCountry(request.getParameter("country"));
-		
-		PrintWriter out = response.getWriter();// from response, get output writer
-		out.println("<br>"); 
-		out.println("User's name = " + user.getFirstName() + " " + user.getLastName()); 
 		
 		return user;
 		

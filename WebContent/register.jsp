@@ -21,18 +21,29 @@
 <!-- <form action='results.jsp'>-->
 <div class="middleSection">    
 	<div class= "middleSect">
-		<c:choose>
-			<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
-				<h2>Register</h2>
-	    		<p>Please fill in all information</p>        
-			</c:when>    
-			<c:otherwise>
-			    <h2>Edit user</h2>
-	    		<p>Please change information below ${user.username}</p> 
-			</c:otherwise>
-		</c:choose>
-	
 		<form action='ControllerServlet?operation=register' class='registerForm' method='POST'>
+	
+			<c:choose>
+				<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
+					<h2>Register</h2>
+		    		<p>Please fill in all information</p>   
+		    		
+		    		<p>Account type: <input type="radio" name="user_type" value="buyer" checked>Buyer
+  					<input type="radio" name="user_type" value="seller">Seller</p>
+				</c:when>    
+				<c:otherwise>
+					<c:choose>
+						<c:when test="${user.getUserType()=='seller'}">
+							 <h2>Edit seller profile</h2>
+						</c:when>
+						<c:when test="${user.getUserType()=='buyer'}">
+							 <h2>Edit buyer profile</h2>
+						</c:when>
+					</c:choose>
+		    		<p>Please change information below ${user.username}</p> 
+				</c:otherwise>
+			</c:choose>
+			${info}
 			<c:choose>
 			    <c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
 			        Username <input type="text" name="username">
@@ -56,7 +67,7 @@
 			State <input type="text" name="state">
 			Country <input type="text" name="country">
 			<h3>Payment</h3>
-		    Credit card number <input type="text" name="creditcard" value=${user.getCreditCard()}>
+	        Payment: <input type="text" name="payment" value="">
 	        
 	        <c:choose>
 			    <c:when test="${user.getUsername()=='NULL'}">

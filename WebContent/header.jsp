@@ -9,6 +9,7 @@
 		<li><a href="/Ass2">Home</a></li>
 		<c:choose>
 			<c:when test="${buyerAccount == 'yes'}">
+
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
 			</c:when>
 			<c:when test="${sellerAccount == 'yes'}">
@@ -27,5 +28,6 @@
 			<li><a href="ControllerServlet?operation=logout">Logout</a></li>
 		</c:if>
 	</ul>
+
 </div>
 </html>
