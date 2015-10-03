@@ -16,7 +16,7 @@
 
 <body>
 
-<%@ include file="header.jsp"%>
+<%@ include file="headertemp.jsp"%>
 
 <!-- <form action='results.jsp'>-->
 <div class="middleSection">    
@@ -28,19 +28,13 @@
 					<h2>Register</h2>
 		    		<p>Please fill in all information</p>   
 		    		
-		    		<p>Account type: <input type="radio" name="user_type" value="buyer" checked>Buyer
-  					<input type="radio" name="user_type" value="seller">Seller</p>
+		    		<p>Account type: <input type=checkbox name="buyer" checked>Buyer
+  					<input type="checkbox" name="seller">Seller</p>
 				</c:when>    
 				<c:otherwise>
-					<c:choose>
-						<c:when test="${user.getUserType()=='seller'}">
-							 <h2>Edit seller profile</h2>
-						</c:when>
-						<c:when test="${user.getUserType()=='buyer'}">
-							 <h2>Edit buyer profile</h2>
-						</c:when>
-					</c:choose>
-		    		<p>Please change information below ${user.username}</p> 
+
+					<h2>Edit profile profile</h2>
+ 
 				</c:otherwise>
 			</c:choose>
 			${info}
@@ -67,14 +61,28 @@
 			State <input type="text" name="state">
 			Country <input type="text" name="country">
 			<h3>Payment</h3>
-	        Payment: <input type="text" name="payment" value="">
+			
+	        
 	        
 	        <c:choose>
-			    <c:when test="${user.getUsername()=='NULL'}">
+			    <c:when test="${user.getUsername()=='NULL' || user.getUsername()==null}">
+			        Credit card: <input type="text" name="credit_card" value="" placeholder="Only if buyer">
+	        		Paypal: <input type="text" name="paypal" value="" placeholder="Only if seller">
+			        
 			        <input type="hidden" name="action" value="registering"/>
 					<input type='submit' value='Submit'/>
 			    </c:when>    
 			    <c:otherwise>
+			    	<c:choose>
+					    <c:when test="${user.hasBuyerDTO()==true}">
+					       Credit card: <input type="text" name="credit_card" value=${user.getBuyerDTO().getCreditCard()}>
+					    </c:when>  
+					</c:choose><c:choose>
+					    <c:when test="${user.hasSellerDTO()==true}">
+					       Paypal: <input type="text" name="paypal" value=${user.getSellerDTO().getPaypal()}>
+					    </c:when>  
+			    	</c:choose>
+		
 			       <input type="hidden" name="action" value="updating_user"/>
 					<input type='submit' value='Update'/>
 			    </c:otherwise>

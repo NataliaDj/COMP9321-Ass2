@@ -7,10 +7,12 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/standard.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/derby.jar"/>
-	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/derbyclient.jar"/>
-	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/mail.jar"/>
-	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="/Users/nataliadjohari/Desktop/9321/apache-tomcat-7.0.42/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/apache-tomcat-7.0.42/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/apache-tomcat-7.0.42/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/apache-tomcat-7.0.42/lib/derbyclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/javamail-1.4.5/mail.jar"/>
+	<classpathentry kind="lib" path="/usr/local/Cellar/tomcat/8.0.26/libexec/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="/usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/Users/rubinghv/Downloads/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

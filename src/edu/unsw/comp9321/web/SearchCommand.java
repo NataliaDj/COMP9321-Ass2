@@ -37,14 +37,15 @@ public class SearchCommand implements Command {
 		}
 		ArrayList<PublicationDTO> result = new ArrayList<PublicationDTO>(bookStoreDAO.searchPublications(title));
 		ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
+		ArrayList<PublicationDTO> temp = new ArrayList<PublicationDTO>(bookStoreDAO.searchPublications(null));
 		Random rand = new Random();
         int randomNum;
         for(int i = 0; i < 10; ++i) {  	
-        	randomNum = rand.nextInt(result.size());
-        	while(random.contains(result.get(randomNum))) {
-        		randomNum = rand.nextInt(result.size());
+        	randomNum = rand.nextInt(temp.size());
+        	while(random.contains(temp.get(randomNum))) {
+        		randomNum = rand.nextInt(temp.size());
         	}
-        	random.add(result.get(randomNum));
+        	random.add(temp.get(randomNum));
         }
 		request.getSession().setAttribute("random", random);
 		request.getSession().setAttribute("totalPublications", result);

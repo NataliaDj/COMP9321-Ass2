@@ -37,7 +37,11 @@ public class RegisterCommand implements Command{
 		 
 		if (action.equals("registering")) { // trying to register with form data
 			register(request, response);
-			 
+			
+			request.setAttribute("error", "Email sent for activation");
+			String nextPage = "login.jsp";
+			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
+			rd.forward(request, response); 
 		} else if (action.equals("activation")) { // trying to activate through link in email
 			response.setContentType("text/html");
 			
@@ -78,6 +82,7 @@ public class RegisterCommand implements Command{
 	 * @return
 	 * @throws IOException
 	 */
+	/*
 	private UserDTO userHelper(HttpServletRequest request, HttpServletResponse response, String user_type) 
 			throws IOException {		 
 		UserDTO user;
@@ -88,7 +93,7 @@ public class RegisterCommand implements Command{
 		}
 		
 		return user;
-	}
+	}*/
 	
 	/**
 	 * Update user information in database and session
@@ -106,11 +111,15 @@ public class RegisterCommand implements Command{
 		
 		// if password is empty, keep it
 		String current_password = user.getPassword();
-		user = CreateUser(request, response, user); 
+		user = CreateUser(request, response, user);
+		user = CreateBuyer(request, user, true);
+		user = CreateSeller(request, user, true); 
 		if (request.getParameter("password").isEmpty()) { // if empty
 			// make sure to keep old one
 			user.setPassword(current_password);
 		}
+		
+		System.out.println("buyer = " + user.getBuyerDTO().getCreditCard());
 		
 		// get service and update in database
 		UserService service = new UserService();
@@ -149,26 +158,53 @@ public class RegisterCommand implements Command{
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<b>Submitting!</b>"); 
 		 
-		UserDTO user = userHelper(request, response, request.getParameter("user_type"));
+		UserDTO user = new UserDTO();
+		user = CreateUser(request, response, user);
+		user = CreateBuyer(request, user);
+		user = CreateSeller(request, user);
+		
 		UserService service = new UserService();
 		service.addUser(user);
 		
-}
-	
-	private BuyerDTO CreateBuyer(HttpServletRequest request, HttpServletResponse response) 
+}	
+	private UserDTO CreateBuyer(HttpServletRequest request, UserDTO user)
 			throws IOException {
-		BuyerDTO buyer = new BuyerDTO();
-		buyer = (BuyerDTO) CreateUser(request, response, buyer);
-		buyer.setCreditCard(Integer.parseInt(request.getParameter("payment")));
-		return buyer;
+		return CreateBuyer(request, user, false);
+	}
+	private UserDTO CreateBuyer(HttpServletRequest request, UserDTO user, boolean update) 
+			throws IOException {
+		if (request.getParameter("buyer") != null || update) {
+			if (update) {
+				BuyerDTO buyer = new BuyerDTO();
+				buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
+				user.setBuyerDTO(buyer);
+			} else if (request.getParameter("buyer").equals("on")) {
+				BuyerDTO buyer = new BuyerDTO();
+				buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
+				user.setBuyerDTO(buyer);
+			} 
+		}
+		return user;
 	}
 	
-	private SellerDTO CreateSeller(HttpServletRequest request, HttpServletResponse response) 
+	private UserDTO CreateSeller(HttpServletRequest request, UserDTO user) 
 			throws IOException {
-		SellerDTO seller = new SellerDTO();
-		seller = (SellerDTO) CreateUser(request, response, seller);
-		seller.setPaypal(request.getParameter("payment"));
-		return seller;
+		return CreateSeller(request, user, false);
+	}
+	private UserDTO CreateSeller(HttpServletRequest request, UserDTO user, boolean update) 
+			throws IOException {
+		if (request.getParameter("seller") != null || update) {
+			if (update) {
+				SellerDTO seller = new SellerDTO();
+				seller.setPaypal(request.getParameter("paypal"));
+				user.setSellerDTO(seller);
+			} else if (request.getParameter("seller").equals("on")) {
+				SellerDTO seller = new SellerDTO();
+				seller.setPaypal(request.getParameter("paypal"));
+				user.setSellerDTO(seller);
+			}
+		}
+		return user;
 	}
 	
 	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response, UserDTO user) 
@@ -189,6 +225,7 @@ public class RegisterCommand implements Command{
 		//user.setPostalCode(request.getParameter("postal_code"));
 		//user.setState(request.getParameter("state"));
 		//user.setCountry(request.getParameter("country"));
+
 		
 		return user;
 		
