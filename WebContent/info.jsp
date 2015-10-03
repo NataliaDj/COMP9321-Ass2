@@ -21,7 +21,7 @@
 	<div class= "middleSect">
 	<c:if test="${not empty publication.picture}">
 		<br>
-		<center><img src="${publication.picture}" height="500" width="300"></center>
+		<center><img src="${publication.picture}" height="600" width="370"></center>
 		<br>
 		<br>
 	</c:if>
@@ -82,6 +82,7 @@
   		<a href="ControllerServlet?operation=removePublication&id=${publication.id}">Remove Publication</a>
   	</c:if>
 	</div>
+		<br>
 		<center>
 		<form action='ControllerServlet?operation=cart' class='registerForm' method='POST'>
   			<button type="submit">Add to Cart</button>
