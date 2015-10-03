@@ -149,14 +149,15 @@ public class BookStoreDAO {
 				rs_specific.close();
 				
 				query = "select * from sellers where seller_id = '" + username + "'";
-				rs_specific = queryDatabase(query);
-				if (rs_specific.next()) {
+				ResultSet rs_seller = queryDatabase(query);
+				if (rs_seller.next()) {
 					SellerDTO seller = new SellerDTO();
-					seller.setPaypal(rs_specific.getString("paypal"));
+					seller.setPaypal(rs_seller.getString("paypal"));
 					userDTO.setSellerDTO(seller);
 				}
 				
 				//rs_specific.close();
+				rs_seller.close();
 				rs.close();
 				closeConnection();
 				

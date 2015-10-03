@@ -10,30 +10,27 @@
 <div id="topNav">
 	<ul>
 		<li><a href="/Ass2">Home</a></li>
-		<c:choose>
-			<c:when test="${user.getUserType() == 'buyer'}">
+		
+			<c:if test="${user.hasBuyerDTO() == true}">
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
-			</c:when>
-			<c:when test="${user.getUserType() == 'seller'}">
+			</c:if>
+			<c:if test="${user.hasSellerDTO() == true}">
 				<li><a href="ControllerServlet?operation=manage">Manage Listing</a></li>
 				<li><a href="ControllerServlet?operation=sell">New Listing</a></li>
-			</c:when>
-			<c:when test="${adminAccount == 'yes'}">
+			</c:if>
+			<c:if test="${adminAccount == 'yes'}">
 				<li><a href="ControllerServlet?operation=searchUsers">Search Users</a></li>
-			</c:when>
-			<c:otherwise>
+			</c:if>
 				<c:choose>
-				<c:when test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller'}">
-					
-				</c:when>
-				<c:otherwise>
-					<li><a href="ControllerServlet?operation=login">Login</a></li>
-					<li><a href="ControllerServlet?operation=register">Register</a></li>
-				</c:otherwise>
+					<c:when test="${user.hasBuyerDTO() == true || user.hasSellerDTO() == true}">
+						<li><a href="ControllerServlet?operation=register">Profile</a></li>
+					</c:when>
+					<c:otherwise>
+						<li><a href="ControllerServlet?operation=login">Login</a></li>
+						<li><a href="ControllerServlet?operation=register">Register</a></li>
+					</c:otherwise>
 				</c:choose>
-			</c:otherwise>
-		</c:choose>
-		<c:if test="${user.getUserType() == 'buyer' || user.getUserType() == 'seller' || adminAccount =='yes'}">
+		<c:if test="${user.hasBuyerDTO() == true || user.hasSellerDTO() == true || adminAccount =='yes'}">
 			<li><a href="ControllerServlet?operation=logout">Logout</a></li>
 		</c:if>
 	</ul>

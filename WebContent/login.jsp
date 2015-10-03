@@ -15,7 +15,7 @@
 
 <body>
 
-<%@ include file="headertemp.jsp"%>
+<%@ include file="header.jsp"%>
 
 <!-- <form action='results.jsp'>-->
 <div class="middleSection">    
