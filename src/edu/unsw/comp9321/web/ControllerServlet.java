@@ -50,7 +50,6 @@ public class ControllerServlet extends HttpServlet {
 		//	cmd = (Command) commands.get(next);
 		//	next = cmd.execute(request, response);
 		//}
-		
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(next);
 		dispatcher.forward(request, response);

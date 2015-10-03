@@ -47,7 +47,7 @@ public class SearchCommand implements Command {
         	}
         	random.add(result.get(randomNum));
         }
-		request.getSession().setAttribute("random", random);
+		request.setAttribute("random", random);
 		return "/results.jsp";
 	}
 }

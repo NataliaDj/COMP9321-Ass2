@@ -7,22 +7,30 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.unsw.comp9321.jdbc.BookStoreDAO;
-import edu.unsw.comp9321.jdbc.DAOFactory;
 
 public class CartCommand implements Command {
-
-	private BookStoreDAO bookStoreDAO;
-
+	BookStoreDAO bookstoreDAO;
+	
 	public CartCommand() {
-		DAOFactory factory = DAOFactory.getInstance();
-		bookStoreDAO = factory.getBookStoreDAO();
+		bookstoreDAO = new BookStoreDAO();
+		
 	}
-	
+
 	@Override
-	public String execute(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String execute(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		if (request.getParameter("action") != null) {
+			String[] removeIDs = request.getParameterValues("toRemove");
+			for (String id: removeIDs) {
+				bookstoreDAO.removeFromCart(id);
+			}
+		}
+		
+		String user = (String) request.getSession().getAttribute("username");
+		request.setAttribute("listings", bookstoreDAO.getCartItems(user)); 
 	
+		return "/cart.jsp";
+	}
+
 }
