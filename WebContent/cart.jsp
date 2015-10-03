@@ -58,6 +58,9 @@
 			   			<td>
 			   				<button type="submit" name="action" value="remove">Remove from Cart</button>
 			   			</td>
+			   			<td>
+			   				<button type="submit" name="action" value="checkout">Checkout</button>
+			   			</td>
 			   		</tr>
 			   		</table>
 			   	</form>

@@ -82,11 +82,13 @@
   		<a href="ControllerServlet?operation=removePublication&id=${publication.id}">Remove Publication</a>
   	</c:if>
 	</div>
+	<c:if test="${buyerAccount == 'yes' }">
 		<center>
-		<form action='ControllerServlet?operation=cart' class='registerForm' method='POST'>
-  			<button type="submit">Add to Cart</button>
+		<form action='ControllerServlet?operation=cart&id=${publication.id}&user=${username}' class='registerForm' method='POST'>
+  			<button type="submit" name="action" value="add">Add to Cart</button>
   		</form>
   		</center>
+  	</c:if>
 </div>
 </body>
 <%@ include file="footer.jsp"%>

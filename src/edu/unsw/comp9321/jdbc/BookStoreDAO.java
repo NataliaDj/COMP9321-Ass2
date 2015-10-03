@@ -452,6 +452,23 @@ public class BookStoreDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addToCart(String id, String seller) {
+		String query ="select * from publications where publication_key='" + id + "'";
+		String insert = "insert into shopping_cart (added, publication_key, buyer_key) values (";
+		ResultSet rs = queryDatabase(query);
+		try {
+			while (rs.next()) {
+				Timestamp timestamp = new Timestamp(new Date().getTime());
+				insert = insert + timestamp + ", ";
+				insert = insert + id + ", ";
+				insert = insert + seller + ")";
+				updateDatabase(insert);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public ArrayList<PublicationDTO> searchPublications (String title) {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
