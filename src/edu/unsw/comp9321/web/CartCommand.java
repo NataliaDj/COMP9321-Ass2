@@ -20,21 +20,20 @@ public class CartCommand implements Command {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		if (request.getParameter("action") == "remove") {
+		String user = (String) request.getSession().getAttribute("username");
+		if (request.getParameter("operation") != null && request.getParameter("operation").equals("removeFromCart")) {
 			String[] removeIDs = request.getParameterValues("toRemove");
 			for (String id: removeIDs) {
 				bookstoreDAO.removeFromCart(id);
 			}
-		} else if (request.getParameter("action") == "add") {
+		} else if (request.getParameter("action") != null && request.getParameter("action").equals("add")) {
 			String addID = request.getParameter("id");
-			String seller = request.getParameter("seller");
-			bookstoreDAO.addToCart(addID, seller);
+			bookstoreDAO.addToCart(addID, user);
 			request.setAttribute("message", "Item was succesffully added to cart");
-			return "/info.jsp";
 		}
 		
-		String user = (String) request.getSession().getAttribute("username");
 		request.setAttribute("listings", bookstoreDAO.getCartItems(user)); 
+		System.out.println(user);
 	
 		return "/cart.jsp";
 	}

@@ -291,7 +291,6 @@ public class BookStoreDAO {
 		String query = "select * from people where username='" + username + "' and "
 					 + "password='" + password + "'" + " and account_activated=true" 
 					 + " and ban=false";
-		//System.out.println("query = " + query);
 		UserDTO user = null;
 		
 		ResultSet rs = queryDatabase(query);
@@ -444,7 +443,6 @@ public class BookStoreDAO {
 		try {
 			//create connection and prepare a query statement
 		     con = services.createConnection();
-		     System.out.println("hello");
 		     String insert = "insert into publications (title, price, author, pub_type, pub_year, "
 				       + "isbn, picture, pause";
 		     if (pub.getSeller() != null) {
@@ -462,7 +460,6 @@ public class BookStoreDAO {
 		     if (pub.getSeller() != null || pub.getSeller() != "") {
 		    	 insert = insert + "'" + pub.getSeller() + "')";
 		     }
-		     System.out.println(insert);
 		     updateDatabase(insert);
 		   } catch (Exception e) {
 			   throw e;
@@ -516,14 +513,19 @@ public class BookStoreDAO {
 	
 	public ArrayList<PublicationDTO> getCartItems(String username) {
 		ArrayList<PublicationDTO> items = new ArrayList<PublicationDTO>();
-		String query ="select * from shopping_cart where buyer_key='" + username + "'" 
-				+ "and remove = null and purchased = null"; //check if this is right
+		String query ="select * from shopping_cart where buyer_key='" + username + "'"
+				+ "and removed is null and purchased is null";
 
 		ResultSet rs = queryDatabase(query);
 		try {
 			while(rs.next()) {
-				PublicationDTO p = createPublication(rs);
-				items.add(p);
+				int key = rs.getInt("publication_key");
+				query = "select * from publications where id = " + key;
+				ResultSet rs_pub = queryDatabase(query);
+				if (rs_pub.next()) {
+					PublicationDTO p = createPublication(rs_pub);
+					items.add(p);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -533,14 +535,15 @@ public class BookStoreDAO {
 	}
 	
 	public void removeFromCart(String id) {
-		String query ="select * from shopping_cart where publication_key='" + id + "'";
+		String query ="select * from shopping_cart where publication_key=" + id;
 		
 		ResultSet rs = queryDatabase(query);
 		try {
 			if (rs.next()) {
 				Timestamp timestamp = new Timestamp(new Date().getTime());
-				query = "update shopping_cart set remove = " + timestamp + " where id = " + id;
+				query = "update shopping_cart set removed = '" + timestamp + "' where publication_key = " + id;
 				updateDatabase(query);
+				System.out.println(query);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -548,15 +551,15 @@ public class BookStoreDAO {
 	}
 	
 	public void addToCart(String id, String seller) {
-		String query ="select * from publications where publication_key='" + id + "'";
+		String query ="select * from publications where id=" + id;
 		String insert = "insert into shopping_cart (added, publication_key, buyer_key) values (";
 		ResultSet rs = queryDatabase(query);
 		try {
 			while (rs.next()) {
 				Timestamp timestamp = new Timestamp(new Date().getTime());
-				insert = insert + timestamp + ", ";
+				insert = insert + "'" + timestamp + "', ";
 				insert = insert + id + ", ";
-				insert = insert + seller + ")";
+				insert = insert + "'" + seller + "')";
 				updateDatabase(insert);
 			}
 		} catch (SQLException e) {

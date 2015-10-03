@@ -19,13 +19,16 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
+		<c:if test="${not empty message}">
+			${message};
+		</c:if>
 		<c:choose>
-			<c:when test="${empty publications}">
+			<c:when test="${empty listings}">
 				<h3>Your shopping cart is empty!</h3>
 			</c:when>
 			<c:otherwise>
 				<h2 align="center">Search Results</h2>
-				<form>
+				<form action="ControllerServlet?operation=cart">
 			   		<table style="width:100%" cellpadding="10">
 			   		<tr>
 			   			<th align="left">
@@ -38,7 +41,7 @@
 			   				Remove
 			   			</th>
 			   		</tr>
-			   		<c:forEach var="i" items="${publications}">
+			   		<c:forEach var="i" items="${listings}">
 			   		<tr>
 			   			<td>
 			   				${i.title}
@@ -56,10 +59,10 @@
 			   		</c:forEach>
 			   		<tr>
 			   			<td>
-			   				<button type="submit" name="action" value="remove">Remove from Cart</button>
+			   				<button type="submit" name="operation" value="removeFromCart">Remove from Cart</button>
 			   			</td>
 			   			<td>
-			   				<button type="submit" name="action" value="checkout">Checkout</button>
+			   				<button type="submit" name="operation" value="checkout">Checkout</button>
 			   			</td>
 			   		</tr>
 			   		</table>
