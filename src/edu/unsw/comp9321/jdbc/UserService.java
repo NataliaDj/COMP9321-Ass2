@@ -74,6 +74,7 @@ public class UserService {
 	
 	private void sendConfirmationEmail(UserDTO user) 
 	{
+		System.out.println("sending email!");
 		Utilities.sendMail("me@something.com", user.getEmail(), "Website confirmation", 
 				 "Hi " + user.getFirstName() + ",\n\n"
 				 		+ "Please click the following link to activate your account:\n"

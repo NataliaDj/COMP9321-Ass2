@@ -154,7 +154,7 @@ public class BookStoreDAO {
 				ResultSet rs_specific = queryDatabase(query);
 				if (rs_specific.next()) {
 					BuyerDTO buyerDTO = (BuyerDTO) userDTO;
-					buyerDTO.setCreditCard(rs.getLong("credit_card"));
+					buyerDTO.setCreditCard(rs_specific.getLong("credit_card"));
 					userDTO = buyerDTO;
 				}
 				rs_specific.close();
@@ -163,7 +163,7 @@ public class BookStoreDAO {
 				rs_specific = queryDatabase(query);
 				if (rs_specific.next()) {
 					SellerDTO sellerDTO = (SellerDTO) userDTO;
-					sellerDTO.setPaypal(rs.getString("paypal"));
+					sellerDTO.setPaypal(rs_specific.getString("paypal"));
 					closeConnection();
 					userDTO = sellerDTO;
 				}
