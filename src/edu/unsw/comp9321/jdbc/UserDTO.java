@@ -20,9 +20,9 @@ public class UserDTO implements Serializable  {
 		username = "NULL";
 	}
 	
-	public String getUserType() {
+	/*public String getUserType() {
 		return "need to override method in child class";
-	}
+	}*/
 	
 	public String getUsername() {
 		return username;
@@ -82,12 +82,28 @@ public class UserDTO implements Serializable  {
 		this.ban = ban;
 	}
 	
+	public boolean hasBuyerDTO() {
+		if (buyerDTO != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	public BuyerDTO getBuyerDTO() {
 		return buyerDTO;
 	}
 	
 	public void setBuyerDTO(BuyerDTO buyerDTO) {
 		this.buyerDTO = buyerDTO;
+	}
+	
+	public boolean hasSellerDTO() {
+		if (sellerDTO != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public SellerDTO getSellerDTO() {

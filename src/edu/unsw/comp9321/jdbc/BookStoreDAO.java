@@ -119,18 +119,7 @@ public class BookStoreDAO {
 	}
 
 	public UserDTO getUserDTO(String username) {
-		UserDTO userDTO = null;
-		
-		if (isBuyer(username)) {
-			//System.out.println("Found buyer!");
-			userDTO = new BuyerDTO();
-		} else if (isSeller(username)) {
-			//System.out.println("Found seller!");
-			userDTO = new SellerDTO();
-		} else {
-			System.out.println("Neither buyer nor seller...");
-			userDTO = new UserDTO();
-		}
+		UserDTO userDTO = new UserDTO();
 		
 		String query = "select * from people where username = '" + username + "'";
 		ResultSet rs = queryDatabase(query);
@@ -153,22 +142,21 @@ public class BookStoreDAO {
 				query = "select * from buyers where buyer_id = '" + username + "'";
 				ResultSet rs_specific = queryDatabase(query);
 				if (rs_specific.next()) {
-					BuyerDTO buyerDTO = (BuyerDTO) userDTO;
-					buyerDTO.setCreditCard(rs_specific.getLong("credit_card"));
-					userDTO = buyerDTO;
+					BuyerDTO buyer = new BuyerDTO();
+					buyer.setCreditCard(rs_specific.getLong("credit_card"));
+					userDTO.setBuyerDTO(buyer);
 				}
 				rs_specific.close();
 				
 				query = "select * from sellers where seller_id = '" + username + "'";
 				rs_specific = queryDatabase(query);
 				if (rs_specific.next()) {
-					SellerDTO sellerDTO = (SellerDTO) userDTO;
-					sellerDTO.setPaypal(rs_specific.getString("paypal"));
-					closeConnection();
-					userDTO = sellerDTO;
+					SellerDTO seller = new SellerDTO();
+					seller.setPaypal(rs_specific.getString("paypal"));
+					userDTO.setSellerDTO(seller);
 				}
 				
-				rs_specific.close();
+				//rs_specific.close();
 				rs.close();
 				closeConnection();
 				
@@ -360,24 +348,9 @@ public class BookStoreDAO {
 			int n = stmt.executeUpdate();
 			if (n != 1)
 				throw new DataAccessException("Did not insert one row into database");
-			
-			if (user instanceof BuyerDTO) {
-				BuyerDTO buyer = (BuyerDTO) user;
-				PreparedStatement stmt_buyer = con.prepareStatement(
-						"insert into buyers (buyer_id, credit_card) values (?, ?)");
-				stmt_buyer.setString(1, buyer.getUsername());
-				stmt_buyer.setLong(2, buyer.getCreditCard());
-				stmt_buyer.executeUpdate();
-				con.close();
-			} else if (user instanceof SellerDTO) {
-				SellerDTO seller = (SellerDTO) user;
-				PreparedStatement stmt_seller = con.prepareStatement(
-						"insert into sellers (seller_id, paypal) values (?, ?)");
-				stmt_seller.setString(1, seller.getUsername());
-				stmt_seller.setString(2, seller.getPaypal());
-				stmt_seller.executeUpdate();
-				con.close();
-			}
+			stmt.close();
+			con.close();
+			insertBuyersAndSellers(user);
 			
 			
 		} catch (ServiceLocatorException e) {
@@ -395,6 +368,84 @@ public class BookStoreDAO {
 		}
 
 		return true;
+	}
+	
+	private void insertBuyersAndSellers(UserDTO user) {
+		Connection con = null;
+		try {
+				con = services.createConnection();
+			if (user.hasBuyerDTO()) {
+				BuyerDTO buyer = user.getBuyerDTO();
+				PreparedStatement stmt_buyer = con.prepareStatement(
+						"insert into buyers (buyer_id, credit_card) values (?, ?)");
+				stmt_buyer.setString(1, user.getUsername());
+				stmt_buyer.setLong(2, buyer.getCreditCard());
+				stmt_buyer.executeUpdate();
+				stmt_buyer.close();
+			} 
+			
+			if (user.hasSellerDTO()) {
+				SellerDTO seller = user.getSellerDTO();
+				PreparedStatement stmt_seller = con.prepareStatement(
+						"insert into sellers (seller_id, paypal) values (?, ?)");
+				stmt_seller.setString(1, user.getUsername());
+				stmt_seller.setString(2, seller.getPaypal());
+				stmt_seller.executeUpdate();
+				stmt_seller.close();
+			}
+			
+			con.close();
+		} catch (ServiceLocatorException e) {
+			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+		} catch (SQLException e) {
+			throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	private void updateBuyersAndSellers(UserDTO user) {
+		Connection con = null;
+		try {
+			con = services.createConnection();
+			if (user.hasBuyerDTO()) {
+				PreparedStatement stmt = con.prepareStatement(
+				"UPDATE buyers SET credit_card = ? WHERE buyer_id = ?");
+				stmt.setLong(1,user.getBuyerDTO().getCreditCard());
+				stmt.setString(2,user.getUsername());
+				stmt.executeUpdate();
+				stmt.close();
+			} 
+			
+			if (user.hasSellerDTO()) {
+				PreparedStatement stmt = con.prepareStatement(
+				"UPDATE sellers SET paypal = ? WHERE seller_id = ?");
+				stmt.setString(1,user.getSellerDTO().getPaypal());
+				stmt.setString(2,user.getUsername());
+				stmt.executeUpdate();
+				stmt.close();
+			} 
+			
+			con.close();
+		} catch (ServiceLocatorException e) {
+			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
+		} catch (SQLException e) {
+			throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
 	}
 	
 	
@@ -416,6 +467,7 @@ public class BookStoreDAO {
 			stmt.executeUpdate();
 			stmt.close();
 			con.close();
+			updateBuyersAndSellers(user);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();

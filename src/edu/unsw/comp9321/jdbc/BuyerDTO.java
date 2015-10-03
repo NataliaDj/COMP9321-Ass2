@@ -1,6 +1,6 @@
 package edu.unsw.comp9321.jdbc;
 
-public class BuyerDTO extends UserDTO {
+public class BuyerDTO {
 	private long creditCard;
 	
 	public String getUserType() {
@@ -14,4 +14,5 @@ public class BuyerDTO extends UserDTO {
 	public void setCreditCard(long creditCard) {
 		this.creditCard = creditCard;
 	}
+	
 }

@@ -11,5 +11,8 @@
 	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/apache-tomcat-7.0.42/lib/servlet-api.jar"/>
 	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/apache-tomcat-7.0.42/lib/derbyclient.jar"/>
 	<classpathentry kind="lib" path="C:/Users/X450JF/Desktop/javamail-1.4.5/mail.jar"/>
+	<classpathentry kind="lib" path="/usr/local/Cellar/tomcat/8.0.26/libexec/lib/tomcat-jdbc.jar"/>
+	<classpathentry kind="lib" path="/usr/local/Cellar/tomcat/8.0.26/libexec/lib/servlet-api.jar"/>
+	<classpathentry kind="lib" path="/Users/rubinghv/Downloads/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
