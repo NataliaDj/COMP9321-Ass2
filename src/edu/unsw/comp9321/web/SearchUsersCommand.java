@@ -32,6 +32,8 @@ public class SearchUsersCommand implements Command {
 			if (userDTO != null) {
 				request.getSession().setAttribute("userDTO", userDTO);
 				nextPage = "/WEB-INF/adminDir/viewUser.jsp";
+			} else if (username != null) {
+				request.setAttribute("noResults", "yes");
 			}
 		}
 		return nextPage;

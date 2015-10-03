@@ -38,7 +38,7 @@ public class BookStoreDAO {
 	 * @param query
 	 * @return
 	 */
-	private ResultSet queryDatabase(String query) {
+	public ResultSet queryDatabase(String query) {
 		con = null;
 		try {
 			con = services.createConnection();
@@ -188,6 +188,13 @@ public class BookStoreDAO {
 		return cart;
 	}
 
+	public void removePublication(int id) {
+		String query = "delete from shopping_cart where publication_key = " + id;
+		updateDatabase(query);
+		query = "delete from publications where id = " + id;
+		updateDatabase(query);
+	}
+	
 	public void updateUserBan(UserDTO userDTO, boolean banStatus) {
 		String username = userDTO.getUsername();
 		String banStr = "false";
@@ -395,7 +402,7 @@ public class BookStoreDAO {
 		return publications;
 	}
 	
-	private PublicationDTO createPublication(ResultSet rs) throws SQLException {
+	public PublicationDTO createPublication(ResultSet rs) throws SQLException {
 		PublicationDTO publ = new PublicationDTO();
 		publ.setTitle(rs.getString("title"));
 		publ.setPrice(rs.getInt("price"));
@@ -406,6 +413,7 @@ public class BookStoreDAO {
 		publ.setPicture(rs.getString("picture"));
 		publ.setPause(rs.getBoolean("pause"));
 		publ.setSellerId(rs.getString("seller_id"));
+		publ.setId(rs.getInt("id"));
 		return publ;
 	}
 }

@@ -21,8 +21,9 @@
 			<c:if test="${requestScope.loginFailed == 'yes'}">
 				<p>Login Failed!</p>
 			</c:if>
-			<%@ include file="footer.jsp"%>
 		</div>
 	</div>
+
+	<%@ include file="footer.jsp"%>
 </body>
 </html>
