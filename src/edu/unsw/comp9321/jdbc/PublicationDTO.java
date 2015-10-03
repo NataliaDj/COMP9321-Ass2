@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class PublicationDTO {
+import java.io.Serializable;
+
+public class PublicationDTO implements Serializable{
 	
 	public PublicationDTO() {
 		
