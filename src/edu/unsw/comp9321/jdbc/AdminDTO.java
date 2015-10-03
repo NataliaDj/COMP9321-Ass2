@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class AdminDTO {
+import java.io.Serializable;
+
+public class AdminDTO implements Serializable {
 	private String id;
 	private String password;
 	

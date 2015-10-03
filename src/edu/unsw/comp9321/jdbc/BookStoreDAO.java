@@ -561,8 +561,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		closeConnection();
+		} finally {
+			closeConnection();
+		}
 		return listings;
 	}
 	
@@ -603,8 +604,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		closeConnection();
+		} finally {
+			closeConnection();
+		}
 		return items;
 	}
 	
@@ -621,8 +623,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
-		closeConnection();
 	}
 	
 	public void checkout(String user) {
@@ -638,8 +641,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
-		closeConnection();
 	}
 	
 	public void addToCart(String id, String seller) {
@@ -656,8 +660,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
-		closeConnection();
 	}
 
 	public ArrayList<PublicationDTO> searchPublications (String title) {
@@ -676,8 +681,9 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}		
-		closeConnection();
+		} finally {
+			closeConnection();
+		}
 		return publications;
 	}
 	

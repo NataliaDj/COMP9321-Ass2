@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class BuyerDTO {
+import java.io.Serializable;
+
+public class BuyerDTO implements Serializable{
 	private long creditCard;
 	
 	public String getUserType() {

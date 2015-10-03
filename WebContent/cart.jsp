@@ -28,7 +28,7 @@
 			</c:when>
 			<c:otherwise>
 				<h2 align="center">Search Results</h2>
-				<form action="ControllerServlet?operation=cart">
+				<form action="ControllerServlet?operation=cart" class="registerForm">
 			   		<table style="width:100%" cellpadding="10">
 			   		<tr>
 			   			<th align="left">
@@ -58,10 +58,12 @@
 			   		</tr>			
 			   		</c:forEach>
 			   		<tr>
-			   			<td>
+			   			<td colspan="3" align="right">
 			   				<button type="submit" name="operation" value="removeFromCart">Remove from Cart</button>
 			   			</td>
-			   			<td>
+			   		</tr>
+			   		<tr>
+			   			<td colspan="3" align="right">
 			   				<button type="submit" name="operation" value="checkout">Checkout</button>
 			   			</td>
 			   		</tr>

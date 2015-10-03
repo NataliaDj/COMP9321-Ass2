@@ -37,8 +37,6 @@ public class CartCommand implements Command {
 		}
 		
 		request.setAttribute("listings", bookstoreDAO.getCartItems(user)); 
-		System.out.println(user);
-	
 		return "/cart.jsp";
 	}
 

@@ -1,6 +1,8 @@
 package edu.unsw.comp9321.jdbc;
 
-public class SellerDTO {
+import java.io.Serializable;
+
+public class SellerDTO implements Serializable {
 	private String paypal;
 	
 	public String getPaypal() {
