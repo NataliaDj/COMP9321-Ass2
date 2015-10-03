@@ -110,12 +110,24 @@ public class BookStoreDAO {
 
 	public UserDTO getUserDTO(String username) {
 		UserDTO userDTO = null;
+		
+		if (isBuyer(username)) {
+			//System.out.println("Found buyer!");
+			userDTO = new BuyerDTO();
+		} else if (isSeller(username)) {
+			//System.out.println("Found seller!");
+			userDTO = new SellerDTO();
+		} else {
+			System.out.println("Neither buyer nor seller...");
+			userDTO = new UserDTO();
+		}
+		
 		String query = "select * from people where username = '" + username + "'";
 		ResultSet rs = queryDatabase(query);
 		try {
 			if (rs.next()) {
 				//pull all information out of results and put it into userDTO
-				userDTO = new UserDTO();
+				
 				userDTO.setUsername(rs.getString("username"));
 				userDTO.setPassword(rs.getString("password"));
 				userDTO.setEmail(rs.getString("email"));
@@ -125,30 +137,30 @@ public class BookStoreDAO {
 				userDTO.setAddress(rs.getString("address"));
 				userDTO.setBan(rs.getBoolean("ban"));
 				userDTO.setAccountActivated(rs.getBoolean("account_activated"));
-				
-				//then create a BuyerDTO and/or SellerDTO for the account
-				/*
-				BuyerDTO buyerDTO = null;
-				SellerDTO sellerDTO = null;
+			
+				// this is a bit hacky but will leave it for now
 				
 				query = "select * from buyers where buyer_id = '" + username + "'";
-				rs = queryDatabase(query);
-				if (rs.next()) {
-					buyerDTO = new BuyerDTO();
+				ResultSet rs_specific = queryDatabase(query);
+				if (rs_specific.next()) {
+					BuyerDTO buyerDTO = (BuyerDTO) userDTO;
 					buyerDTO.setCreditCard(rs.getLong("credit_card"));
-					
+					userDTO = buyerDTO;
 				}
+				rs_specific.close();
 				
 				query = "select * from sellers where seller_id = '" + username + "'";
-				rs = queryDatabase(query);
-				if (rs.next()) {
-					sellerDTO = new SellerDTO();
+				rs_specific = queryDatabase(query);
+				if (rs_specific.next()) {
+					SellerDTO sellerDTO = (SellerDTO) userDTO;
 					sellerDTO.setPaypal(rs.getString("paypal"));
+					closeConnection();
+					userDTO = sellerDTO;
 				}
 				
-				userDTO.setBuyerDTO(buyerDTO);
-				userDTO.setSellerDTO(sellerDTO);*/
-				
+				rs_specific.close();
+				rs.close();
+				closeConnection();
 				
 			}
 		} catch (SQLException e) {
@@ -157,6 +169,32 @@ public class BookStoreDAO {
 		}
 		return userDTO;
 	}
+	
+	public boolean userExistsHelper(String username, String table, String column) {
+		String query = "select * from " + table + " where " + column + " = '" + username + "'";
+		ResultSet rs = queryDatabase(query);
+		try {
+			if (rs.next()) {
+				closeConnection();
+				return true;
+			} else {
+				closeConnection();
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public boolean isBuyer(String username) {
+		return userExistsHelper(username, "buyers", "buyer_id");
+	}
+	
+	public boolean isSeller(String username) {
+		return userExistsHelper(username, "sellers", "seller_id");
+	}	
 
 	public void updateUserBan(UserDTO userDTO, boolean banStatus) {
 		String username = userDTO.getUsername();
@@ -214,6 +252,7 @@ public class BookStoreDAO {
 			if (rs.next()) {
 				user = getUserDTO(username);
 			}
+			rs.close();
  		} catch (SQLException e) {
 			e.printStackTrace();
 			return null; // means there is no result
@@ -283,6 +322,7 @@ public class BookStoreDAO {
 				stmt_buyer.setString(1, buyer.getUsername());
 				stmt_buyer.setLong(2, buyer.getCreditCard());
 				stmt_buyer.executeUpdate();
+				con.close();
 			} else if (user instanceof SellerDTO) {
 				SellerDTO seller = (SellerDTO) user;
 				PreparedStatement stmt_seller = con.prepareStatement(
@@ -290,6 +330,7 @@ public class BookStoreDAO {
 				stmt_seller.setString(1, seller.getUsername());
 				stmt_seller.setString(2, seller.getPaypal());
 				stmt_seller.executeUpdate();
+				con.close();
 			}
 			
 			
@@ -311,6 +352,41 @@ public class BookStoreDAO {
 	}
 	
 	
+	public boolean updateUser(UserDTO user) {
+		
+		Connection con = null;
+		try {
+			con = services.createConnection();
+			PreparedStatement stmt = con.prepareStatement(
+			"UPDATE people SET password = ?, email = ?, first_name = ?, last_name = ?"
+			+ ", birth_year = ?, address = ? WHERE username = ?");
+			stmt.setString(1,user.getPassword());
+			stmt.setString(2,user.getEmail());
+			stmt.setString(3,user.getFirstName());
+			stmt.setString(4,user.getLastName());
+			stmt.setInt(5,user.getBirthYear());
+			stmt.setString(6,user.getAddress());
+			stmt.setString(7,user.getUsername());
+			stmt.executeUpdate();
+			stmt.close();
+			con.close();
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ServiceLocatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			if (con != null) {
+				try {
+					con.close();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
+		return false;
+	}
 	
 	/**
 	 * 

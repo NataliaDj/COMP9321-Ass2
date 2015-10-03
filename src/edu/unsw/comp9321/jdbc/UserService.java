@@ -60,6 +60,17 @@ public class UserService {
 		
 	}
 	
+	/**
+	 * Update the users information in the database
+	 * 
+	 * @param user 
+	 * @return
+	 */
+	public boolean updateUser(UserDTO user){
+		return bookstoreDAO.updateUser(user);
+				
+	}
+	
 	
 	private void sendConfirmationEmail(UserDTO user) 
 	{
