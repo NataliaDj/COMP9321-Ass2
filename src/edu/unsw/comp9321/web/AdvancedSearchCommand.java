@@ -57,6 +57,7 @@ public class AdvancedSearchCommand implements Command {
 		        	random.add(publications.get(randomNum));
 		        }
 				request.getSession().setAttribute("random", random);
+				request.getSession().setAttribute("found", publications);
 				return "/results.jsp";
 			}
 		}
@@ -132,6 +133,7 @@ public class AdvancedSearchCommand implements Command {
 			return "/info.jsp";
 		} else {
 			request.setAttribute("publications", publications);
+			request.getSession().setAttribute("found", publications);
 			return "/results.jsp";
 		}
 	}
