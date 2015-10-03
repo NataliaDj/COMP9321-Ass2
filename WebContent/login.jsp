@@ -23,7 +23,7 @@
 <div class="middleSection">    
 	<div class= "middleSect">
 	    <h2>Login</h2>
-		<p>${error}</p>
+		<p><b>${error}</b></p>
 		<form action='ControllerServlet?operation=login' class='registerForm' method='POST'>
 			Username <input type="text"name="username">
 			Password <input type="password" name="password">

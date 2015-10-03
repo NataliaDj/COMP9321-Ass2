@@ -27,8 +27,6 @@ public class RegisterCommand implements Command{
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 
-		//InetAddress ip = InetAddress.getLocalHost();
-		//System.out.println("hostaddress = " + ip.getHostName());
 		PrintWriter out = response.getWriter();
 		String action = "";
 		UserDTO user = new UserDTO();
@@ -91,8 +89,6 @@ public class RegisterCommand implements Command{
 			user = CreateBuyer(request, response);
 		}
 		
-		// also keep password the same
-		
 		return user;
 	}
 	
@@ -121,9 +117,9 @@ public class RegisterCommand implements Command{
 		// get service and update in database
 		UserService service = new UserService();
 		if (service.updateUser(user)) { // if successfully updated
-			request.setAttribute("error", "<p><b>Your profile has successfully been updated</b></p>");
+			request.setAttribute("info", "<p><b>Your profile has successfully been updated</b></p>");
 		} else {
-			request.setAttribute("error", "<p><b>Error: profile could not be updated</b></p>");
+			request.setAttribute("info", "<p><b>Error: profile could not be updated</b></p>");
 		}
 		
 		// finally put user back into session.

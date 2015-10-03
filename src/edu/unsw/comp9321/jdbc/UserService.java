@@ -77,7 +77,7 @@ public class UserService {
 		Utilities.sendMail("me@something.com", user.getEmail(), "Website confirmation", 
 				 "Hi " + user.getFirstName() + ",\n\n"
 				 		+ "Please click the following link to activate your account:\n"
-				 		+ "http://localhost:8080/Ass2/ControllerServlet?operation=register&action=activation&"
+				 		+ "http://localhost:8080/Ass2/ControllerServlet?operation=activation&"
 				 		+ "username=" + user.getUsername() + "\n\n"
 				 		+ "Cheers");
 	}

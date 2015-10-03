@@ -43,7 +43,7 @@
 		    		<p>Please change information below ${user.username}</p> 
 				</c:otherwise>
 			</c:choose>
-			${error}
+			${info}
 			<c:choose>
 			    <c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
 			        Username <input type="text" name="username">
