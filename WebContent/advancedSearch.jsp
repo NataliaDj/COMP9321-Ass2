@@ -14,10 +14,7 @@
 </head>
 
 <body>
-<c:choose> 
-	<c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}"> <%@ include file="header.jsp"%> </c:when>    
-	<c:otherwise> <%@ include file="HeaderUser.html"%> </c:otherwise>
-</c:choose>
+<%@ include file="header.jsp"%>
 
 <div class="middleSection">    
 	<div class= "middleSect">
