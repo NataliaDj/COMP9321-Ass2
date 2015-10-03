@@ -350,7 +350,7 @@ public class BookStoreDAO {
 				throw new DataAccessException("Did not insert one row into database");
 			stmt.close();
 			con.close();
-			insertBuyersAndSellers(user);
+			
 			
 			
 		} catch (ServiceLocatorException e) {
@@ -366,7 +366,8 @@ public class BookStoreDAO {
 				}
 			}
 		}
-
+		
+		insertBuyersAndSellers(user);
 		return true;
 	}
 	
@@ -450,7 +451,7 @@ public class BookStoreDAO {
 	
 	
 	public boolean updateUser(UserDTO user) {
-		
+		updateBuyersAndSellers(user);
 		Connection con = null;
 		try {
 			con = services.createConnection();
@@ -467,7 +468,6 @@ public class BookStoreDAO {
 			stmt.executeUpdate();
 			stmt.close();
 			con.close();
-			updateBuyersAndSellers(user);
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
