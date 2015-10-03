@@ -7,11 +7,12 @@
 <div id="topNav">
         <ul>
 	        <li><a href="/Ass2">Home</a></li>
-	        <c:if test="${adminAccount != 'yes'}">
+	        <c:if test="${adminAccount != 'yes' && empty username}">
 				<li><a href="ControllerServlet?operation=login">Login</a></li>
 				<li><a href="ControllerServlet?operation=register">Register</a></li>
 			</c:if>
 			<c:if test="${not empty username}">
+				<li><a href="ControllerServlet?operation=register">Profile</a></li>
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
 			</c:if>
 			<c:if test="${adminAccount == 'yes'}">
@@ -20,6 +21,7 @@
 			<c:if test="${not empty username || adminAccount == 'yes'}">
 				<li><a href="ControllerServlet?operation=logout">Logout</a></li>
  			</c:if>
+
         </ul>
 </div>
 </html>
