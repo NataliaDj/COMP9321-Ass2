@@ -29,7 +29,7 @@ public class SearchUsersCommand implements Command {
 			nextPage = "/WEB-INF/adminDir/searchUsers.jsp";
 			String username = request.getParameter("username");
 			UserDTO userDTO = bookstoreDAO.getUserDTO(username);
-			if (userDTO != null) {
+			if (userDTO != null && userDTO.getBuyerDTO() != null) {
 				request.getSession().setAttribute("userDTO", userDTO);
 				nextPage = "/WEB-INF/adminDir/viewUser.jsp";
 			} else if (username != null) {

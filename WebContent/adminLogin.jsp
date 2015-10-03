@@ -13,10 +13,10 @@
 	<div class="middleSection">
 		<div class="middleSect">
 			<form action="ControllerServlet" method='POST'>
-				username<input type="text" name="adminId"> password<input
-					type="password" name="password"> <input type="hidden"
-					name="operation" value="adminLogin" /> <input type='submit'
-					value='Submit' />
+				Username<input type="text" name="adminId"> 
+				Password<input type="password" name="password"> 
+				<input type="hidden" name="operation" value="adminLogin" />
+				<input type='submit' value='Submit' />
 			</form>
 			<c:if test="${requestScope.loginFailed == 'yes'}">
 				<p>Login Failed!</p>
