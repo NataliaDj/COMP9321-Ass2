@@ -11,6 +11,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>Welcome!</title>
 	<link href="frontpage.css" rel="stylesheet" type="text/css">
+	<link href="resultsTable.css" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -28,7 +29,7 @@
 			</c:when>
 			<c:otherwise>
 				<h2 align="center">Search Results</h2>
-			   		<table style="width:100%" cellpadding="10">
+			   		<table style="width:100%" cellpadding="10" class="results">
 			   		<tr>
 			   			<th align="left">
 			   				Title
@@ -40,7 +41,7 @@
 			   		<c:forEach var="i" items="${publications}">
 			   		<tr>
 			   			<td>
-			   				${i.title}
+			   				<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
 			   			</td>
 			   			<td>
 			   				<c:forEach var="j" items="${i.author}" varStatus="loop">

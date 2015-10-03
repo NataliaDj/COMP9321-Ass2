@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Logger;
 
 import edu.unsw.comp9321.exception.DataAccessException;
 import edu.unsw.comp9321.exception.ServiceLocatorException;
@@ -417,13 +419,83 @@ public class BookStoreDAO {
 		}
 	}
 
+	public ArrayList<PublicationDTO> findListing(String username) {
+		ArrayList<PublicationDTO> listings = new ArrayList<PublicationDTO>();
+		String query ="select * from publications where seller_id='" + username + "'";
+
+		ResultSet rs = queryDatabase(query);
+		try {
+			while(rs.next()) {
+				PublicationDTO p = createPublication(rs);
+				listings.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		closeConnection();
+		return listings;
+	}
+	
+	public void updatePause(String id) {
+		String query ="select * from publications where id=" + id;
+		
+		String pause = "false";
+		ResultSet rs = queryDatabase(query);
+		try {
+			while (rs.next()) {
+				if(rs.getBoolean("pause")) {
+					pause = "true";
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		query = "update publication set pause = " + pause + " where id = " + id;
+		updateDatabase(query);
+	}
+	
+	
+	
+	public ArrayList<PublicationDTO> getCartItems(String username) {
+		ArrayList<PublicationDTO> items = new ArrayList<PublicationDTO>();
+		String query ="select * from shopping_cart where buyer_key='" + username + "'" 
+				+ "and remove = null and purchased = null"; //check if this is right
+
+		ResultSet rs = queryDatabase(query);
+		try {
+			while(rs.next()) {
+				PublicationDTO p = createPublication(rs);
+				items.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		closeConnection();
+		return items;
+	}
+	
+	public void removeFromCart(String id) {
+		String query ="select * from shopping_cart where publication_key='" + id + "'";
+		
+		ResultSet rs = queryDatabase(query);
+		try {
+			if (rs.next()) {
+				Timestamp timestamp = new Timestamp(new Date().getTime());
+				query = "update shopping_cart set remove = " + timestamp + " where id = " + id;
+				updateDatabase(query);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public ArrayList<PublicationDTO> searchPublications (String title) {
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
 		String query = "";
 		if(title == null || title.equals("")) {
-			query = "select * from publications";
+			query = "select * from publications where pause='false'";
 		} else {
-			query = "select * from publications where lower(title) like lower('%" + title + "%')";
+			query = "select * from publications where lower(title) like lower('%" + title + "%') and pause='false'";
 		}
 		ResultSet rs = queryDatabase(query);
 		try {
@@ -451,4 +523,5 @@ public class BookStoreDAO {
 		publ.setSellerId(rs.getString("seller_id"));
 		return publ;
 	}
+
 }

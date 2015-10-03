@@ -21,22 +21,33 @@
 
 <div class="middleSection">    
 	<div class= "middleSect">
-		<form action="advancedSearch.jsp">
-		<button type="submit">Advanced Search</button>
-		</form>
-		<br>
-		<br>
-		<form action='ControllerServlet?operation=search' class='registerForm' method='POST'>
-			Title: <input type="text" name="title">
-			<input type="submit" value="Search">
+		<form action='ControllerServlet?operation=advancedSearch' class='registerForm' method='POST'>
+			Publication Type: 
+			<select name="type">
+				<option></option>
+				<option value="book/collection">Books/Collections</option>
+				<option value="journal">Journal</option>
+				<option value="conference">Conference</option>
+				<option value="editorship">Editorship</option>
+			</select>
 			<br>
+			<br>
+			Title: <input type="text" name="title">
+			<br>
+			Author: <input type="text" name="author">
+			<br>
+			Publication Year: <input type="text" name="year">
+			<br>
+			ISBN: <input type="text" name="isbn">
+			<br>
+			Price Range:
+			<br>
+			Min: <input type="text" name="minPrice">
+			<br>
+			Max: <input type="text" name="maxPrice">
+			<br>
+			<input type="submit" value="Search">
 		</form>
-		<br>
-		<br>
-		<c:forEach var="i" items="${random}">
-		<a href="ControllerServlet?operation=advancedSearch&title=${i.title}&type=${i.pubType}&link=true">${i.title}</a>
-		<br>
-		</c:forEach>
 	</div>
 </div>
 
