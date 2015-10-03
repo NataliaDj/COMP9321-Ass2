@@ -16,12 +16,9 @@ public class AdvancedSearchCommand implements Command {
 
 	private BookStoreDAO bookStoreDAO;
 
-	// private ArrayList<PublicationDTO> publications;
-
 	public AdvancedSearchCommand() {
 		DAOFactory factory = DAOFactory.getInstance();
 		bookStoreDAO = factory.getBookStoreDAO();
-		// publications = new ArrayList<PublicationDTO>();
 	}
 
 	@Override

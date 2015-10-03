@@ -82,7 +82,13 @@
    		</td>
    	</tr>
   	</table>
+  	<br>
 	</div>
+		<center>
+		<form action='ControllerServlet?operation=cart' class='registerForm' method='POST'>
+  			<button type="submit">Add to Cart</button>
+  		</form>
+  		</center>
 </div>
 </body>
 <%@ include file="footer.jsp"%>
