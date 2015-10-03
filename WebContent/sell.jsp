@@ -50,7 +50,16 @@
 	        <br/>
 	        <br/>
 	        <br/>
-	        <input type="hidden" name="bookSeller" value=${user.getUsername()}>
+	        
+	        <c:choose>
+				<c:when test="${user.getUsername()==null || user.getUsername()==''}">
+					Seller: 
+		        	<input type="text" name="bookSeller" value=${user.getUsername()}>
+		        </c:when>
+		        <c:otherwise>
+		        	<input type="hidden" name="bookSeller" value=${user.getUsername()}>
+		        </c:otherwise>
+	        </c:choose>
 	        <input type="hidden" name="action" value="newListing"/>
 	        <input type="submit">
 		</form>
