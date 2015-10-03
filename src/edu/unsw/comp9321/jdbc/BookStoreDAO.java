@@ -136,30 +136,13 @@ public class BookStoreDAO {
 				userDTO.setAddress(rs.getString("address"));
 				userDTO.setBan(rs.getBoolean("ban"));
 				userDTO.setAccountActivated(rs.getBoolean("account_activated"));
-			
-				// this is a bit hacky but will leave it for now
-				
-				query = "select * from buyers where buyer_id = '" + username + "'";
-				ResultSet rs_specific = queryDatabase(query);
-				if (rs_specific.next()) {
-					BuyerDTO buyer = new BuyerDTO();
-					buyer.setCreditCard(rs_specific.getLong("credit_card"));
-					userDTO.setBuyerDTO(buyer);
-				}
-				rs_specific.close();
-				
-				query = "select * from sellers where seller_id = '" + username + "'";
-				ResultSet rs_seller = queryDatabase(query);
-				if (rs_seller.next()) {
-					SellerDTO seller = new SellerDTO();
-					seller.setPaypal(rs_seller.getString("paypal"));
-					userDTO.setSellerDTO(seller);
-				}
 				
 				//rs_specific.close();
-				rs_seller.close();
 				rs.close();
 				closeConnection();
+				
+				userDTO = GetBuyerDTO(userDTO);
+				userDTO = GetSellerDTO(userDTO);
 				
 			}
 		} catch (SQLException e) {
@@ -255,8 +238,10 @@ public class BookStoreDAO {
 		try {
 			rs.last();
 			matches = rs.getInt("matchcount");
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
+			closeConnection();
 			e.printStackTrace();
 		}
 		closeConnection();
@@ -288,11 +273,12 @@ public class BookStoreDAO {
 				user = getUserDTO(username);
 			}
 			rs.close();
+			closeConnection();
  		} catch (SQLException e) {
 			e.printStackTrace();
 			return null; // means there is no result
 		}
-		
+		closeConnection();
 		return user;
 	}
 	
@@ -370,6 +356,40 @@ public class BookStoreDAO {
 		insertBuyersAndSellers(user);
 		return true;
 	}
+	
+	private UserDTO GetBuyerDTO(UserDTO user) {
+		String query = "select * from buyers where buyer_id = '" + user.getUsername() + "'";
+		ResultSet rs = queryDatabase(query);
+		try {
+			if (rs.next()) {
+				BuyerDTO buyer = new BuyerDTO();
+				buyer.setCreditCard(rs.getLong("credit_card"));
+				user.setBuyerDTO(buyer);
+				rs.close();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	private UserDTO GetSellerDTO(UserDTO user) {
+		String query = "select * from sellers where seller_id = '" + user.getUsername() + "'";
+		ResultSet rs = queryDatabase(query);
+		try {	
+			if (rs.next()) {
+				SellerDTO seller = new SellerDTO();
+				seller.setPaypal(rs.getString("paypal"));
+				user.setSellerDTO(seller);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
 	
 	private void insertBuyersAndSellers(UserDTO user) {
 		Connection con = null;
