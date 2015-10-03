@@ -621,6 +621,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		closeConnection();
 	}
 	
 	public void checkout(String user) {
@@ -637,6 +638,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		closeConnection();
 	}
 	
 	public void addToCart(String id, String seller) {
@@ -654,6 +656,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		closeConnection();
 	}
 
 	public ArrayList<PublicationDTO> searchPublications (String title) {
