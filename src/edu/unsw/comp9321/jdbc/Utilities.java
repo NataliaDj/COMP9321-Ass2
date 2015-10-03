@@ -66,6 +66,7 @@ public class Utilities {
 	 */
 	public static String generateMD5(String unhashed) {
         String generated_md5 = null;
+        
         if (unhashed == null) return null;
          
         try {

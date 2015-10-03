@@ -36,13 +36,15 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("PAGE_NOT_FOUND", new ErrorCommand());
 		commands.put("adminLogin", new AdminLoginCommand());
 		commands.put("searchUsers", new SearchUsersCommand());
-		commands.put("logout", new LogoutCommand());
 		commands.put("banUser", new BanUserCommand());
 		commands.put("unbanUser", new UnbanUserCommand());
 		commands.put("manage", new ManageCommand());
 		commands.put("cart", new CartCommand());
 		commands.put("next", new NextPageCommand());
 		commands.put("back", new BackPageCommand());
+		commands.put("viewHistory", new ViewHistoryCommand());
+		commands.put("viewPublication", new ViewPublicationCommand());
+		commands.put("removePublication", new RemovePublicationCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,

@@ -14,7 +14,7 @@
 </head>
 
 <body>
-<%@ include file="HeaderSeller.html"%>
+<%@ include file="header.jsp"%>
 
 <div class="middleSection">    
 	<div class= "middleSect">
