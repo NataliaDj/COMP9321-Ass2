@@ -13,7 +13,7 @@ create table people(
 	last_name varchar(32),
 	birth_year numeric(4,0), 
 	address varchar(100),
-	account_activated numeric(1,0) DEFAULT 0,
+	account_activated boolean not null,
 	ban boolean not null,
  	primary key (username)
 );
@@ -27,7 +27,7 @@ create table buyers(
 
 create table sellers(
 	seller_id varchar(32) not null,
-	paypal varchar(20) not null,
+	paypal varchar(32) not null,
 	foreign key(seller_id) references people(username),
 	primary key(seller_id)
 );

@@ -50,7 +50,9 @@ public class ControllerServlet extends HttpServlet {
 		
 		RequestDispatcher dispatcher = getServletContext()
 				.getRequestDispatcher(next);
-		dispatcher.forward(request, response);
+		if (dispatcher != null) {
+			dispatcher.forward(request, response);
+		}
 	}
 	
 	private Command resolveCommand(HttpServletRequest request) {

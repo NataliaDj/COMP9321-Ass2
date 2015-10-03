@@ -1,6 +1,6 @@
 package edu.unsw.comp9321.jdbc;
 
-public class SellerDTO {
+public class SellerDTO extends UserDTO {
 	private String paypal;
 	
 	public String getPaypal() {

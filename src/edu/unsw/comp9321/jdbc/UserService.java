@@ -27,14 +27,8 @@ public class UserService {
 	 */
 	public UserDTO login(String username, String password) {
 		
-		UserDTO user = bookstoreDAO.userLogin(username, password);
-		
-		if (user != null) {
-					
-		} 
-		
+		UserDTO user = bookstoreDAO.userLogin(username, password);		
 		return user;		
-         
 		
 	}
 	

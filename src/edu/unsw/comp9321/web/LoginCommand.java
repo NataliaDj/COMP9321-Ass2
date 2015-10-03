@@ -40,8 +40,8 @@ public class LoginCommand implements Command{
 			
 			UserDTO user = service.login(request.getParameter("username"), Utilities.generateMD5(password));
 			if (user == null) {
-				request.setAttribute("error", "Username and/or password is incorrect, please try again." );
-				
+				request.setAttribute("error", "Either username and/or password is incorrect, your account has not been activated yet,"
+						+ " or you have been banned. Please try again." );
 			} else {
 				// found user
 				HttpSession session = request.getSession(true);

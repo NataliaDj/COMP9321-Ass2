@@ -46,7 +46,7 @@ public class BookStoreDAO {
 					ResultSet.CONCUR_READ_ONLY);
 
 			ResultSet rs = statement.executeQuery(query);
-			closeConnection();
+			//closeConnection(); has to be closed outside this method otherwise ResultSet is not accessible
 			return rs;
 
 		} catch (ServiceLocatorException e) {
@@ -124,14 +124,10 @@ public class BookStoreDAO {
 				userDTO.setBirthYear(rs.getInt("birth_year"));
 				userDTO.setAddress(rs.getString("address"));
 				userDTO.setBan(rs.getBoolean("ban"));
-				int activated = rs.getInt("account_activated");
-				if (activated == 1) {				//this would be easier if account_activated were boolean
-					userDTO.setAccountActivated(true);
-				} else {
-					userDTO.setAccountActivated(false);
-				}
+				userDTO.setAccountActivated(rs.getBoolean("account_activated"));
 				
 				//then create a BuyerDTO and/or SellerDTO for the account
+				/*
 				BuyerDTO buyerDTO = null;
 				SellerDTO sellerDTO = null;
 				
@@ -140,6 +136,7 @@ public class BookStoreDAO {
 				if (rs.next()) {
 					buyerDTO = new BuyerDTO();
 					buyerDTO.setCreditCard(rs.getLong("credit_card"));
+					
 				}
 				
 				query = "select * from sellers where seller_id = '" + username + "'";
@@ -150,7 +147,9 @@ public class BookStoreDAO {
 				}
 				
 				userDTO.setBuyerDTO(buyerDTO);
-				userDTO.setSellerDTO(sellerDTO);
+				userDTO.setSellerDTO(sellerDTO);*/
+				
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -175,7 +174,7 @@ public class BookStoreDAO {
 	 * @param username
 	 */
 	private boolean userExists(String username) {
-		String query = "select count(*) AS matchcount from users where username = '" + username + "'";
+		String query = "select count(*) AS matchcount from people where username = '" + username + "'";
 		int matches = 0;
 
 		ResultSet rs = queryDatabase(query);
@@ -204,17 +203,18 @@ public class BookStoreDAO {
 	 * @param username
 	 */
 	public UserDTO userLogin(String username, String password) {
-		String query = "select * from users where username='" + username + "' and "
-					 + "password='" + password + "'";
+		String query = "select * from people where username='" + username + "' and "
+					 + "password='" + password + "'" + " and account_activated=true" 
+					 + " and ban=false";
 		//System.out.println("query = " + query);
 		UserDTO user = null;
 		
 		ResultSet rs = queryDatabase(query);
 		try {
 			if (rs.next()) {
-				getUserDTO(username);
+				user = getUserDTO(username);
 			}
-		} catch (SQLException e) {
+ 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null; // means there is no result
 		}
@@ -231,11 +231,10 @@ public class BookStoreDAO {
 	 */
 	public boolean activateUser(String username) {
 		System.out.println("Activating database: " + username + "!");
-
-		String query = "update people set account_activated=1 where username='" + username + "'";
+		String query = "update people set account_activated=true where username='" + username + "'";
 		updateDatabase(query);
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -260,8 +259,8 @@ public class BookStoreDAO {
 		try {
 			con = services.createConnection();
 			PreparedStatement stmt = con.prepareStatement(
-					"insert into users (username, password, email, first_name, last_name, birth_year, "
-							+ "address, credit_card) values (?, ?, ?, ?, ?, ?, ?, ?)");
+					"insert into people (username, password, email, first_name, last_name, birth_year, "
+							+ "address, account_activated, ban) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			stmt.setString(1, user.getUsername());
 			stmt.setString(2, user.getPassword());
@@ -270,17 +269,30 @@ public class BookStoreDAO {
 			stmt.setString(5, user.getLastName());
 			stmt.setLong(6, user.getBirthYear());
 			stmt.setString(7, "temp address");
-			//stmt.setString(9, bean.getAddressOne());
-			//stmt.setString(10, bean.getAddressTwo());
-			//stmt.setString(11, bean.getCity());
-			//stmt.setString(12, bean.getPostalCode());
-			//stmt.setString(13, bean.getState());
-			//stmt.setString(14, bean.getCountry());
-			stmt.setLong(8, user.getBuyerDTO().getCreditCard());
+			stmt.setBoolean(8, false);
+			stmt.setBoolean(9, false);
 
 			int n = stmt.executeUpdate();
 			if (n != 1)
 				throw new DataAccessException("Did not insert one row into database");
+			
+			if (user instanceof BuyerDTO) {
+				BuyerDTO buyer = (BuyerDTO) user;
+				PreparedStatement stmt_buyer = con.prepareStatement(
+						"insert into buyers (buyer_id, credit_card) values (?, ?)");
+				stmt_buyer.setString(1, buyer.getUsername());
+				stmt_buyer.setLong(2, buyer.getCreditCard());
+				stmt_buyer.executeUpdate();
+			} else if (user instanceof SellerDTO) {
+				SellerDTO seller = (SellerDTO) user;
+				PreparedStatement stmt_seller = con.prepareStatement(
+						"insert into sellers (seller_id, paypal) values (?, ?)");
+				stmt_seller.setString(1, seller.getUsername());
+				stmt_seller.setString(2, seller.getPaypal());
+				stmt_seller.executeUpdate();
+			}
+			
+			
 		} catch (ServiceLocatorException e) {
 			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 		} catch (SQLException e) {
@@ -297,6 +309,8 @@ public class BookStoreDAO {
 
 		return true;
 	}
+	
+	
 	
 	/**
 	 * 

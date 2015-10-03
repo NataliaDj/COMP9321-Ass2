@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.unsw.comp9321.jdbc.BuyerDTO;
+import edu.unsw.comp9321.jdbc.SellerDTO;
 import edu.unsw.comp9321.jdbc.UserDTO;
 import edu.unsw.comp9321.jdbc.UserService;
 import edu.unsw.comp9321.jdbc.Utilities;
@@ -81,18 +83,40 @@ public class RegisterCommand implements Command{
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<b>Submitting!</b>"); 
 		 
-		UserDTO user = CreateUser(request, response);
-				
+		UserDTO user;
+		if (request.getParameter("user_type").equalsIgnoreCase("seller")) {
+			user = CreateSeller(request, response);
+		} else {
+			user = CreateBuyer(request, response);
+		}
+		
 		UserService service = new UserService();
 		service.addUser(user);
+		
+		
 		//TEMP DISABLED//UserDelegate user_del = DelegateFactory.getInstance().getUserDelegate();
 		//TEMP DISABLED//user_del.addUser(userbean);
 	}
 	
-	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response) 
+	private BuyerDTO CreateBuyer(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		BuyerDTO buyer = new BuyerDTO();
+		buyer = (BuyerDTO) CreateUser(request, response, buyer);
+		buyer.setCreditCard(Integer.parseInt(request.getParameter("payment")));
+		return buyer;
+	}
+	
+	private SellerDTO CreateSeller(HttpServletRequest request, HttpServletResponse response) 
+			throws IOException {
+		SellerDTO seller = new SellerDTO();
+		seller = (SellerDTO) CreateUser(request, response, seller);
+		seller.setPaypal(request.getParameter("payment"));
+		return seller;
+	}
+	
+	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response, UserDTO user) 
 			throws IOException {
 		
-		UserDTO user = new UserDTO();
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
 		user.setUsername(request.getParameter("username"));
@@ -108,10 +132,6 @@ public class RegisterCommand implements Command{
 		//user.setPostalCode(request.getParameter("postal_code"));
 		//user.setState(request.getParameter("state"));
 		//user.setCountry(request.getParameter("country"));
-		
-		PrintWriter out = response.getWriter();// from response, get output writer
-		out.println("<br>"); 
-		out.println("User's name = " + user.getFirstName() + " " + user.getLastName()); 
 		
 		return user;
 		

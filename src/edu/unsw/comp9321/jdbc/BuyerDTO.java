@@ -1,6 +1,6 @@
 package edu.unsw.comp9321.jdbc;
 
-public class BuyerDTO {
+public class BuyerDTO extends UserDTO {
 	private long creditCard;
 	
 	public long getCreditCard() {
