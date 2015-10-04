@@ -92,9 +92,10 @@ public class UserDTO implements Serializable  {
 		address = full_address.split(",");
 		
 		// if empty, fill with empty strings
+		address[0] = " ";
 		if (address.length < 5) {
-			for (int i = 0; i < 6; i++) {
-				address[i] = " ";
+			for (int i = 1; i < 6; i++) {
+				address[i] = ", ";
 			}
 		}
 	}
