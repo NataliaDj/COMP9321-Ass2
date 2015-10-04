@@ -39,16 +39,16 @@
 			${info}
 			<c:choose>
 			    <c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
-			        Username <input type="text" name="username" maxlength="32" pattern="[A-Za-z0-9]{4,}" title="At least 4 or more letters and/or numbers">
-			        Password <input type="password" name="password" maxlength="32" pattern="[A-Za-z0-9]{8,}" title="At least 8 or more letters and/or numbers">
+			        Username <input type="text" name="username" maxlength="32" pattern="[A-Za-z0-9]{4,}" title="At least 4 or more letters and/or numbers" required>
+			        Password <input type="password" name="password" maxlength="32" pattern="[A-Za-z0-9]{8,}" title="At least 8 or more letters and/or numbers" required>
 			    </c:when>    
 			    <c:otherwise>
-			       <input type="hidden" name="username" value=${user.getUsername()} maxlength="32">
-			       Password <input type="password" name="password" placeholder="Only fill in when changing password" pattern="[A-Za-z0-9]" title="Only numbers and letters allowed">
+			       <input type="hidden" name="username" value=${user.getUsername()} maxlength="32" >
+			       Password <input type="password" name="password" placeholder="Only fill in when changing password" pattern="[A-Za-z0-9]{8,}" title="Only numbers and letters allowed" required>
 			    </c:otherwise>
 			</c:choose>
 			
-			Email: <input type="text" name="email"  value="${user.getEmail()}" maxlength="32" pattern="[A-Za-z0-9-_\.]{1,}[\@][A-Za-z0-9-_]{1,}[\.][A-Za-z]{1,0}" title="Please enter a valid email address">
+			Email: <input type="text" name="email"  value="${user.getEmail()}" maxlength="32" pattern="[A-Za-z0-9-_\.]{1,}[\@][A-Za-z0-9-_]{1,}[\.][A-Za-z]{1,0}" title="Please enter a valid email address" required>
 			<br>
 			<h3>Personal information</h3>
 			Nickname <input type="text" name="nickname" value="${user.getNickname()}" maxlength="32" pattern="[A-Za-z0-9-' ]*" title="Use of illegal characters">

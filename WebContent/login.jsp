@@ -23,8 +23,10 @@
 	    <h2>Login</h2>
 		<p><b>${error}</b></p>
 		<form action='ControllerServlet?operation=login' class='registerForm' method='POST'>
-			Username <input type="text"name="username" maxlength="32" pattern="[A-Za-z0-9]{4,}" title="At least 4 or more letters and/or numbers">
-			Password <input type="password" name="password" maxlength="32" pattern="[A-Za-z0-9]{8,}" title="At least 8 or more letters and/or numbers">
+			Username <input type="text"name="username" maxlength="32" pattern="[A-Za-z0-9]{4,}" 
+						title="At least 4 or more letters and/or numbers" required>
+			Password <input type="password" name="password" maxlength="32" pattern="[A-Za-z0-9]{8,}" 
+						title="At least 8 or more letters and/or numbers" required>
 	        
 	    <!--<p><input type='submit' value='Search'></form></p>-->
 		    <input type="hidden" name="action" value="loggingin"/>

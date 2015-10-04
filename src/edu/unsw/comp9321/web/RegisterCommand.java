@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import edu.unsw.comp9321.exception.ServiceLocatorException;
 import edu.unsw.comp9321.jdbc.BuyerDTO;
 import edu.unsw.comp9321.jdbc.SellerDTO;
 import edu.unsw.comp9321.jdbc.UserDTO;
@@ -36,12 +37,17 @@ public class RegisterCommand implements Command{
 		}
 		 
 		if (action.equals("registering")) { // trying to register with form data
-			register(request, response);
-			
-			request.setAttribute("error", "Email sent for activation");
-			String nextPage = "login.jsp";
+			String nextPage = "";
+			if (register(request, response)) {
+				request.setAttribute("error", "Email sent for activation");
+				nextPage = "login.jsp";
+			} else {
+				request.setAttribute("info", "<p><b>Either the username or email is already taken</b></p>");
+				nextPage = "register.jsp";
+			}
 			RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
 			rd.forward(request, response); 
+			
 		} else if (action.equals("activation")) { // trying to activate through link in email
 			response.setContentType("text/html");
 			
@@ -129,8 +135,9 @@ public class RegisterCommand implements Command{
 	 * @param request
 	 * @param response
 	 * @throws IOException
+	 * @throws ServletException 
 	 */
-	private void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	private boolean register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		response.setContentType("text/html");// from response, set content type
 		PrintWriter out = response.getWriter();// from response, get output writer
 		out.println("<b>Submitting!</b>"); 
@@ -141,7 +148,13 @@ public class RegisterCommand implements Command{
 		user = CreateSeller(request, user);
 		
 		UserService service = new UserService();
-		service.addUser(user);
+		
+		// if adding user is unsuccessful, it's beacause of username or email duplication
+		if (!service.addUser(user)) {
+			return false;
+		} else {
+			return true;
+		}
 		
 }	
 	private UserDTO CreateBuyer(HttpServletRequest request, UserDTO user)
@@ -151,15 +164,19 @@ public class RegisterCommand implements Command{
 	private UserDTO CreateBuyer(HttpServletRequest request, UserDTO user, boolean update) 
 			throws IOException {
 		if (request.getParameter("buyer") != null || (update && request.getParameter("credit_card") != null)) {
-			if (update) {
-				BuyerDTO buyer = new BuyerDTO();
-				buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
-				user.setBuyerDTO(buyer);
-			} else if (request.getParameter("buyer").equals("on")) {
-				BuyerDTO buyer = new BuyerDTO();
-				buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
-				user.setBuyerDTO(buyer);
-			} 
+			try {
+				if (update) {
+					BuyerDTO buyer = new BuyerDTO();
+					buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
+					user.setBuyerDTO(buyer);
+				} else if (request.getParameter("buyer").equals("on")) {
+					BuyerDTO buyer = new BuyerDTO();
+					buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
+					user.setBuyerDTO(buyer);
+				} 
+			} catch (NumberFormatException e) {
+			
+			}
 		}
 		return user;
 	}
@@ -171,14 +188,18 @@ public class RegisterCommand implements Command{
 	private UserDTO CreateSeller(HttpServletRequest request, UserDTO user, boolean update) 
 			throws IOException {
 		if (request.getParameter("seller") != null || (update && request.getParameter("paypal") != null)) {
-			if (update) {
-				SellerDTO seller = new SellerDTO();
-				seller.setPaypal(request.getParameter("paypal"));
-				user.setSellerDTO(seller);
-			} else if (request.getParameter("seller").equals("on")) {
-				SellerDTO seller = new SellerDTO();
-				seller.setPaypal(request.getParameter("paypal"));
-				user.setSellerDTO(seller);
+			try {
+				if (update) {
+					SellerDTO seller = new SellerDTO();
+					seller.setPaypal(request.getParameter("paypal"));
+					user.setSellerDTO(seller);
+				} else if (request.getParameter("seller").equals("on")) {
+					SellerDTO seller = new SellerDTO();
+					seller.setPaypal(request.getParameter("paypal"));
+					user.setSellerDTO(seller);
+				} 
+			} catch (NumberFormatException e) {
+				
 			}
 		}
 		return user;

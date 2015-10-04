@@ -52,11 +52,12 @@ public class UserService {
 	 * @param user 
 	 * @return
 	 */
-	public UserDTO addUser(UserDTO user){
+	public boolean addUser(UserDTO user){
 		if (bookstoreDAO.addUser(user)) {
 			sendConfirmationEmail(user); // send confirmation email if adding user to database is successful
+			return true;
 		}
-		return null;
+		return false;
 		
 	}
 	

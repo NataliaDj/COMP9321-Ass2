@@ -254,6 +254,34 @@ public class BookStoreDAO {
 			return false;
 		}
 	}
+	
+	/**
+	 * Test if the username exists in the users table in the database
+	 * 
+	 * @param username
+	 */
+	private boolean emailExists(String email) {
+		String query = "select count(*) AS matchcount from people where email = '" + email + "'";
+		int matches = 0;
+
+		ResultSet rs = queryDatabase(query);
+		try {
+			rs.last();
+			matches = rs.getInt("matchcount");
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			closeConnection();
+			e.printStackTrace();
+		}
+		closeConnection();
+
+		if (matches > 0) { 
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	/**
 	 * Test if username and password combination exists in the database, 
@@ -309,8 +337,8 @@ public class BookStoreDAO {
 	public boolean addUser(UserDTO user) throws DataAccessException {
 
 		// first test if user already exists
-		if (userExists(user.getUsername())) {
-			System.out.println("Not creating user because username already exists!");
+		if (userExists(user.getUsername()) || emailExists(user.getEmail())) {
+			System.out.println("Not creating user because username and/or email already exists!");
 			return false;
 		} else {
 			System.out.println("creating user = " + user.getUsername());
