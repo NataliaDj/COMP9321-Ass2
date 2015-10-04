@@ -80,11 +80,12 @@ public class BookStoreDAO {
 					ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_READ_ONLY);
 			statement.executeUpdate(query);
-			closeConnection();
 		} catch (ServiceLocatorException e) {
 			throw new DataAccessException("Unable to retrieve connection; " + e.getMessage(), e);
 		} catch (SQLException e) {
 			throw new DataAccessException("Unable to execute query; " + e.getMessage(), e);
+		} finally {
+			closeConnection();
 		}
 	}
 
@@ -113,8 +114,10 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			closeConnection();
 		}
-		closeConnection();
 		return retVal;
 	}
 
@@ -137,18 +140,15 @@ public class BookStoreDAO {
 				userDTO.setAddress(rs.getString("address"));
 				userDTO.setBan(rs.getBoolean("ban"));
 				userDTO.setAccountActivated(rs.getBoolean("account_activated"));
-				
-				//rs_specific.close();
-				rs.close();
-				closeConnection();
-				
 				userDTO = GetBuyerDTO(userDTO);
 				userDTO = GetSellerDTO(userDTO);
 				
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			closeConnection();
 		}
 		closeConnection();
 		return userDTO;
@@ -176,8 +176,9 @@ public class BookStoreDAO {
 
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 
 		
@@ -196,8 +197,9 @@ public class BookStoreDAO {
 				return false;
 			} 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		return false;
 	}
@@ -240,13 +242,13 @@ public class BookStoreDAO {
 		try {
 			rs.last();
 			matches = rs.getInt("matchcount");
-			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			closeConnection();
 			e.printStackTrace();
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			closeConnection();
 		}
-		closeConnection();
 
 		if (matches > 0) { 
 			return true;
@@ -302,13 +304,13 @@ public class BookStoreDAO {
 			if (rs.next()) {
 				user = getUserDTO(username);
 			}
-			rs.close();
-			closeConnection();
  		} catch (SQLException e) {
 			e.printStackTrace();
 			return null; // means there is no result
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			closeConnection();
 		}
-		closeConnection();
 		return user;
 	}
 	
@@ -399,7 +401,6 @@ public class BookStoreDAO {
 				rs.close();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		closeConnection();
@@ -417,8 +418,9 @@ public class BookStoreDAO {
 				rs.close();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			closeConnection();
 		}
 		closeConnection();
 		return user;
@@ -571,14 +573,6 @@ public class BookStoreDAO {
 		     updateDatabase(insert);
 		   } catch (Exception e) {
 			   throw e;
-		   } finally {
-		      if (con != null) {
-		         try {
-		           con.close();
-		         } catch (SQLException e1) {
-		           e1.printStackTrace();
-		         }
-		      }
 		   }
 		   
 		   return true;
@@ -597,6 +591,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 		return listings;
@@ -615,10 +610,11 @@ public class BookStoreDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 		}
 		query = "update publications set pause = " + pause + " where id = " + id;
 		updateDatabase(query);
-		closeConnection();
 	}
 	
 	public ArrayList<PublicationDTO> getCartItems(String username) {
@@ -636,10 +632,12 @@ public class BookStoreDAO {
 					PublicationDTO p = createPublication(rs_pub);
 					items.add(p);
 				}
+				try { rs_pub.close(); } catch (SQLException e) {e.printStackTrace();}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 		return items;
@@ -653,30 +651,66 @@ public class BookStoreDAO {
 			if (rs.next()) {
 				Timestamp timestamp = new Timestamp(new Date().getTime());
 				query = "update shopping_cart set removed = '" + timestamp + "' where publication_key = " + id;
-				updateDatabase(query);
-				System.out.println(query);
+				try {
+					con = services.createConnection();
+					Statement statement = con.createStatement(
+							ResultSet.TYPE_SCROLL_INSENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+					statement.executeUpdate(query);
+				} catch (ServiceLocatorException e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 	}
 	
 	public void checkout(String user) {
-		String query ="select * from shopping_cart where buyer_key='" + user +"'";
+		String query ="select * from shopping_cart where buyer_key='" + user +"' and purchased is null and removed is null";
 		
 		ResultSet rs = queryDatabase(query);
 		try {
 			while (rs.next()) {
 				Timestamp timestamp = new Timestamp(new Date().getTime());
 				query = "update shopping_cart set purchased='" + timestamp + "' where buyer_key='" + user + "' and publication_key=" + rs.getInt("publication_key")  ;
-				updateDatabase(query);
-				System.out.println(query);
+				try {
+					con = services.createConnection();
+					Statement statement = con.createStatement(
+							ResultSet.TYPE_SCROLL_INSENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+					statement.executeUpdate(query);
+					query = "select * from publications where id=" + rs.getInt("publication_key"); 
+					ResultSet rs_pub = queryDatabase(query);
+					try {
+						if (rs_pub.next()) {
+							query = "select * from people where username='" + rs_pub.getString("seller_id") + "'"; 
+							ResultSet rs_sel = queryDatabase(query);
+							try { 
+								if (rs_sel.next()) {
+								Utilities.sendMail("me@something.com", rs_sel.getString("email"), "Your Book was Just Sold", 
+										 "Hi " + rs_sel.getString("first_name") + ",\n\n"
+										 		+ rs_pub.getString("title") + " was just sold\n\n"
+										 		+ "Cheers");
+								}
+							} finally {
+								try { rs_sel.close(); } catch (SQLException e) {e.printStackTrace();}
+							}
+						}
+					} finally {
+						try { rs_pub.close(); } catch (SQLException e) {e.printStackTrace();}
+					}
+				} catch (ServiceLocatorException e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 	}
@@ -691,11 +725,20 @@ public class BookStoreDAO {
 				insert = insert + "'" + timestamp + "', ";
 				insert = insert + id + ", ";
 				insert = insert + "'" + seller + "')";
-				updateDatabase(insert);
+				try {
+					con = services.createConnection();
+					Statement statement = con.createStatement(
+							ResultSet.TYPE_SCROLL_INSENSITIVE,
+							ResultSet.CONCUR_READ_ONLY);
+					statement.executeUpdate(insert);
+				} catch (ServiceLocatorException e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 	}
@@ -717,6 +760,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 		return publications;
