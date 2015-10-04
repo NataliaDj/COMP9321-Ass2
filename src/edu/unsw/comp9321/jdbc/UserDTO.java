@@ -90,6 +90,13 @@ public class UserDTO implements Serializable  {
 	
 	public void setAddress(String full_address) {
 		address = full_address.split(",");
+		
+		// if empty, fill with empty strings
+		if (address.length < 5) {
+			for (int i = 0; i < 6; i++) {
+				address[i] = " ";
+			}
+		}
 	}
 	
 	public String getAddressString() {
