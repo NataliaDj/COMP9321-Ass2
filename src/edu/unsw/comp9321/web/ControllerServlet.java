@@ -49,6 +49,7 @@ public class ControllerServlet extends HttpServlet {
 		commands.put("viewPublication", new ViewPublicationCommand());
 		commands.put("removePublication", new RemovePublicationCommand());
 		commands.put("activation", new ActivationCommand());
+		commands.put("home", new HomeCommand());
 	}
 
 	protected void processRequest(HttpServletRequest request,

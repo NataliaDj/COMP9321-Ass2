@@ -43,20 +43,9 @@ public class AdvancedSearchCommand implements Command {
 				return "/info.jsp";
 			} else {
 				ArrayList<PublicationDTO> result = new ArrayList<PublicationDTO>();
-				ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
 				result.addAll(bookStoreDAO.searchPublications(null));
 				request.setAttribute("publications",
 						result);
-				Random rand = new Random();
-		        int randomNum;
-		        for(int i = 0; i < 10; ++i) {  	
-		        	randomNum = rand.nextInt(result.size());
-		        	while(random.contains(result.get(randomNum))) {
-		        		randomNum = rand.nextInt(result.size());
-		        	}
-		        	random.add(result.get(randomNum));
-		        }
-				request.getSession().setAttribute("random", random);
 				request.getSession().setAttribute("totalPublications", result);
 				request.getSession().setAttribute("totalMatches", result.size());
 				request.getSession().setAttribute("currPage", 1);
@@ -80,7 +69,6 @@ public class AdvancedSearchCommand implements Command {
 
 		// ELSE
 		ArrayList<PublicationDTO> publications = new ArrayList<PublicationDTO>();
-		ArrayList<PublicationDTO> random = new ArrayList<PublicationDTO>();
 		String type = request.getParameter("type");
 		title = request.getParameter("title");
 		String author = request.getParameter("author");
@@ -88,16 +76,6 @@ public class AdvancedSearchCommand implements Command {
 		String isbn = request.getParameter("isbn");
 		int minPrice = -1, maxPrice = -1;
 		publications.addAll(bookStoreDAO.searchPublications(null));
-		Random rand = new Random();
-        int randomNum;
-        for(int i = 0; i < 10; ++i) {  	
-        	randomNum = rand.nextInt(publications.size());
-        	while(random.contains(publications.get(randomNum))) {
-        		randomNum = rand.nextInt(publications.size());
-        	}
-        	random.add(publications.get(randomNum));
-        }
-		request.getSession().setAttribute("random", random);
 		if (type != null) {
 			if (!type.equals("")) {
 				specificSearch(publications, "type", type, year, minPrice,

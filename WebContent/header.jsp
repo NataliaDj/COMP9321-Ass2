@@ -9,7 +9,7 @@
 </header>
 <div id="topNav">
 	<ul>
-		<li><a href="/Ass2">Home</a></li>
+		<li><a href="ControllerServlet?operation=home">Home</a></li>
 		
 			<c:if test="${user.hasBuyerDTO() == true}">
 				<li><a href="ControllerServlet?operation=cart">Cart</a></li>
