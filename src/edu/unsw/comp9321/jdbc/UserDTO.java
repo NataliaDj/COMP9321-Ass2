@@ -94,6 +94,7 @@ public class UserDTO implements Serializable  {
 		// if empty, fill with empty strings
 		
 		if (address.length < 5) {
+			address = new String[6];
 			address[0] = " ";
 			for (int i = 1; i < 6; i++) {
 				address[i] = ", ";
