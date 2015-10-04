@@ -9,6 +9,7 @@ create table people(
 	username varchar(32) not null,
 	password varchar(32) not null, 
 	email varchar(32) not null unique,
+	nickname varchar(32),
 	first_name varchar(32),
 	last_name varchar(32),
 	birth_year numeric(4,0), 

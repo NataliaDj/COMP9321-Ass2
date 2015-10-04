@@ -73,6 +73,7 @@ public class Utilities {
         if (unhashed == null) return null;
          
         try {
+        	
 	        MessageDigest digest = MessageDigest.getInstance("MD5");
 	        digest.update(unhashed.getBytes(), 0, unhashed.length());
 	        generated_md5 = new BigInteger(1, digest.digest()).toString(16);

@@ -32,9 +32,8 @@
   					<input type="checkbox" name="seller">Seller</p>
 				</c:when>    
 				<c:otherwise>
-
-					<h2>Edit profile</h2>
- 
+					<h2>Edit your profile </h2>
+					<p>Here you can edit your profile ${user.getNickname()}</p>
 				</c:otherwise>
 			</c:choose>
 			${info}
@@ -51,6 +50,7 @@
 			Email: <input type="text" name="email"  value=${user.getEmail()}>
 			<br>
 			<h3>Personal information</h3>
+			Nickname <input type="text" name="nickname" value=${user.getNickname()}>
 		    First name <input type="text" name="firstname" value=${user.getFirstName()}>
 		   	Last name <input type="text" name="lastname"  value=${user.getLastName()}>
 		  	Birth year: <input type="text" name="birth_year"  value=${user.getBirthYear()}>

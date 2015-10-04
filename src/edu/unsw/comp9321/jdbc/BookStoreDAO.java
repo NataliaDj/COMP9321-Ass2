@@ -130,6 +130,7 @@ public class BookStoreDAO {
 				userDTO.setUsername(rs.getString("username"));
 				userDTO.setPassword(rs.getString("password"));
 				userDTO.setEmail(rs.getString("email"));
+				userDTO.setNickname(rs.getString("nickname"));
 				userDTO.setFirstName(rs.getString("first_name"));
 				userDTO.setLastName(rs.getString("last_name"));
 				userDTO.setBirthYear(rs.getInt("birth_year"));
@@ -319,18 +320,19 @@ public class BookStoreDAO {
 		try {
 			con = services.createConnection();
 			PreparedStatement stmt = con.prepareStatement(
-					"insert into people (username, password, email, first_name, last_name, birth_year, "
-							+ "address, account_activated, ban) values (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					"insert into people (username, password, email, nickname, first_name, last_name, birth_year, "
+							+ "address, account_activated, ban) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			stmt.setString(1, user.getUsername());
 			stmt.setString(2, user.getPassword());
 			stmt.setString(3, user.getEmail());
-			stmt.setString(4, user.getFirstName());
-			stmt.setString(5, user.getLastName());
-			stmt.setLong(6, user.getBirthYear());
-			stmt.setString(7, user.getAddressString());
-			stmt.setBoolean(8, false);
+			stmt.setString(4, user.getNickname());
+			stmt.setString(5, user.getFirstName());
+			stmt.setString(6, user.getLastName());
+			stmt.setLong(7, user.getBirthYear());
+			stmt.setString(8, user.getAddressString());
 			stmt.setBoolean(9, false);
+			stmt.setBoolean(10, false);
 
 			int n = stmt.executeUpdate();
 			if (n != 1)
@@ -480,15 +482,16 @@ public class BookStoreDAO {
 		try {
 			con = services.createConnection();
 			PreparedStatement stmt = con.prepareStatement(
-			"UPDATE people SET password = ?, email = ?, first_name = ?, last_name = ?"
+			"UPDATE people SET password = ?, email = ?, nickname = ?, first_name = ?, last_name = ?"
 			+ ", birth_year = ?, address = ? WHERE username = ?");
 			stmt.setString(1,user.getPassword());
 			stmt.setString(2,user.getEmail());
-			stmt.setString(3,user.getFirstName());
-			stmt.setString(4,user.getLastName());
-			stmt.setInt(5,user.getBirthYear());
-			stmt.setString(6,user.getAddressString());
-			stmt.setString(7,user.getUsername());
+			stmt.setString(3,user.getNickname());
+			stmt.setString(4,user.getFirstName());
+			stmt.setString(5,user.getLastName());
+			stmt.setInt(6,user.getBirthYear());
+			stmt.setString(7,user.getAddressString());
+			stmt.setString(8,user.getUsername());
 			stmt.executeUpdate();
 			stmt.close();
 			con.close();

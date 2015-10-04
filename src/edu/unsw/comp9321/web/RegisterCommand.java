@@ -193,6 +193,7 @@ public class RegisterCommand implements Command{
 		
 		System.out.println("password = " + request.getParameter("password").length());
 		
+		user.setNickname(request.getParameter("nickname"));
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
 		user.setUsername(request.getParameter("username"));

@@ -7,6 +7,7 @@ public class UserDTO implements Serializable  {
 	private String username;
 	private String password; 
 	private String email;
+	private String nickname;
 	private String firstName;
 	private String lastName;
 	private int birthYear; 
@@ -142,5 +143,13 @@ public class UserDTO implements Serializable  {
 	
 	public void setSellerDTO(SellerDTO sellerDTO) {
 		this.sellerDTO = sellerDTO;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }
