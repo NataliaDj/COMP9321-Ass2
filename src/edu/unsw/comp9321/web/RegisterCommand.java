@@ -94,18 +94,14 @@ public class RegisterCommand implements Command{
 		user = CreateUser(request, response, user);
 		user = CreateBuyer(request, user, true);
 		user = CreateSeller(request, user, true); 
-		
-		System.out.println("user string = " + user.getAddressString());
-		
+				
 		// if password is empty, keep it
 		if (request.getParameter("password").isEmpty() || 
 				request.getParameter("password").length() == 0) { // if empty
 			// make sure to keep old one
 			user.setPassword(current_password);
 		}
-		
-		//System.out.println("buyer = " + user.getBuyerDTO().getCreditCard());
-		
+				
 		// get service, update in database, and display message
 		UserService service = new UserService();
 		if (service.updateUser(user)) { // if successfully updated
@@ -190,9 +186,7 @@ public class RegisterCommand implements Command{
 	
 	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response, UserDTO user) 
 			throws IOException {
-		
-		System.out.println("password = " + request.getParameter("password").length());
-		
+				
 		user.setNickname(request.getParameter("nickname"));
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
