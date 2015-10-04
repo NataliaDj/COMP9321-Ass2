@@ -34,6 +34,9 @@ public class ViewPublicationCommand implements Command {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			bookstoreDAO.closeConnection();
 		}
 		return nextPage;
 	}

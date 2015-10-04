@@ -89,7 +89,7 @@ public class BookStoreDAO {
 		}
 	}
 
-	private void closeConnection() {
+	public void closeConnection() {
 		if (con != null) {
 			try {
 				con.close();
@@ -147,7 +147,7 @@ public class BookStoreDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
+			//try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 		return userDTO;
@@ -167,16 +167,22 @@ public class BookStoreDAO {
 				
 				//create and add publicationDTO
 				ResultSet temp = queryDatabase("select * from publications where id = " + rs.getInt("publication_key"));
-				temp.next();
-				PublicationDTO pub = createPublication(temp);
-				current.setPublication(pub);
-				
-				cart.add(current);
+				try {
+					temp.next();
+					PublicationDTO pub = createPublication(temp);
+					current.setPublication(pub);
+					
+					cart.add(current);
+				} finally {
+
+					try { temp.close(); } catch (SQLException e) {e.printStackTrace();}
+				}
 
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
+			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
 
