@@ -19,4 +19,4 @@ INSERT INTO publications (title, price, author, pub_type, pub_year, pause) VALUE
 INSERT INTO publications (title, price, author, pub_type, pub_year, pause) VALUES ('how to cook for forty humans',50,'Matt Groening','journal',1990,'false');
 
 update publications set pause = false where title = 'Pattern Matching in Trees and Nets';
-insert into publications (title, price, author, pub_type, pub_year, isbn, picture, pause, seller_id) values ('a', 1, 'b', 'book/collection', 1234, '123457890', '12asdf', 'true', 'dory');
+insert into publications (title, price, author, pub_type, pub_year, isbn, picture, pause, seller_id) values ('a', 1, 'b', 'book/collection', 1234, '123457890', '12asdf', 'true', 'nemo');

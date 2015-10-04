@@ -150,7 +150,6 @@ public class BookStoreDAO {
 			try { rs.close(); } catch (SQLException e) {e.printStackTrace();}
 			closeConnection();
 		}
-		closeConnection();
 		return userDTO;
 	}
 	

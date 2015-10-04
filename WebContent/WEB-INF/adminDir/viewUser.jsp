@@ -40,7 +40,7 @@
 				</tr>
 				<tr>
 					<td><b>Address:</b></td>
-					<td><c:out value="${userDTO.address}" />
+					<td><c:out value="${userDTO.addressString}" />
 					<td>
 				</tr>
 				<tr>

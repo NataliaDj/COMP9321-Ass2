@@ -21,15 +21,17 @@
 			<c:if test="${adminAccount == 'yes'}">
 				<li><a href="ControllerServlet?operation=searchUsers">Search Users</a></li>
 			</c:if>
-				<c:choose>
-					<c:when test="${user.hasBuyerDTO() == true || user.hasSellerDTO() == true}">
-						<li><a href="ControllerServlet?operation=register">Profile</a></li>
-					</c:when>
-					<c:otherwise>
-						<li><a href="ControllerServlet?operation=login">Login</a></li>
-						<li><a href="ControllerServlet?operation=register">Register</a></li>
-					</c:otherwise>
-				</c:choose>
+				<c:if test="${adminAccount != 'yes' }">
+					<c:choose>
+						<c:when test="${user.hasBuyerDTO() == true || user.hasSellerDTO() == true}">
+							<li><a href="ControllerServlet?operation=register">Profile</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="ControllerServlet?operation=login">Login</a></li>
+							<li><a href="ControllerServlet?operation=register">Register</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 		<c:if test="${user.hasBuyerDTO() == true || user.hasSellerDTO() == true || adminAccount =='yes'}">
 			<li><a href="ControllerServlet?operation=logout">Logout</a></li>
 		</c:if>
