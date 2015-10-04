@@ -10,7 +10,7 @@ public class UserDTO implements Serializable  {
 	private String firstName;
 	private String lastName;
 	private int birthYear; 
-	private String address;
+	private String[] address; 
 	private boolean accountActivated;
 	private boolean ban;
 	private BuyerDTO buyerDTO;
@@ -18,6 +18,7 @@ public class UserDTO implements Serializable  {
 	
 	public UserDTO() {
 		username = "NULL";
+		address = new String[6];
 	}
 	
 	/*public String getUserType() {
@@ -62,11 +63,40 @@ public class UserDTO implements Serializable  {
 		this.birthYear = birthYear;
 	}
 	
-	public String getAddress() {
-		return address;
+	public String getAddressOne() {
+		return address[0];
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	
+	public String getAddressTwo() {
+		return address[1];
+	}
+
+	public String getAddressCity() {
+		return address[2];
+	}
+	
+	public String getAddressPostalCode() {
+		return address[3];
+	}
+	
+	public String getAddressState() {
+		return address[4];
+	}
+	
+	public String getAddressCountry() {
+		return address[5];
+	}
+	
+	public void setAddress(String full_address) {
+		address = full_address.split(",");
+	}
+	
+	public String getAddressString() {
+		String returnString = address[0];
+		for (int i = 1; i < 6; i++) {
+			returnString += "," + address[i];
+		}
+		return returnString;
 	}
 
 	public boolean getAccountActivated() {

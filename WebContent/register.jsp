@@ -33,7 +33,7 @@
 				</c:when>    
 				<c:otherwise>
 
-					<h2>Edit profile profile</h2>
+					<h2>Edit profile</h2>
  
 				</c:otherwise>
 			</c:choose>
@@ -41,12 +41,13 @@
 			<c:choose>
 			    <c:when test="${user.getUsername()==null || user.getUsername()=='NULL'}">
 			        Username <input type="text" name="username">
+			        Password <input type="password" name="password">
 			    </c:when>    
 			    <c:otherwise>
 			       <input type="hidden" name="username" value=${user.getUsername()}>
+			       Password <input type="password" name="password" placeholder="Only fill in when changing password">
 			    </c:otherwise>
 			</c:choose>
-			Password <input type="password" name="password">
 			Email: <input type="text" name="email"  value=${user.getEmail()}>
 			<br>
 			<h3>Personal information</h3>

@@ -21,7 +21,6 @@ public class LoginCommand implements Command{
 	
 	public String execute(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
 		String action = "";
 		if (request.getParameter("action") != null) {
 			action = request.getParameter("action");

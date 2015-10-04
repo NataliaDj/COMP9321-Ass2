@@ -328,7 +328,7 @@ public class BookStoreDAO {
 			stmt.setString(4, user.getFirstName());
 			stmt.setString(5, user.getLastName());
 			stmt.setLong(6, user.getBirthYear());
-			stmt.setString(7, "temp address");
+			stmt.setString(7, user.getAddressString());
 			stmt.setBoolean(8, false);
 			stmt.setBoolean(9, false);
 
@@ -487,7 +487,7 @@ public class BookStoreDAO {
 			stmt.setString(3,user.getFirstName());
 			stmt.setString(4,user.getLastName());
 			stmt.setInt(5,user.getBirthYear());
-			stmt.setString(6,user.getAddress());
+			stmt.setString(6,user.getAddressString());
 			stmt.setString(7,user.getUsername());
 			stmt.executeUpdate();
 			stmt.close();

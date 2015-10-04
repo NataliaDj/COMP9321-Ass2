@@ -73,27 +73,6 @@ public class RegisterCommand implements Command{
 		return null;
 	}
 	
-	/**
-	 * Get the right type of user (buyer or seller)
-	 * 
-	 * @param request
-	 * @param response
-	 * @param user_type
-	 * @return
-	 * @throws IOException
-	 */
-	/*
-	private UserDTO userHelper(HttpServletRequest request, HttpServletResponse response, String user_type) 
-			throws IOException {		 
-		UserDTO user;
-		if (user_type.equalsIgnoreCase("seller")) {
-			user = CreateSeller(request, response);
-		} else {
-			user = CreateBuyer(request, response);
-		}
-		
-		return user;
-	}*/
 	
 	/**
 	 * Update user information in database and session
@@ -105,23 +84,29 @@ public class RegisterCommand implements Command{
 	 */
 	private void updateUser(HttpServletRequest request, HttpServletResponse response) 
 			throws IOException, ServletException {
+		
 		// first current session user
 		HttpSession session = request.getSession(false);
 		UserDTO user = (UserDTO) session.getAttribute("user");
 		
-		// if password is empty, keep it
 		String current_password = user.getPassword();
+		// create user object
 		user = CreateUser(request, response, user);
 		user = CreateBuyer(request, user, true);
 		user = CreateSeller(request, user, true); 
-		if (request.getParameter("password").isEmpty()) { // if empty
+		
+		System.out.println("user string = " + user.getAddressString());
+		
+		// if password is empty, keep it
+		if (request.getParameter("password").isEmpty() || 
+				request.getParameter("password").length() == 0) { // if empty
 			// make sure to keep old one
 			user.setPassword(current_password);
 		}
 		
-		System.out.println("buyer = " + user.getBuyerDTO().getCreditCard());
+		//System.out.println("buyer = " + user.getBuyerDTO().getCreditCard());
 		
-		// get service and update in database
+		// get service, update in database, and display message
 		UserService service = new UserService();
 		if (service.updateUser(user)) { // if successfully updated
 			request.setAttribute("info", "<p><b>Your profile has successfully been updated</b></p>");
@@ -135,13 +120,9 @@ public class RegisterCommand implements Command{
 		
 		// send to updated page
 		String nextPage = "register.jsp";
-		
 		RequestDispatcher rd = request.getRequestDispatcher("/"+nextPage);
 		rd.forward(request, response);
-		
-		
-		
-
+	
 	}
 	
 	
@@ -173,7 +154,7 @@ public class RegisterCommand implements Command{
 	}
 	private UserDTO CreateBuyer(HttpServletRequest request, UserDTO user, boolean update) 
 			throws IOException {
-		if (request.getParameter("buyer") != null || update) {
+		if (request.getParameter("buyer") != null || (update && request.getParameter("credit_card") != null)) {
 			if (update) {
 				BuyerDTO buyer = new BuyerDTO();
 				buyer.setCreditCard(Integer.parseInt(request.getParameter("credit_card")));
@@ -193,7 +174,7 @@ public class RegisterCommand implements Command{
 	}
 	private UserDTO CreateSeller(HttpServletRequest request, UserDTO user, boolean update) 
 			throws IOException {
-		if (request.getParameter("seller") != null || update) {
+		if (request.getParameter("seller") != null || (update && request.getParameter("paypal") != null)) {
 			if (update) {
 				SellerDTO seller = new SellerDTO();
 				seller.setPaypal(request.getParameter("paypal"));
@@ -210,6 +191,8 @@ public class RegisterCommand implements Command{
 	private UserDTO CreateUser(HttpServletRequest request, HttpServletResponse response, UserDTO user) 
 			throws IOException {
 		
+		System.out.println("password = " + request.getParameter("password").length());
+		
 		user.setFirstName(request.getParameter("firstname"));
 		user.setLastName(request.getParameter("lastname"));
 		user.setUsername(request.getParameter("username"));
@@ -219,16 +202,21 @@ public class RegisterCommand implements Command{
 		user.setEmail(request.getParameter("email"));
 		user.setBirthYear(Integer.parseInt(request.getParameter("birth_year")));
 		
-		//user.setAddressOne(request.getParameter("address_one"));
-		//user.setAddressTwo(request.getParameter("address_two"));
-		//user.setCity(request.getParameter("city"));
-		//user.setPostalCode(request.getParameter("postal_code"));
-		//user.setState(request.getParameter("state"));
-		//user.setCountry(request.getParameter("country"));
-
+		
+		String address = Utilities.VerifyInput(request.getParameter("address_one")) + "," +
+						Utilities.VerifyInput(request.getParameter("address_two")) + "," +
+						Utilities.VerifyInput(request.getParameter("city")) + "," +
+						Utilities.VerifyInput(request.getParameter("postal_code")) + "," +
+						Utilities.VerifyInput(request.getParameter("state")) + "," +
+						Utilities.VerifyInput(request.getParameter("country"));
+		user.setAddress(address);
 		
 		return user;
 		
 		
 	}
+	
+	
+	
+	
 }

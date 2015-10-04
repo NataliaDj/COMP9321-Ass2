@@ -34,14 +34,17 @@ public class Utilities {
 	public static void sendMail(String email_sender, String email_receiver,
 								String subject, String content) {
 		try {
-			Context initCtx = new InitialContext();
-			Context envCtx = (Context) initCtx.lookup("java:comp/env");
-			Session session = (Session) envCtx.lookup("mail/Session");
+			// get context and session
+			Context initital_context = new InitialContext();
+			Context env_context = (Context) initital_context.lookup("java:comp/env");
+			Session session = (Session) env_context.lookup("mail/Session");
 			
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(email_sender));
+			
 			InternetAddress to[] = new InternetAddress[1];
 			to[0] = new InternetAddress(email_receiver);
+			
 			message.setRecipients(Message.RecipientType.TO, to);
 			message.setSubject(subject);
 			message.setContent(content, "text/plain");
@@ -59,7 +62,7 @@ public class Utilities {
 	}
 	
 	/**
-	 * 
+	 * Generate MD5 function for 
 	 * 
 	 * @param unhashed
 	 * @return
@@ -79,5 +82,16 @@ public class Utilities {
         return generated_md5;
     }
 	
+	public static String VerifyInput(String input) {
+		
+		//System.out.println("input = " + input);
+		//System.out.println("input length = " + input.length());
+		
+		if (input == null || input.length() == 0) {
+			return " ";
+		}
+		
+		return input;
+	}
 	
 }
