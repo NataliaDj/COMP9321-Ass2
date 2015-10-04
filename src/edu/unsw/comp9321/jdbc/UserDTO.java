@@ -19,7 +19,7 @@ public class UserDTO implements Serializable  {
 	
 	public UserDTO() {
 		username = "NULL";
-		address = new String[6];
+		this.setAddress(" ");
 	}
 	
 	/*public String getUserType() {
