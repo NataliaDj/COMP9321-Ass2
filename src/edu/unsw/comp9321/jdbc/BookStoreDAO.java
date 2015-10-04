@@ -149,6 +149,7 @@ public class BookStoreDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		closeConnection();
 		return userDTO;
 	}
 	
@@ -371,6 +372,7 @@ public class BookStoreDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		closeConnection();
 		return user;
 	}
 	
@@ -382,11 +384,13 @@ public class BookStoreDAO {
 				SellerDTO seller = new SellerDTO();
 				seller.setPaypal(rs.getString("paypal"));
 				user.setSellerDTO(seller);
+				rs.close();
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		closeConnection();
 		return user;
 	}
 	
