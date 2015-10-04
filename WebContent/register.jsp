@@ -55,12 +55,12 @@
 		   	Last name <input type="text" name="lastname"  value=${user.getLastName()}>
 		  	Birth year: <input type="text" name="birth_year"  value=${user.getBirthYear()}>
 		   	<h3>Address</h3>
-		   	Address 1 <input type="text" name="address_one">
-		   	Address 2 <input type="text" name="address_two">
-			City <input type="text" name="city">
-			Postal code <input type="text" name="postal_code">
-			State <input type="text" name="state">
-			Country <input type="text" name="country">
+		   	Address 1 <input type="text" name="address_one" value=${user.getAddressOne()}>
+		   	Address 2 <input type="text" name="address_two" value=${user.getAddressTwo()}>
+			City <input type="text" name="city" value=${user.getAddressCity()}>
+			Postal code <input type="text" name="postal_code" value=${user.getAddressPostalCode()}>
+			State <input type="text" name="state" value=${user.getAddressState()}>
+			Country <input type="text" name="country" value=${user.getAddressCountry()}>
 			<h3>Payment</h3>
 			
 	        
